@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas en Vivo</title>
-    <!-- Cargamos el motor Clappr, excelente solucionando problemas de transmisión mixta -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+    <!-- Cargamos la biblioteca Hls.js oficial, la más potente para transmisiones en directo -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -33,9 +33,10 @@
             border-radius: 12px;
             overflow: hidden;
         }
-        #player {
+        video {
             width: 100%;
-            aspect-ratio: 16/9;
+            display: block;
+            background-color: #000;
         }
         .instrucciones {
             background-color: #222;
@@ -51,10 +52,6 @@
             margin-top: 0;
             color: #ffcc00;
         }
-        .instrucciones p {
-            margin-bottom: 0;
-            line-height: 1.5;
-        }
     </style>
 </head>
 <body>
@@ -63,29 +60,58 @@
     <p class="subtitulo">Visualizando la señal en directo de Canal CTV</p>
 
     <div class="video-container">
-        <!-- Contenedor donde Clappr renderizará el streaming -->
-        <div id="player"></div>
+        <!-- Reproductor de video nativo optimizado con controles estándar -->
+        <video id="video" controls autoplay muted playsinline></video>
     </div>
 
     <div class="instrucciones">
-        <h3>¿Problemas con la reproducción?</h3>
-        <p>Los navegadores modernos aplican medidas estrictas con transmisiones externas. Si la pantalla se mantiene oscura, pulsa el botón de reproducción integrado o recarga el sitio web.</p>
+        <h3>¿La pantalla sigue dando vueltas?</h3>
+        <p>1. Haz clic en el <strong>icono del candado</strong> en la barra de direcciones de arriba.</p>
+        <p>2. Busca la opción <strong>Configuración del sitio</strong> (o Permisos).</p>
+        <p>3. Activa o permite la opción de <strong>Contenido no seguro</strong> y recarga la página.</p>
     </div>
 
     <script>
-        // Dirección de Canal CTV procesada a través del puente AllOrigins para saltar bloqueos de red
-        var streamingUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://85.49.92.53/Canal-CTV/index.m3u8');
+        var video = document.getElementById('video');
+        // Usamos un proxy de respaldo transparente para evitar el bloqueo del bucle de carga
+        var videoSrc = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://85.49.92.53/Canal-CTV/index.m3u8');
 
-        var player = new Clappr.Player({
-            source: streamingUrl,
-            parentId: "#player",
-            width: '100%',
-            height: '100%',
-            autoPlay: true,
-            mute: true,
-            mimeType: "application/x-mpegURL",
-            playbackNotSupportedMessage: "Cargando retransmisión... Si no inicia automáticamente, por favor refresca la página."
-        });
+        if (Hls.isSupported()) {
+            var hls = new Hls({
+                maxBufferLength: 10,
+                maxMaxBufferLength: 20,
+                enableWorker: true,
+                lowLatencyMode: true
+            });
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+            });
+            
+            // Manejador inteligente de errores de red para forzar la carga si se traba
+            hls.on(Hls.Events.ERROR, function (event, data) {
+                if (data.fatal) {
+                    switch (data.type) {
+                        case Hls.ErrorTypes.NETWORK_ERROR:
+                            hls.startLoad();
+                            break;
+                        case Hls.ErrorTypes.MEDIA_ERROR:
+                            hls.recoverMediaError();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        }
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            // Compatibilidad nativa para dispositivos Apple (Safari / iPhone)
+            video.src = 'http://85.49.92.53/Canal-CTV/index.m3u8';
+            video.addEventListener('loadedmetadata', function() {
+                video.play();
+            });
+        }
     </script>
 </body>
 </html>
