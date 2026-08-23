@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas en Vivo</title>
-    <!-- Cargamos el reproductor Video.js compatible con M3U8 -->
-    <link href="https://zencdn.net" rel="stylesheet" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,6 +21,13 @@
             margin: 20px auto;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 450px;
+            border: none;
         }
         .instrucciones {
             background-color: #333;
@@ -30,36 +35,24 @@
             border-radius: 8px;
             max-width: 600px;
             margin: 20px auto;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
     <h1>Caudete Fiestas - Transmisión en Vivo</h1>
-    <p>Disfruta de los videos de las fiestas en ejecución.</p>
+    <p>Disfruta de los videos de las fiestas en ejecución de Canal CTV.</p>
 
     <div class="video-container">
-        <!-- REPRODUCTOR DE VIDEO -->
-        <video
-            id="reproductor-caudete"
-            class="video-js vjs-default-skin vjs-16-9 vjs-big-play-centered"
-            controls
-            preload="auto"
-            data-setup='{}'>
-            <!-- REEMPLAZA EL SIGUIENTE ENLACE CON TU IP O URL M3U8 -->
-            <source src="http://85.49.92.53/Canal-CTV/index.m3u8" type="application/x-mpegURL">
-            <p class="vjs-no-js">
-                Para ver este video, activa JavaScript o usa un navegador que soporte video HTML5.
-            </p>
-        </video>
+        <!-- REPRODUCTOR CONFIGURADO CON TU SEÑAL EXACTA -->
+        <iframe src="https://player.srt.zone/?url=http://85.49.92.53/Canal-CTV/index.m3u8" allowfullscreen></iframe>
     </div>
 
     <div class="instrucciones">
-        <h3>¿No puedes ver la transmisión?</h3>
-        <p>Asegúrate de que el servidor de origen (tu IP) esté encendido y transmitiendo en directo.</p>
+        <h3>¿No puedes ver el video?</h3>
+        <p>Si el reproductor aparece en blanco o da error de seguridad, haz clic en el candado o escudo de la barra de direcciones de tu navegador y selecciona <strong>"Permitir contenido no seguro"</strong>.</p>
     </div>
 
-    <!-- Scripts de Video.js -->
-    <script src="https://zencdn.net"></script>
 </body>
 </html>
