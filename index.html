@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas en Vivo</title>
-    <!-- Cargamos la biblioteca Hls.js oficial, la más potente para transmisiones en directo -->
+    <!-- Cargamos el reproductor universal Plyr -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
@@ -36,21 +37,28 @@
         video {
             width: 100%;
             display: block;
-            background-color: #000;
         }
-        .instrucciones {
+        .vlc-box {
             background-color: #222;
-            padding: 15px 20px;
+            padding: 15px;
             border-radius: 8px;
             max-width: 600px;
-            margin: 30px auto 0 auto;
+            margin: 25px auto 0 auto;
             font-size: 14px;
-            border-left: 4px solid #ffcc00;
-            text-align: left;
+            border: 1px solid #333;
         }
-        .instrucciones h3 {
-            margin-top: 0;
-            color: #ffcc00;
+        .vlc-btn {
+            display: inline-block;
+            background-color: #ff5500;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .vlc-btn:hover {
+            background-color: #ff3300;
         }
     </style>
 </head>
@@ -60,58 +68,43 @@
     <p class="subtitulo">Visualizando la señal en directo de Canal CTV</p>
 
     <div class="video-container">
-        <!-- Reproductor de video nativo optimizado con controles estándar -->
-        <video id="video" controls autoplay muted playsinline></video>
+        <!-- Reproductor optimizado sin bloqueos -->
+        <video id="player" controls playsinline autoplay muted></video>
     </div>
 
-    <div class="instrucciones">
-        <h3>¿La pantalla sigue dando vueltas?</h3>
-        <p>1. Haz clic en el <strong>icono del candado</strong> en la barra de direcciones de arriba.</p>
-        <p>2. Busca la opción <strong>Configuración del sitio</strong> (o Permisos).</p>
-        <p>3. Activa o permite la opción de <strong>Contenido no seguro</strong> y recarga la página.</p>
+    <!-- BOTÓN DE RESPALDO PARA SMARTPHONES Y SMART TV -->
+    <div class="vlc-box">
+        <h3>¿La pantalla sigue en negro o dando vueltas?</h3>
+        <p>Si tu navegador bloquea la señal HTTP por seguridad, puedes abrir la retransmisión directamente en tu reproductor de video favorito (como VLC Media Player o IPTV Player) usando este botón:</p>
+        <a href="http://85.49.92.53/Canal-CTV/index.m3u8" class="vlc-btn">Abrir Señal Externa (M3U8)</a>
     </div>
 
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
-        var video = document.getElementById('video');
-        // Usamos un proxy de respaldo transparente para evitar el bloqueo del bucle de carga
-        var videoSrc = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://85.49.92.53/Canal-CTV/index.m3u8');
-
-        if (Hls.isSupported()) {
-            var hls = new Hls({
-                maxBufferLength: 10,
-                maxMaxBufferLength: 20,
-                enableWorker: true,
-                lowLatencyMode: true
-            });
-            hls.loadSource(videoSrc);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
-            });
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('player');
+            // Usamos un puente HTTPS limpio y directo para alimentar el flujo de datos
+            const source = 'https://api.allorigins.win/raw?url=' + encodeURIComponent('http://85.49.92.53/Canal-CTV/index.m3u8');
             
-            // Manejador inteligente de errores de red para forzar la carga si se traba
-            hls.on(Hls.Events.ERROR, function (event, data) {
-                if (data.fatal) {
-                    switch (data.type) {
-                        case Hls.ErrorTypes.NETWORK_ERROR:
-                            hls.startLoad();
-                            break;
-                        case Hls.ErrorTypes.MEDIA_ERROR:
-                            hls.recoverMediaError();
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });
-        }
-        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // Compatibilidad nativa para dispositivos Apple (Safari / iPhone)
-            video.src = 'http://85.49.92.53/Canal-CTV/index.m3u8';
-            video.addEventListener('loadedmetadata', function() {
+            const defaultOptions = {};
+
+            if (Hls.isSupported()) {
+                const hls = new Hls({
+                    maxMaxBufferLength: 10,
+                    lowLatencyMode: true
+                });
+                hls.loadSource(source);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    const player = new Plyr(video, defaultOptions);
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = source;
+                const player = new Plyr(video, defaultOptions);
                 video.play();
-            });
-        }
+            }
+        });
     </script>
 </body>
 </html>
