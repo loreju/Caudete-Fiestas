@@ -3,77 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Caudete Fiestas en Vivo</title>
-    <!-- Cargamos el motor hls.js para que el PC entienda el formato m3u8 -->
+    <title>Caudete Fiestas</title>
+    <!-- Cargamos Hls.js y los estilos limpios de Plyr para el boton de Play grande -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a1a;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #141414;
             color: #ffffff;
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
+            margin: 0;
         }
-        h1 { color: #ffcc00; }
+        h1 {
+            color: #ffcc00;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         .video-container {
-            max-width: 800px;
-            margin: 20px auto;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             background-color: #000;
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        video { width: 100%; display: block; }
-        .guia-seguridad {
-            background-color: #d9534f;
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            max-width: 600px;
-            margin: 20px auto;
-            text-align: left;
-            font-size: 14px;
+        video {
+            width: 100%;
+            display: block;
         }
-        .guia-seguridad ol { margin-left: 20px; padding: 0; }
+        /* Personalización del botón Play de Plyr para que sea amarillo de Caudete */
+        .plyr--video .plyr__control--overlaid {
+            background: rgba(255, 204, 0, 0.9) !important;
+            color: #000 !important;
+        }
+        .plyr__control {
+            color: #000;
+        }
+        .plyr--full-ui input[type=range] {
+            color: #ffcc00 !important;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Caudete Fiestas - Canal CTV</h1>
-    <p>Transmisión directa desde el PC</p>
+    <h1>Caudete Fiestas</h1>
 
     <div class="video-container">
-        <!-- Reproductor de video directo sin servidores intermedios -->
-        <video id="reproductor" controls autoplay muted playsinline></video>
+        <!-- Reproductor limpio con volumen activo y botón de reproducción inicial -->
+        <video id="player" controls playsinline poster=""></video>
     </div>
 
-    <div class="guia-seguridad">
-        <strong>⚠️ INSTRUCCIONES OBLIGATORIAS PARA VER EL VIDEO EN PC:</strong><br><br>
-        Como la señal de televisión es antigua (HTTP) y esta web es moderna y segura (HTTPS), tu navegador bloqueará el video por defecto. Para desbloquearlo en 5 segundos, haz esto:
-        <ol>
-            <li>Mira arriba a la izquierda en tu navegador, justo al lado de la dirección de esta web. Haz clic en el <strong>icono de los dos controles deslizantes (o el icono de información/candado)</strong>.</li>
-            <li>Haz clic en <strong>"Configuración del sitio"</strong> (Site settings).</li>
-            <li>En la lista que se abre, busca abajo del todo la opción llamada <strong>"Contenido no seguro"</strong> (Insecure content).</li>
-            <li>Cambia la opción de "Bloquear" a <strong>"Permitir"</strong> (Allow).</li>
-            <li>Vuelve a esta pestaña y haz clic en el botón flotante que te saldrá arriba para <strong>Volver a cargar / Actualizar</strong> la página. ¡El video cargará al instante!</li>
-        </ol>
-    </div>
-
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <script>
-        var video = document.getElementById('reproductor');
-        var videoSrc = 'http://85.49.92.53/Canal-CTV/index.m3u8';
-
-        if (Hls.isSupported()) {
-            var hls = new Hls();
-            hls.loadSource(videoSrc);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                video.play();
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('player');
+            const source = 'http://85.49.92.53/Canal-CTV/index.m3u8';
+            
+            // Configuración del reproductor visual
+            const player = new Plyr(video, {
+                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                tooltips: { controls: true, seek: true }
             });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = videoSrc;
-            video.play();
-        }
+
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(source);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    // Espera la interacción del usuario con el botón Play
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = source;
+            }
+        });
     </script>
 </body>
 </html>
