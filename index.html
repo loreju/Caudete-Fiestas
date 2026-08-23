@@ -4,122 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas en Vivo</title>
-    <!-- Librería Hls.js optimizada -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.11/dist/hls.min.js"></script>
+    <!-- Cargamos el motor hls.js para que el PC entienda el formato m3u8 -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #141414;
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
             color: #ffffff;
             text-align: center;
             padding: 20px;
-            margin: 0;
         }
-        h1 {
-            color: #ffcc00;
-            margin-bottom: 5px;
-        }
-        .subtitulo {
-            color: #b3b3b3;
-            font-size: 16px;
-            margin-top: 0;
-            margin-bottom: 25px;
-        }
+        h1 { color: #ffcc00; }
         .video-container {
             max-width: 800px;
-            margin: 0 auto;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+            margin: 20px auto;
             background-color: #000;
-            border-radius: 12px;
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        video {
-            width: 100%;
-            display: block;
-            background-color: #000;
-        }
-        .panel-alternativo {
-            background-color: #222;
-            padding: 20px;
-            border-radius: 12px;
+        video { width: 100%; display: block; }
+        .guia-seguridad {
+            background-color: #d9534f;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
             max-width: 600px;
-            margin: 30px auto 0 auto;
-            border: 1px solid #333;
+            margin: 20px auto;
+            text-align: left;
+            font-size: 14px;
         }
-        .panel-alternativo h3 {
-            color: #ffcc00;
-            margin-top: 0;
-        }
-        .btn-directo {
-            display: block;
-            background-color: #ff5500;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            margin: 10px auto;
-            max-width: 80%;
-            transition: 0.2s;
-        }
-        .btn-directo:hover {
-            background-color: #e04c00;
-        }
-        .btn-vlc {
-            background-color: #2b70c9;
-        }
-        .btn-vlc:hover {
-            background-color: #1d5cae;
-        }
-        .nota-informativa {
-            font-size: 12px;
-            color: #888;
-            margin-top: 15px;
-        }
+        .guia-seguridad ol { margin-left: 20px; padding: 0; }
     </style>
 </head>
 <body>
 
-    <h1>Caudete Fiestas - Transmisión en Vivo</h1>
-    <p class="subtitulo">Señal en directo de Canal CTV</p>
+    <h1>Caudete Fiestas - Canal CTV</h1>
+    <p>Transmisión directa desde el PC</p>
 
     <div class="video-container">
-        <!-- REPRODUCTOR WEB INTEGRADO -->
-        <video id="videoPlayer" controls autoplay muted playsinline></video>
+        <!-- Reproductor de video directo sin servidores intermedios -->
+        <video id="reproductor" controls autoplay muted playsinline></video>
     </div>
 
-    <!-- PANEL DE ACCESO DIRECTO GARANTIZADO -->
-    <div class="panel-alternativo">
-        <h3>¿La pantalla web da error o no carga?</h3>
-        <p>Debido a las restricciones de seguridad de los navegadores actuales, si el cuadro de arriba no inicia, pulsa una de las siguientes opciones para abrir la señal sin restricciones:</p>
-        
-        <!-- Enlace HTTP directo para navegadores o apps compatibles -->
-        <a href="http://85.49.92.53/Canal-CTV/index.m3u8" class="btn-directo" target="_blank">📺 Abrir Canal en Pestaña Directa</a>
-        
-        <!-- Enlace forzado para la aplicación VLC -->
-        <a href="intent://85.49.92.53/Canal-CTV/index.m3u8#Intent;scheme=http;type=video/*;package=org.videolan.vlc;end" class="btn-directo btn-vlc">🧡 Reproducir directamente en App VLC</a>
-        
-        <p class="nota-informativa">Recomendado para teléfonos móviles, Smart TVs o si usas Google Chrome/Edge y experimentas el bloqueo del reproductor.</p>
+    <div class="guia-seguridad">
+        <strong>⚠️ INSTRUCCIONES OBLIGATORIAS PARA VER EL VIDEO EN PC:</strong><br><br>
+        Como la señal de televisión es antigua (HTTP) y esta web es moderna y segura (HTTPS), tu navegador bloqueará el video por defecto. Para desbloquearlo en 5 segundos, haz esto:
+        <ol>
+            <li>Mira arriba a la izquierda en tu navegador, justo al lado de la dirección de esta web. Haz clic en el <strong>icono de los dos controles deslizantes (o el icono de información/candado)</strong>.</li>
+            <li>Haz clic en <strong>"Configuración del sitio"</strong> (Site settings).</li>
+            <li>En la lista que se abre, busca abajo del todo la opción llamada <strong>"Contenido no seguro"</strong> (Insecure content).</li>
+            <li>Cambia la opción de "Bloquear" a <strong>"Permitir"</strong> (Allow).</li>
+            <li>Vuelve a esta pestaña y haz clic en el botón flotante que te saldrá arriba para <strong>Volver a cargar / Actualizar</strong> la página. ¡El video cargará al instante!</li>
+        </ol>
     </div>
 
     <script>
-        var video = document.getElementById('videoPlayer');
-        // Alternamos a un proxy alternativo de alta velocidad
-        var sourceUrl = 'https://thingproxy.freeboard.io/fetch/http://85.49.92.53/Canal-CTV/index.m3u8';
+        var video = document.getElementById('reproductor');
+        var videoSrc = 'http://85.49.92.53/Canal-CTV/index.m3u8';
 
         if (Hls.isSupported()) {
-            var hls = new Hls({
-                maxMaxBufferLength: 15,
-                enableWorker: true
-            });
-            hls.loadSource(sourceUrl);
+            var hls = new Hls();
+            hls.loadSource(videoSrc);
             hls.attachMedia(video);
             hls.on(Hls.Events.MANIFEST_PARSED, function() {
                 video.play();
             });
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // Conexión nativa limpia para Safari / iPhone / Apple
-            video.src = 'http://85.49.92.53/Canal-CTV/index.m3u8';
+            video.src = videoSrc;
             video.play();
         }
     </script>
