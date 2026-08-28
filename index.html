@@ -16,13 +16,36 @@
             padding: 40px 20px;
             margin: 0;
         }
+        
+        /* Contenedor superior para los logos principales y el título */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto 30px auto;
+            background-color: #1e1e1e;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .header-logos {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
         h1 {
             color: #ffcc00;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2.3rem;
+            margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
+            flex: 1;
+            min-width: 250px;
         }
+
         .video-container {
             max-width: 900px;
             margin: 0 auto;
@@ -35,6 +58,37 @@
             width: 100%;
             display: block;
         }
+
+        /* Bloque inferior para las comparsas */
+        .comparsas-seccion {
+            margin-top: 40px;
+        }
+        .comparsas-seccion h2 {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .comparsas-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .escudo-comparsa {
+            width: 65px;
+            height: auto;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
+            transition: transform 0.2s ease-in-out;
+        }
+        .escudo-comparsa:hover {
+            transform: scale(1.15);
+        }
+
         /* Personalización del botón Play de Plyr para que sea amarillo de Caudete */
         .plyr--video .plyr__control--overlaid {
             background: rgba(255, 204, 0, 0.9) !important;
@@ -46,15 +100,41 @@
         .plyr--full-ui input[type=range] {
             color: #ffcc00 !important;
         }
+
+        /* Ajustes responsivos para pantallas pequeñas */
+        @media (max-width: 600px) {
+            .header-container { flex-direction: column; padding: 15px; }
+            h1 { font-size: 1.8rem; order: -1; } /* Pone el título arriba en móviles */
+            .header-logos { height: 55px; }
+            .escudo-comparsa { width: 50px; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Caudete Fiestas</h1>
+    <!-- Cabecera organizada con Logos y Título -->
+    <div class="header-container">
+        <img class="header-logos" src="img/logo-ctv.png" alt="Logo CTV">
+        <h1>Caudete Fiestas</h1>
+        <img class="header-logos" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+        <img class="header-logos" src="img/logo-asociacion.png" alt="Asociación de Comparsas">
+    </div>
 
+    <!-- Reproductor de vídeo -->
     <div class="video-container">
-        <!-- Reproductor limpio con volumen activo y botón de reproducción inicial -->
         <video id="player" controls playsinline poster=""></video>
+    </div>
+
+    <!-- Sección de Comparsas Tradicionales -->
+    <div class="comparsas-seccion">
+        <h2>Comparsas</h2>
+        <div class="comparsas-grid">
+            <img class="escudo-comparsa" src="img/guerreros.png" alt="Guerreros" title="Comparsa de Guerreros">
+            <img class="escudo-comparsa" src="img/mirenos.png" alt="Mirenos" title="Comparsa de Mirenos">
+            <img class="escudo-comparsa" src="img/tarik.png" alt="Tarik" title="Comparsa de Tarik">
+            <img class="escudo-comparsa" src="img/moros.png" alt="Moros" title="Comparsa de Moros">
+            <img class="escudo-comparsa" src="img/antigua.png" alt="La Antigua" title="Comparsa de La Antigua">
+        </div>
     </div>
 
     <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
