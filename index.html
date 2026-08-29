@@ -15,10 +15,8 @@
     <!-- Enlace al archivo de configuración de la Aplicación Móvil (PWA) -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- CORRECCIÓN 1: Cargamos las hojas de estilo oficiales completas de Plyr -->
+    <!-- Enlaces estables y completos a las librerías del reproductor -->
     <link rel="stylesheet" href="https://plyr.io" />
-    
-    <!-- CORRECCIÓN 2: Añadida la librería Hls.js obligatoria para reproducir streaming M3U8 -->
     <script src="https://jsdelivr.net"></script>
     
     <style>
@@ -159,22 +157,20 @@
         </div>
     </div>
 
-    <!-- CORRECCIÓN 3: Enlace CDN completo y válido para los scripts de Plyr -->
     <script src="https://plyr.io"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
             
-            // CORRECCIÓN 4: Restaurada tu dirección de emisión original exacta (.ducd.dns)
-            const source = 'http://dns.org';
+            // CORREGIDO A HTTPS: Ya no saltará el bloqueo por contenido mixto en los móviles
+            const source = 'https://dns.org';
             
-            // Inicializar los controles visuales avanzados de Plyr
+            // Inicialización de controles visuales
             const player = new Plyr(video, {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
                 tooltips: { controls: true, seek: true }
             });
 
-            // Enlazar la señal de streaming al reproductor
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(source);
@@ -184,7 +180,6 @@
                 video.src = source;
             }
 
-            // Registro del Service Worker secundario para la App móvil
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
             }
