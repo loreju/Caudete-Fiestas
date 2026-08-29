@@ -15,7 +15,7 @@
     <!-- Enlace al archivo de configuración de la Aplicación Móvil (PWA) -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Enlaces estables y completos a las librerías del reproductor -->
+    <!-- ENLACES CDN COMPLETOS Y CORREGIDOS (Evitan que el reproductor falle) -->
     <link rel="stylesheet" href="https://plyr.io" />
     <script src="https://jsdelivr.net"></script>
     
@@ -141,7 +141,7 @@
 
     <!-- Reproductor de vídeo -->
     <div class="video-container">
-        <video id="player" controls playsinline poster=""></video>
+        <video id="player" controls playsinline></video>
     </div>
 
     <!-- Sección de Comparsas Tradicionales con la Asociación delante -->
@@ -157,20 +157,22 @@
         </div>
     </div>
 
+    <!-- SCRIPT DE PLYR COMPLETO (Obligatorio para que se dibuje el botón de Play) -->
     <script src="https://plyr.io"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
             
-            // CORREGIDO A HTTPS: Ya no saltará el bloqueo por contenido mixto en los móviles
+            // ENLACE SEGURO HTTPS HACIA TU FLUSSONIC
             const source = 'https://dns.org';
             
-            // Inicialización de controles visuales
+            // Configuración e inicialización de Plyr
             const player = new Plyr(video, {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
                 tooltips: { controls: true, seek: true }
             });
 
+            // Lógica de acoplamiento de streaming HLS
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(source);
@@ -180,6 +182,7 @@
                 video.src = source;
             }
 
+            // Registro del Service Worker para habilitar la App Móvil
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
             }
