@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
     <link rel="manifest" href="manifest.json">
 
-    <!-- Cargamos Hls.js oficial completo -->
+    <!-- CORREGIDO: Cargamos Hls.js oficial completo desde CDN -->
     <script src="https://jsdelivr.net"></script>
     
     <style>
@@ -123,7 +123,7 @@
         <img class="header-logos" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
     </div>
 
-    <!-- Reproductor nativo HTML5 (Inmune a bloqueos visuales de librerías) -->
+    <!-- Reproductor nativo HTML5 con soporte móvil -->
     <div class="video-container">
         <video id="player" controls playsinline></video>
     </div>
@@ -146,25 +146,46 @@
             const video = document.getElementById('player');
             const source = 'https://caudetefiestas.duckdns.org/canal-CTV/index.m3u8';
 
-            // Forzar la inicialización limpia de la transmisión HLS
-            if (Hls.isSupported()) {
+            // Comprobación de que la librería externa se cargó correctamente
+            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({
                     xhrSetup: function (xhr, url) {
-                        xhr.withCredentials = false; // Evita conflictos con las cookies de GitHub
+                        xhr.withCredentials = false; // Evita conflictos en hosting estático como GitHub Pages
                     }
                 });
                 hls.loadSource(source);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    console.log("Streaming cargado correctamente.");
+                    console.log("Streaming HLS cargado correctamente.");
+                });
+                
+                // Manejo básico de errores de red en streaming directo
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                    if (data.fatal) {
+                        switch (data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                console.log("Error de red, intentando recuperar...");
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                console.log("Error de medios, intentando recuperar...");
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                console.log("No se pudo recuperar el streaming.");
+                                break;
+                        }
+                    }
                 });
             } 
+            // Soporte nativo de Safari (iOS / Mac) que no requiere Hls.js
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
             }
 
+            // Registro del Service Worker para la PWA
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+                navigator.serviceWorker.register('sw.js').catch(err => console.log("SW Error:", err));
             }
         });
     </script>
