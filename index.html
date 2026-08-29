@@ -17,7 +17,7 @@
 
     <!-- Cargamos Hls.js y los estilos limpios de Plyr para el boton de Play grande -->
     <link rel="stylesheet" href="https://plyr.io" />
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://jsdelivr.net"></script>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -147,9 +147,7 @@
     <div class="comparsas-seccion">
         <h2>Asociación y Comparsas</h2>
         <div class="comparsas-grid">
-            <!-- Asociación colocada al lado (delante) de Guerreros -->
             <img class="logo-asociacion-abajo" src="img/logo-asociacion.png" alt="Asociación de Comparsas" title="Asociación de Comparsas Ntra. Sra. de Gracia">
-            
             <img class="escudo-comparsa" src="img/guerreros.png" alt="Guerreros" title="Comparsa de Guerreros">
             <img class="escudo-comparsa" src="img/mirenos.png" alt="Mirenos" title="Comparsa de Mirenos">
             <img class="escudo-comparsa" src="img/tarik.png" alt="Tarik" title="Comparsa de Tarik">
@@ -158,35 +156,33 @@
         </div>
     </div>
 
-    <!-- Carga de scripts externos -->
+    <!-- Carga de scripts externos independientes -->
     <script src="https://plyr.io"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            const source = 'http://duckdns.org';
             
-            // Opciones de configuración visual para Plyr
-            const plyrOptions = {
+            // DIRECCIÓN ORIGINAL RECORREGIDA: Sin la "k" y con el punto intermedio (.ducd.dns)
+            const source = 'http://dns.org';
+            
+            // Inicializar primero los controles visuales de Plyr
+            const player = new Plyr(video, {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
                 tooltips: { controls: true, seek: true }
-            };
+            });
 
-            // Solución: Inicializar Hls primero y acoplar Plyr solo tras analizar el manifiesto del streaming
+            // Cargar el flujo de vídeo mediante Hls.js
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(source);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    const player = new Plyr(video, plyrOptions);
-                });
             } 
-            // Soporte directo alternativo para entornos Apple/Safari nativos sin usar la librería externa
+            // Alternativa nativa para Safari / iPhone
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
-                const player = new Plyr(video, plyrOptions);
             }
 
-            // Registro obligatorio del Service Worker para activar la App móvil independiente
+            // Registro del Service Worker para la App móvil
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
             }
