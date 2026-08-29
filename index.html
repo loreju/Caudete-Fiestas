@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas</title>
+    
+    <!-- Metaetiquetas para optimizar el comportamiento en iPhone y Android -->
+    <meta name="theme-color" content="#141414">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
+    <link rel="apple-touch-icon" href="img/logo-ctv.png">
+
+    <!-- Enlace al archivo de configuración de la Aplicación Móvil (PWA) -->
+    <link rel="manifest" href="manifest.json">
+
     <!-- Cargamos Hls.js y los estilos limpios de Plyr para el boton de Play grande -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
@@ -102,10 +113,10 @@
         }
 
         /* Ajustes responsivos para pantallas pequeñas */
-        @media (max-width: 600px) {
-            .header-container { flex-direction: column; padding: 15px; }
-            h1 { font-size: 1.8rem; order: -1; } /* Pone el título arriba en móviles */
-            .header-logos { height: 55px; }
+        @media (max-width: 768px) {
+            .header-container { gap: 15px; padding: 15px; }
+            h1 { font-size: 1.8rem; width: 100%; order: -1; margin-bottom: 10px; }
+            .header-logos { height: 50px; }
             .escudo-comparsa { width: 50px; }
         }
     </style>
@@ -115,6 +126,7 @@
     <!-- Cabecera organizada con Logos y Título -->
     <div class="header-container">
         <img class="header-logos" src="img/logo-ctv.png" alt="Logo CTV">
+        <img class="header-logos" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
         <h1>Caudete Fiestas</h1>
         <img class="header-logos" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         <img class="header-logos" src="img/logo-asociacion.png" alt="Asociación de Comparsas">
@@ -158,6 +170,11 @@
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
+            }
+
+            // Registro obligatorio del Service Worker para activar la App móvil
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
             }
         });
     </script>
