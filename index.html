@@ -17,7 +17,7 @@
 
     <!-- Cargamos Hls.js y los estilos limpios de Plyr para el boton de Play grande -->
     <link rel="stylesheet" href="https://plyr.io" />
-    <script src="https://jsdelivr.net"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -158,30 +158,35 @@
         </div>
     </div>
 
+    <!-- Carga de scripts externos -->
     <script src="https://plyr.io"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
             const source = 'http://duckdns.org';
             
-            // Configuración del reproductor visual
-            const player = new Plyr(video, {
+            // Opciones de configuración visual para Plyr
+            const plyrOptions = {
                 controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
                 tooltips: { controls: true, seek: true }
-            });
+            };
 
+            // Solución: Inicializar Hls primero y acoplar Plyr solo tras analizar el manifiesto del streaming
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(source);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    // Espera la interacción del usuario con el botón Play
+                    const player = new Plyr(video, plyrOptions);
                 });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            } 
+            // Soporte directo alternativo para entornos Apple/Safari nativos sin usar la librería externa
+            else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
+                const player = new Plyr(video, plyrOptions);
             }
 
-            // Registro obligatorio del Service Worker para activar la App móvil
+            // Registro obligatorio del Service Worker para activar la App móvil independiente
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
             }
