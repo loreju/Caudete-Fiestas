@@ -11,12 +11,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
-
-    <!-- Enlace al archivo de configuración de la Aplicación Móvil (PWA) -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- ENLACES CDN COMPLETOS Y CORREGIDOS (Evitan que el reproductor falle) -->
-    <link rel="stylesheet" href="https://plyr.io" />
+    <!-- Cargamos Hls.js oficial completo -->
     <script src="https://jsdelivr.net"></script>
     
     <style>
@@ -29,7 +26,6 @@
             margin: 0;
         }
         
-        /* Contenedor superior para los logos principales y el título */
         .header-container {
             display: flex;
             align-items: center;
@@ -65,13 +61,14 @@
             background-color: #000;
             border-radius: 12px;
             overflow: hidden;
+            padding: 5px;
         }
         video {
             width: 100%;
             display: block;
+            border-radius: 8px;
         }
 
-        /* Bloque inferior para las comparsas y asociación */
         .comparsas-seccion {
             margin-top: 40px;
         }
@@ -107,19 +104,6 @@
             transform: scale(1.15);
         }
 
-        /* Personalización del botón Play de Plyr para que sea amarillo de Caudete */
-        .plyr--video .plyr__control--overlaid {
-            background: rgba(255, 204, 0, 0.9) !important;
-            color: #000 !important;
-        }
-        .plyr__control {
-            color: #000;
-        }
-        .plyr--full-ui input[type=range] {
-            color: #ffcc00 !important;
-        }
-
-        /* Ajustes responsivos para pantallas pequeñas */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; }
             h1 { font-size: 1.8rem; width: 100%; order: -1; margin-bottom: 10px; }
@@ -139,7 +123,7 @@
         <img class="header-logos" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
     </div>
 
-    <!-- Reproductor de vídeo -->
+    <!-- Reproductor nativo HTML5 (Inmune a bloqueos visuales de librerías) -->
     <div class="video-container">
         <video id="player" controls playsinline></video>
     </div>
@@ -157,32 +141,28 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE PLYR COMPLETO (Obligatorio para que se dibuje el botón de Play) -->
-    <script src="https://plyr.io"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            
-            // ENLACE SEGURO HTTPS HACIA TU FLUSSONIC
             const source = 'https://dns.org';
-            
-            // Configuración e inicialización de Plyr
-            const player = new Plyr(video, {
-                controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
-                tooltips: { controls: true, seek: true }
-            });
 
-            // Lógica de acoplamiento de streaming HLS
+            // Forzar la inicialización limpia de la transmisión HLS
             if (Hls.isSupported()) {
-                const hls = new Hls();
+                const hls = new Hls({
+                    xhrSetup: function (xhr, url) {
+                        xhr.withCredentials = false; // Evita conflictos con las cookies de GitHub
+                    }
+                });
                 hls.loadSource(source);
                 hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    console.log("Streaming cargado correctamente.");
+                });
             } 
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
             }
 
-            // Registro del Service Worker para habilitar la App Móvil
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
             }
