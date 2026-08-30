@@ -40,7 +40,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
                  
-        /* BLOQUES SUPERIORES: Altura fija y alineación inferior para clavar los textos en línea */
+        /* BLOQUES SUPERIORES: Altura fija y alineación inferior para asentar los bloques de texto */
         .header-block {
             display: flex;
             flex-direction: column;
@@ -51,15 +51,15 @@
             gap: 15px;
         }
 
-        /* Bloque específico para CTV: Un poco más ancho para que quepa en una sola línea corrida */
+        /* Bloque específico para CTV: Un poco más de margen para equilibrar el texto corrido */
         .header-block.ctv-block {
-            min-width: 200px;
+            min-width: 220px;
         }
                  
-        /* Títulos institucionales: Mismo tamaño de letra grande original y alineación perfecta */
+        /* Títulos institucionales: Mismo tamaño grande. Altura fija de 45px para centrar el texto verticalmente */
         .header-block h3 {
             color: #ffcc00;
-            font-size: 0.95rem; /* Tamaño de letra grande original recuperado */
+            font-size: 0.95rem; /* Idéntico tamaño en los tres bloques */
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 0;
@@ -69,12 +69,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 45px; /* Altura fija para centrar el de una línea con los de dos líneas */
+            height: 45px; /* Alineación vertical perfecta entre una y dos líneas */
         }
 
-        /* Forzamos que el título de CTV no salte de línea */
+        /* Ajuste específico para que Caudete Televisión se vea con el mismo peso visual sin saltar de línea */
         .header-block.ctv-block h3 {
             white-space: nowrap;
+            letter-spacing: 1.5px; /* Un pelín más expandido para igualar la anchura visual */
         }
                  
         /* TAMAÑOS DE LOGOS SUPERIORES EQUILIBRADOS */
@@ -207,7 +208,7 @@
             .logo-ayuntamiento { width: 90px; height: 90px; }
             .logo-mayordomia { width: 100px; height: 100px; }
             .header-block h3 { font-size: 0.7rem; height: auto; }
-            .header-block.ctv-block h3 { white-space: normal; }
+            .header-block.ctv-block h3 { white-space: normal; letter-spacing: 1px; }
                          
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
@@ -218,9 +219,9 @@
 </head>
 <body>
 
-    <!-- Cabecera simétrica con letras grandes y textos perfectamente nivelados -->
+    <!-- Cabecera simétrica con equilibro de fuentes y alineación de altura exacta -->
     <div class="header-container">
-        <!-- Bloque Izquierdo: CTV (En una sola línea corrida y centrado) -->
+        <!-- Bloque Izquierdo: CTV (En una sola línea corrida y centrado verticalmente en su caja) -->
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
             <h3>Caudete Televisión</h3>
@@ -233,13 +234,13 @@
             <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
                  
-        <!-- Bloque Derecho: Ayuntamiento (En dos líneas con letras grandes) -->
+        <!-- Bloque Derecho: Ayuntamiento -->
         <div class="header-block">
             <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
             <h3>M.I. Ayuntamiento<br>de Caudete</h3>
         </div>
                  
-        <!-- Bloque Derecho: Mayordomía (En dos líneas con letras grandes) -->
+        <!-- Bloque Derecho: Mayordomía -->
         <div class="header-block">
             <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
@@ -283,5 +284,3 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('player');
-            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
