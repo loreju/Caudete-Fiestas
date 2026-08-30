@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas</title>
-    
+         
     <!-- Metaetiquetas para optimizar el comportamiento en iPhone y Android -->
     <meta name="theme-color" content="#141414">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,7 +15,7 @@
 
     <!-- Cargamos Hls.js oficial completo desde CDN -->
     <script src="https://jsdelivr.net"></script>
-    
+         
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -25,7 +25,7 @@
             padding: 40px 20px;
             margin: 0;
         }
-        
+                 
         .header-container {
             display: flex;
             align-items: center;
@@ -39,18 +39,19 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        
+                 
         /* Bloques de logotipos organizados con títulos abajo */
         .header-block {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-width: 160px;
+            justify-content: flex-end; /* Alinea los elementos al fondo para igualar textos */
+            min-width: 170px;
+            height: 170px; /* Altura fija para asegurar simetría total en cabecera */
             gap: 12px;
         }
-        
-        /* CORRECCIÓN: Centrado absoluto en los textos institucionales superiores */
+                 
+        /* Centrado absoluto en los textos institucionales superiores */
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.95rem;
@@ -60,26 +61,21 @@
             font-weight: bold;
             max-width: 180px;
             line-height: 1.3;
-            text-align: center; /* Alineación simétrica */
+            text-align: center;
         }
-        
-        /* LOGOS SUPERIORES */
+                 
+        /* LOGOS SUPERIORES IGUALADOS */
         .logo-ctv-arriba {
             height: 120px; 
             width: auto;
             object-fit: contain;
         }
-        .logo-ayuntamiento-arriba {
-            width: 170px;
-            height: auto;
+        .logo-institucional {
+            width: 160px;
+            height: 110px; /* Altura idéntica para Ayuntamiento y Mayordomía */
             object-fit: contain;
         }
-        .logo-mayordomia-arriba {
-            width: 160px; 
-            height: auto;
-            object-fit: contain;
-        }
-        
+                 
         /* BLOQUE CENTRAL DE TEXTOS UNIFICADOS */
         .title-block {
             flex: 1;
@@ -88,6 +84,8 @@
             flex-direction: column;
             gap: 8px;
             align-items: center;
+            justify-content: center;
+            height: 170px;
         }
         h1 {
             color: #ffcc00;
@@ -146,15 +144,15 @@
             max-width: 1350px;
             margin: 0 auto;
         }
-        
-        /* Contenedores individuales para cada comparsa */
+                 
+        /* Contenedores individuales totalmente simétricos */
         .comparsa-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            width: 185px; /* CORRECCIÓN: Ampliada la caja para mayor simetría texto/logo */
+            width: 185px; 
         }
         /* Nombres individuales dorados */
         .comparsa-card p {
@@ -167,45 +165,35 @@
             line-height: 1.3;
             text-align: center;
         }
-        
-        /* LOGOS INFERIORES EQUILIBRADOS MILIMÉTRICAMENTE */
-        .referencia-grande {
-            height: 155px;  
-            width: 155px;   
+                 
+        /* LOGOS INFERIORES CON TAMAÑO ÚNICO E IDÉNTICO */
+        .logo-comparsa {
+            height: 150px;  
+            width: 150px;   
             object-fit: contain;
             filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
             transition: transform 0.2s ease-in-out;
         }
-        /* CORRECCIÓN: Aumentadas las 4 restantes de 120px a 145px para máxima simetría visual */
-        .ajuste-pequeno {
-            height: 145px;  
-            width: 145px;   
-            object-fit: contain;
-            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
-            transition: transform 0.2s ease-in-out;
-        }
-        
-        .referencia-grande:hover, .ajuste-pequeno:hover {
+                 
+        .logo-comparsa:hover {
             transform: scale(1.08);
         }
 
         @media (max-width: 768px) {
             .header-container { gap: 20px; padding: 15px; }
-            .title-block { order: -1; width: 100%; min-width: 100%; }
+            .title-block { order: -1; width: 100%; min-width: 100%; height: auto; }
             h1 { font-size: 1.5rem; }
             .honor-text { font-size: 0.95rem; }
             .subtitle-years { font-size: 0.95rem; }
+            .header-block { min-width: 110px; height: auto; gap: 6px; }
             .logo-ctv-arriba { height: 80px; }
-            .logo-ayuntamiento-arriba { width: 110px; }
-            .logo-mayordomia-arriba { width: 105px; }
-            .header-block { min-width: 110px; gap: 6px; }
+            .logo-institucional { width: 110px; height: 80px; }
             .header-block h3 { font-size: 0.7rem; }
-            
+                         
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
             .comparsa-card p { font-size: 0.65rem; }
-            .referencia-grande { width: 100px; height: 100px; }
-            .ajuste-pequeno { width: 90px; height: 90px; }
+            .logo-comparsa { width: 100px; height: 100px; }
         }
     </style>
 </head>
@@ -217,59 +205,58 @@
         <div class="header-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
         </div>
-        
+                 
         <!-- Bloque Central Totalmente Unificado -->
         <div class="title-block">
             <h1>Caudete Fiestas de Moros y Cristianos</h1>
             <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
             <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
-        
-        <!-- Bloque Derecho: Ayuntamiento con texto centrado abajo -->
+                 
+        <!-- Bloque Derecho: Ayuntamiento -->
         <div class="header-block">
-            <img class="logo-ayuntamiento-arriba" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+            <img class="logo-institucional" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
             <h3>M.I. Ayuntamiento<br>de Caudete</h3>
         </div>
-        
-        <!-- Bloque Derecho: Mayordomía con texto centrado abajo -->
+                 
+        <!-- Bloque Derecho: Mayordomía -->
         <div class="header-block">
-            <img class="logo-mayordomia-arriba" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
+            <img class="logo-institucional" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
         </div>
     </div>
 
-    <!-- Reproductor nativo con URL de transmisión actualizada -->
+    <!-- Reproductor nativo -->
     <div class="video-container">
         <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
 
-    <!-- Sección de Comparsas: Balance simétrico absoluto entre logos y textos -->
+    <!-- Sección de Comparsas: Mismo tamaño y posición exacta para las 6 -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
             <div class="comparsa-card">
-                <img class="referencia-grande" src="img/logo-asociacion.png" alt="Asociación de Comparsas">
+                <img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación de Comparsas">
                 <p>Asociación de Comparsas</p>
             </div>
             <div class="comparsa-card">
-                <img class="referencia-grande" src="img/guerreros.png" alt="Guerreros">
+                <img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros">
                 <p>Comparsa de Guerreros</p>
             </div>
             <div class="comparsa-card">
-                <img class="ajuste-pequeno" src="img/mirenos.png" alt="Mirenos">
+                <img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos">
                 <p>Comparsa de Mirenos</p>
             </div>
             <div class="comparsa-card">
-                <img class="ajuste-pequeno" src="img/tarik.png" alt="Tarik">
+                <img class="logo-comparsa" src="img/tarik.png" alt="Tarik">
                 <p>Comparsa de Tarik</p>
             </div>
             <div class="comparsa-card">
-                <img class="ajuste-pequeno" src="img/moros.png" alt="Moros">
+                <img class="logo-comparsa" src="img/moros.png" alt="Moros">
                 <p>Comparsa de Moros</p>
             </div>
             <div class="comparsa-card">
-                <!-- CORRECCIÓN: Texto perfectamente unificado -->
-                <img class="ajuste-pequeno" src="img/antigua.png" alt="La Antigua">
-                <p>Comparsa de La Antigua</p>
+                <img class="logo-comparsa" src="img/antigua.png" alt="La Antigua">
+                <p>Comparsa de LA ANTIGUA</p>
             </div>
         </div>
     </div>
@@ -282,4 +269,11 @@
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({
                     maxBufferLength: 10,
-                    liveSyncDurationCount: 3,
+                    liveSyncDurationCount: 3
+                });
+                // Aquí iría el resto de la lógica de inicialización de Hls
+            }
+        });
+    </script>
+</body>
+</html>
