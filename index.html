@@ -40,44 +40,42 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
                  
-        /* BLOQUES SUPERIORES: Altura y alineación para coordinar con el bloque central */
+        /* BLOQUES SUPERIORES: Forzamos el nacimiento desde arriba para arrimar los elementos */
         .header-block {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start; 
             min-width: 180px;
-            height: 220px; 
-            gap: 4px; /* Pegamos el texto más al logo para empujar la base hacia arriba */
+            height: 210px; /* Reducida la caja general para compactar visualmente hacia arriba */
         }
 
         /* Bloque específico para CTV */
         .header-block.ctv-block {
-            min-width: 240px;
+            min-width: 250px;
         }
                  
-        /* CORRECCIÓN: Los títulos se alinean con la parte superior del recuadro de los años */
+        /* TÍTULOS SUPERIORES: Eliminado el empuje inferior para pegarlos al logotipo */
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.95rem; 
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin: auto 0 0 0; /* Empuja el texto hacia arriba de forma natural */
             font-weight: bold;
             line-height: 1.3;
             text-align: center;
-            display: flex;
-            align-items: flex-start; /* Alineado al inicio del bloque de texto */
-            justify-content: center;
-            height: 38px; /* Ajuste preciso de altura para clavar el nivel superior de los años */
+            margin-top: -15px; /* Sube drásticamente el texto para arropar la base del logo */
+            margin-bottom: 0;
         }
 
-        /* Ajustes visuales de CTV en concordancia */
+        /* CORRECCIÓN: Relleno, escala y empaque extra para Caudete Televisión */
         .header-block.ctv-block h3 {
-            font-size: 1.1rem; 
-            font-weight: 600; 
+            font-size: 1.15rem; /* Letra más grande */
+            font-weight: 700; /* Mayor grosor y presencia */
             white-space: nowrap;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            text-shadow: 0px 0px 1px #ffcc00; /* Efecto de relleno sutil para dar más cuerpo */
+            margin-top: -5px; /* Ajuste específico por la escala de su imagen */
         }
                  
         /* TAMAÑOS DE LOGOS SUPERIORES */
@@ -106,7 +104,7 @@
             gap: 8px;
             align-items: center;
             justify-content: center;
-            height: 220px;
+            height: 210px;
         }
         h1 {
             color: #ffcc00;
@@ -204,13 +202,13 @@
             h1 { font-size: 1.5rem; }
             .honor-text { font-size: 0.95rem; }
             .subtitle-years { font-size: 0.95rem; }
-            .header-block { min-width: 110px; height: auto; gap: 6px; }
+            .header-block { min-width: 110px; height: auto; }
             .header-block.ctv-block { min-width: 110px; }
             .logo-ctv-arriba { height: 75px; }
             .logo-ayuntamiento { width: 90px; height: 90px; }
             .logo-mayordomia { width: 100px; height: 100px; }
-            .header-block h3 { font-size: 0.7rem; height: auto; margin: 0; }
-            .header-block.ctv-block h3 { font-size: 0.75rem; white-space: normal; letter-spacing: 1px; }
+            .header-block h3 { font-size: 0.7rem; height: auto; margin-top: 5px; }
+            .header-block.ctv-block h3 { font-size: 0.75rem; white-space: normal; letter-spacing: 1px; margin-top: 5px; text-shadow: none; }
                          
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
@@ -221,9 +219,9 @@
 </head>
 <body>
 
-    <!-- Cabecera corregida con títulos alineados con la parte superior del recuadro de años -->
+    <!-- Cabecera simétrica con textos arrimados firmemente a los logotipos -->
     <div class="header-container">
-        <!-- Bloque Izquierdo: CTV -->
+        <!-- Bloque Izquierdo: CTV (Con texto realzado y compactado) -->
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
             <h3>Caudete Televisión</h3>
@@ -285,4 +283,3 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
