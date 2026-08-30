@@ -40,22 +40,21 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
                  
-        /* BLOQUES SUPERIORES: Forzamos el nacimiento desde arriba para arrimar los elementos */
+        /* BLOQUES SUPERIORES: Distribución limpia desde arriba */
         .header-block {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start; 
             min-width: 180px;
-            height: 210px; /* Reducida la caja general para compactar visualmente hacia arriba */
+            height: 215px; 
         }
 
-        /* Bloque específico para CTV */
         .header-block.ctv-block {
             min-width: 250px;
         }
                  
-        /* TÍTULOS SUPERIORES: Eliminado el empuje inferior para pegarlos al logotipo */
+        /* Base común para los títulos superiores */
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.95rem; 
@@ -64,18 +63,25 @@
             font-weight: bold;
             line-height: 1.3;
             text-align: center;
-            margin-top: -15px; /* Sube drásticamente el texto para arropar la base del logo */
             margin-bottom: 0;
         }
 
-        /* CORRECCIÓN: Relleno, escala y empaque extra para Caudete Televisión */
+        /* CORRECCIÓN DE DISTANCIAS INDIVIDUALES (IGUALADAS A MAYORDOMÍA) */
         .header-block.ctv-block h3 {
-            font-size: 1.15rem; /* Letra más grande */
-            font-weight: 700; /* Mayor grosor y presencia */
+            font-size: 1.15rem; 
+            font-weight: 700; 
             white-space: nowrap;
             letter-spacing: 0.5px;
-            text-shadow: 0px 0px 1px #ffcc00; /* Efecto de relleno sutil para dar más cuerpo */
-            margin-top: -5px; /* Ajuste específico por la escala de su imagen */
+            text-shadow: 0px 0px 1px #ffcc00; 
+            margin-top: 5px; /* Ajuste suave para clonar la separación de Mayordomía */
+        }
+
+        .header-block.ayuntamiento-block h3 {
+            margin-top: -5px; /* Ajuste suave por el reborde del escudo */
+        }
+
+        .header-block.mayordomia-block h3 {
+            margin-top: -15px; /* Tu margen de referencia original que quedaba perfecto */
         }
                  
         /* TAMAÑOS DE LOGOS SUPERIORES */
@@ -104,7 +110,7 @@
             gap: 8px;
             align-items: center;
             justify-content: center;
-            height: 210px;
+            height: 215px;
         }
         h1 {
             color: #ffcc00;
@@ -219,9 +225,9 @@
 </head>
 <body>
 
-    <!-- Cabecera simétrica con textos arrimados firmemente a los logotipos -->
+    <!-- Cabecera simétrica con alineación de textos individualizada y equilibrada -->
     <div class="header-container">
-        <!-- Bloque Izquierdo: CTV (Con texto realzado y compactado) -->
+        <!-- Bloque Izquierdo: CTV -->
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
             <h3>Caudete Televisión</h3>
@@ -235,13 +241,13 @@
         </div>
                  
         <!-- Bloque Derecho: Ayuntamiento -->
-        <div class="header-block">
+        <div class="header-block ayuntamiento-block">
             <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
             <h3>M.I. Ayuntamiento<br>de Caudete</h3>
         </div>
                  
-        <!-- Bloque Derecho: Mayordomía -->
-        <div class="header-block">
+        <!-- Bloque Derecho: Mayordomía (Tu referencia de espacio perfecta) -->
+        <div class="header-block mayordomia-block">
             <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
         </div>
@@ -283,3 +289,4 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
