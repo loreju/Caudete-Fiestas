@@ -293,7 +293,7 @@
                     });
                 });
             } 
-            else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
                 video.addEventListener('loadedmetadata', function() {
                     video.play().catch(error => {
@@ -305,3 +305,4 @@
     </script>
 </body>
 </html>
+
