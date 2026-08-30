@@ -40,12 +40,24 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         
-        /* Bloques de logotipos limpios */
+        /* Bloques de logotipos organizados con títulos */
         .header-block {
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-width: 140px;
+            min-width: 160px;
+            gap: 12px;
+        }
+        
+        /* CORRECCIÓN: Títulos superiores idénticos en estilo y color al bloque inferior */
+        .header-block h3 {
+            color: #ffcc00;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+            font-weight: bold;
         }
         
         /* LOGOS SUPERIORES */
@@ -82,7 +94,6 @@
             letter-spacing: 1px;
             line-height: 1.2;
         }
-        /* CORRECCIÓN: Texto en honor dorado brillante como el título */
         .honor-text {
             color: #ffcc00;
             font-size: 1.2rem;
@@ -168,6 +179,8 @@
             .logo-ctv-arriba { height: 80px; }
             .logo-ayuntamiento-arriba { width: 110px; }
             .logo-mayordomia-arriba { width: 105px; }
+            .header-block { min-width: 110px; gap: 6px; }
+            .header-block h3 { font-size: 0.75rem; }
             .referencia-grande { width: 105px; height: 105px; }
             .ajuste-pequeno { width: 80px; height: 80px; }
         }
@@ -175,27 +188,29 @@
 </head>
 <body>
 
-    <!-- Cabecera organizada con jerarquía centralizada y limpia -->
+    <!-- Cabecera organizada con jerarquía unificada y títulos simétricos -->
     <div class="header-container">
         <!-- Bloque Izquierdo: CTV -->
         <div class="header-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
         </div>
         
-        <!-- Bloque Central Totalmente Unificado (Dorado Armónico) -->
+        <!-- Bloque Central Totalmente Unificado -->
         <div class="title-block">
             <h1>Caudete Fiestas de Moros y Cristianos</h1>
             <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
             <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
         
-        <!-- Bloque Derecho Ayuntamiento: Escudo limpio -->
+        <!-- Bloque Derecho: M.I. Ayuntamiento -->
         <div class="header-block">
+            <h3>M.I. Ayuntamiento</h3>
             <img class="logo-ayuntamiento-arriba" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         </div>
         
-        <!-- Bloque Derecho Mayordomía: Escudo limpio -->
+        <!-- Bloque Derecho: M.I. Mayordomía -->
         <div class="header-block">
+            <h3>M.I. Mayordomía</h3>
             <img class="logo-mayordomia-arriba" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
         </div>
     </div>
@@ -260,15 +275,3 @@
                             default:
                                 console.log("Error crítico del servidor streaming.");
                                 break;
-                        }
-                    }
-                });
-            } 
-            else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = source;
-                video.addEventListener('loadedmetadata', () => {
-                    video.play().catch(err => console.log("Safari requirió acción manual."));
-                });
-            }
-
-            if ('serviceWorker' in navigator) {
