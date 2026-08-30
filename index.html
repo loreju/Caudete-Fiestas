@@ -53,13 +53,13 @@
 
         /* Bloque específico para CTV: Un poco más de margen para equilibrar el texto corrido */
         .header-block.ctv-block {
-            min-width: 220px;
+            min-width: 240px;
         }
                  
-        /* Títulos institucionales: Mismo tamaño grande. Altura fija de 45px para centrar el texto verticalmente */
+        /* Títulos institucionales estándar (Ayuntamiento y Mayordomía) */
         .header-block h3 {
             color: #ffcc00;
-            font-size: 0.95rem; /* Idéntico tamaño en los tres bloques */
+            font-size: 0.95rem; 
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 0;
@@ -72,10 +72,12 @@
             height: 45px; /* Alineación vertical perfecta entre una y dos líneas */
         }
 
-        /* Ajuste específico para que Caudete Televisión se vea con el mismo peso visual sin saltar de línea */
+        /* CORRECCIÓN: Ajuste de píxeles y grosor extra para Caudete Televisión */
         .header-block.ctv-block h3 {
+            font-size: 1.1rem; /* Un punto más grande para compensar visualmente la línea única */
+            font-weight: 800; /* Mayor grosor tipográfico */
             white-space: nowrap;
-            letter-spacing: 1.5px; /* Un pelín más expandido para igualar la anchura visual */
+            letter-spacing: 1px;
         }
                  
         /* TAMAÑOS DE LOGOS SUPERIORES EQUILIBRADOS */
@@ -208,7 +210,7 @@
             .logo-ayuntamiento { width: 90px; height: 90px; }
             .logo-mayordomia { width: 100px; height: 100px; }
             .header-block h3 { font-size: 0.7rem; height: auto; }
-            .header-block.ctv-block h3 { white-space: normal; letter-spacing: 1px; }
+            .header-block.ctv-block h3 { font-size: 0.75rem; white-space: normal; }
                          
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
@@ -219,9 +221,9 @@
 </head>
 <body>
 
-    <!-- Cabecera simétrica con equilibro de fuentes y alineación de altura exacta -->
+    <!-- Cabecera corregida con ajuste de compensación óptica para CTV -->
     <div class="header-container">
-        <!-- Bloque Izquierdo: CTV (En una sola línea corrida y centrado verticalmente en su caja) -->
+        <!-- Bloque Izquierdo: CTV (Con tamaño e impacto visual igualado a los de dos líneas) -->
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
             <h3>Caudete Televisión</h3>
