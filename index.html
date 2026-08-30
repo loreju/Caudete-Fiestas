@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
     <link rel="manifest" href="manifest.json">
 
-    <!-- CORREGIDO: Cargamos Hls.js oficial completo desde CDN -->
+    <!-- Cargamos Hls.js oficial completo desde CDN -->
     <script src="https://jsdelivr.net"></script>
     
     <style>
@@ -40,7 +40,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         .header-logos {
-            height: 70px;
+            height: 70px; /* Altura fija para equilibrar CTV, Ayuntamiento y Mayordomía */
             width: auto;
             object-fit: contain;
         }
@@ -88,15 +88,11 @@
             max-width: 900px;
             margin: 0 auto;
         }
-        .escudo-comparsa {
-            width: 65px;
-            height: auto;
-            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
-            transition: transform 0.2s ease-in-out;
-        }
-        .logo-asociacion-abajo {
-            width: 75px; 
-            height: auto;
+        /* CORRECCIÓN: Contenedores cuadrados idénticos con ajuste inteligente */
+        .escudo-comparsa, .logo-asociacion-abajo {
+            height: 75px;  
+            width: 75px;   
+            object-fit: contain; /* Ajusta el logo al tamaño máximo sin deformarlo */
             filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
             transition: transform 0.2s ease-in-out;
         }
@@ -108,27 +104,28 @@
             .header-container { gap: 15px; padding: 15px; }
             h1 { font-size: 1.8rem; width: 100%; order: -1; margin-bottom: 10px; }
             .header-logos { height: 50px; }
-            .escudo-comparsa { width: 50px; }
-            .logo-asociacion-abajo { width: 60px; }
+            .escudo-comparsa, .logo-asociacion-abajo { width: 55px; height: 55px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabecera organizada: CTV, Título, Ayuntamiento y Mayordomía -->
+    <!-- Cabecera organizada: CTV Completo, Título, Ayuntamiento y Mayordomía -->
     <div class="header-container">
-        <img class="header-logos" src="img/logo-ctv.png" alt="Logo CTV">
+        <!-- PROBANDO: Logo CTV Completo con nombre -->
+        <img class="header-logos" src="img/logo-ctv-completo.png" alt="Logo Caudete Televisión">
+        
         <h1>Caudete Fiestas</h1>
         <img class="header-logos" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         <img class="header-logos" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
     </div>
 
-    <!-- Reproductor nativo HTML5 con soporte móvil -->
+    <!-- Reproductor nativo HTML5 (Inmune a bloqueos visuales de librerías) -->
     <div class="video-container">
         <video id="player" controls playsinline></video>
     </div>
 
-    <!-- Sección de Comparsas Tradicionales con la Asociación delante -->
+    <!-- Sección de Comparsas Tradicionales con tamaño corregido y simétrico -->
     <div class="comparsas-seccion">
         <h2>Asociación y Comparsas</h2>
         <div class="comparsas-grid">
@@ -144,48 +141,46 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
+            const source = 'https://duckdns.org';
 
-            // Comprobación de que la librería externa se cargó correctamente
+            // Inicialización limpia de la transmisión HLS con control de errores
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({
                     xhrSetup: function (xhr, url) {
-                        xhr.withCredentials = false; // Evita conflictos en hosting estático como GitHub Pages
+                        xhr.withCredentials = false; // Evita conflictos en GitHub Pages
                     }
                 });
                 hls.loadSource(source);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    console.log("Streaming HLS cargado correctamente.");
+                    console.log("Streaming cargado correctamente.");
                 });
-                
-                // Manejo básico de errores de red en streaming directo
+
+                // Manejo de reconexión por pérdida de red
                 hls.on(Hls.Events.ERROR, function (event, data) {
                     if (data.fatal) {
                         switch (data.type) {
                             case Hls.ErrorTypes.NETWORK_ERROR:
-                                console.log("Error de red, intentando recuperar...");
+                                console.log("Error de red, reintentando...");
                                 hls.startLoad();
                                 break;
                             case Hls.ErrorTypes.MEDIA_ERROR:
-                                console.log("Error de medios, intentando recuperar...");
+                                console.log("Error de medios, recuperando...");
                                 hls.recoverMediaError();
                                 break;
                             default:
-                                console.log("No se pudo recuperar el streaming.");
+                                console.log("Error irrecuperable en streaming.");
                                 break;
                         }
                     }
                 });
             } 
-            // Soporte nativo de Safari (iOS / Mac) que no requiere Hls.js
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
             }
 
-            // Registro del Service Worker para la PWA
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js').catch(err => console.log("SW Error:", err));
+                navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
             }
         });
     </script>
