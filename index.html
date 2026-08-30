@@ -32,19 +32,27 @@
             justify-content: center;
             flex-wrap: wrap;
             gap: 25px;
-            max-width: 1200px;
+            max-width: 1250px;
             margin: 0 auto 30px auto;
             background-color: #1e1e1e;
             padding: 20px 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        /* CORRECCIÓN: Logos superiores un 25% más grandes (de 70px a 90px) */
+        
+        /* LOGOS SUPERIORES */
         .header-logos {
             height: 90px; 
             width: auto;
             object-fit: contain;
         }
+        /* CORRECCIÓN: Ayuntamiento un 35% más grande */
+        .logo-ayuntamiento-arriba {
+            height: 125px;
+            width: auto;
+            object-fit: contain;
+        }
+        
         h1 {
             color: #ffcc00;
             font-size: 2.5rem;
@@ -87,10 +95,11 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 30px;
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
-        /* CORRECCIÓN: Logos de comparsas un 25% más grandes (de 75px a 95px) y bien equilibrados */
+        
+        /* LOGOS DE COMPARSAS GENERALES */
         .escudo-comparsa, .logo-asociacion-abajo {
             height: 95px;  
             width: 95px;   
@@ -98,39 +107,48 @@
             filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
             transition: transform 0.2s ease-in-out;
         }
+        
+        /* CORRECCIÓN: Asociación y Guerreros destacados con tamaño ampliado */
+        .destacado-grande {
+            height: 130px;
+            width: 130px;
+        }
+        
         .escudo-comparsa:hover, .logo-asociacion-abajo:hover {
-            transform: scale(1.15);
+            transform: scale(1.1);
         }
 
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; }
             h1 { font-size: 1.8rem; width: 100%; order: -1; margin-bottom: 10px; }
             .header-logos { height: 65px; }
+            .logo-ayuntamiento-arriba { height: 90px; }
             .escudo-comparsa, .logo-asociacion-abajo { width: 70px; height: 70px; }
+            .destacado-grande { width: 95px; height: 95px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabecera organizada: Regresamos al Logo CTV Normal, Título, Ayuntamiento y Mayordomía -->
+    <!-- Cabecera organizada: Logo CTV Normal, Título, Ayuntamiento (Más Grande) y Mayordomía -->
     <div class="header-container">
         <img class="header-logos" src="img/logo-ctv.png" alt="Logo CTV">
         <h1>Caudete Fiestas</h1>
-        <img class="header-logos" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+        <img class="logo-ayuntamiento-arriba" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         <img class="header-logos" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
     </div>
 
-    <!-- CORRECCIÓN: Añadido autoplay, muted y loop para asegurar que cargue y reproduzca al instante -->
+    <!-- Reproductor nativo optimizado para transmisiones en directo -->
     <div class="video-container">
-        <video id="player" controls playsinline autoplay muted loop></video>
+        <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
 
-    <!-- Sección de Comparsas Tradicionales con tamaño ampliado -->
+    <!-- Sección de Comparsas: Asociación y Guerreros ampliados en el grid -->
     <div class="comparsas-seccion">
         <h2>Asociación y Comparsas</h2>
         <div class="comparsas-grid">
-            <img class="logo-asociacion-abajo" src="img/logo-asociacion.png" alt="Asociación de Comparsas" title="Asociación de Comparsas Ntra. Sra. de Gracia">
-            <img class="escudo-comparsa" src="img/guerreros.png" alt="Guerreros" title="Comparsa de Guerreros">
+            <img class="logo-asociacion-abajo destacado-grande" src="img/logo-asociacion.png" alt="Asociación de Comparsas" title="Asociación de Comparsas Ntra. Sra. de Gracia">
+            <img class="escudo-comparsa destacado-grande" src="img/guerreros.png" alt="Guerreros" title="Comparsa de Guerreros">
             <img class="escudo-comparsa" src="img/mirenos.png" alt="Mirenos" title="Comparsa de Mirenos">
             <img class="escudo-comparsa" src="img/tarik.png" alt="Tarik" title="Comparsa de Tarik">
             <img class="escudo-comparsa" src="img/moros.png" alt="Moros" title="Comparsa de Moros">
@@ -143,45 +161,54 @@
             const video = document.getElementById('player');
             const source = 'https://duckdns.org';
 
-            // Inicialización limpia de la transmisión HLS con control de errores
+            // Configuración optimizada del motor HLS
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({
+                    maxBufferLength: 10,
+                    liveSyncDurationCount: 3,
                     xhrSetup: function (xhr, url) {
                         xhr.withCredentials = false;
                     }
                 });
+                
                 hls.loadSource(source);
                 hls.attachMedia(video);
+                
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    console.log("Streaming cargado correctamente.");
-                    // Forzar el inicio del vídeo tras procesar el stream
-                    video.play().catch(error => {
-                        console.log("La reproducción automática requería interacción del usuario o silencio previo:", error);
-                    });
+                    console.log("Streaming HLS cargado.");
+                    // Intento de reproducción forzada
+                    const playPromise = video.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.log("Esperando interacción para audio.");
+                        });
+                    }
                 });
 
+                // Auto-recuperación activa frente a caídas del streaming directo
                 hls.on(Hls.Events.ERROR, function (event, data) {
                     if (data.fatal) {
                         switch (data.type) {
                             case Hls.ErrorTypes.NETWORK_ERROR:
-                                console.log("Error de red, reintentando...");
+                                console.log("Fallo de conexión, re-enganchando...");
                                 hls.startLoad();
                                 break;
                             case Hls.ErrorTypes.MEDIA_ERROR:
-                                console.log("Error de medios, recuperando...");
+                                console.log("Fallo de decodificación, restaurando...");
                                 hls.recoverMediaError();
                                 break;
                             default:
-                                console.log("Error irrecuperable.");
+                                console.log("Error crítico del servidor streaming.");
                                 break;
                         }
                     }
                 });
             } 
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // Soporte de Safari nativo
                 video.src = source;
                 video.addEventListener('loadedmetadata', () => {
-                    video.play().catch(err => console.log("Auto-play bloqueado por Safari nativo"));
+                    video.play().catch(err => console.log("Safari requirió acción manual."));
                 });
             }
 
