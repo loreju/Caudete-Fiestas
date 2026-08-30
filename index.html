@@ -31,22 +31,23 @@
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 20px;
-            max-width: 1100px;
+            gap: 25px;
+            max-width: 1200px;
             margin: 0 auto 30px auto;
             background-color: #1e1e1e;
-            padding: 15px 25px;
+            padding: 20px 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
+        /* CORRECCIÓN: Logos superiores un 25% más grandes (de 70px a 90px) */
         .header-logos {
-            height: 70px; /* Altura fija para equilibrar CTV, Ayuntamiento y Mayordomía */
+            height: 90px; 
             width: auto;
             object-fit: contain;
         }
         h1 {
             color: #ffcc00;
-            font-size: 2.3rem;
+            font-size: 2.5rem;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -67,32 +68,33 @@
             width: 100%;
             display: block;
             border-radius: 8px;
+            background-color: #000;
         }
 
         .comparsas-seccion {
-            margin-top: 40px;
+            margin-top: 45px;
         }
         .comparsas-seccion h2 {
             color: #ffcc00;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
         .comparsas-grid {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            gap: 25px;
-            max-width: 900px;
+            gap: 30px;
+            max-width: 1000px;
             margin: 0 auto;
         }
-        /* CORRECCIÓN: Contenedores cuadrados idénticos con ajuste inteligente */
+        /* CORRECCIÓN: Logos de comparsas un 25% más grandes (de 75px a 95px) y bien equilibrados */
         .escudo-comparsa, .logo-asociacion-abajo {
-            height: 75px;  
-            width: 75px;   
-            object-fit: contain; /* Ajusta el logo al tamaño máximo sin deformarlo */
+            height: 95px;  
+            width: 95px;   
+            object-fit: contain;
             filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
             transition: transform 0.2s ease-in-out;
         }
@@ -103,29 +105,27 @@
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; }
             h1 { font-size: 1.8rem; width: 100%; order: -1; margin-bottom: 10px; }
-            .header-logos { height: 50px; }
-            .escudo-comparsa, .logo-asociacion-abajo { width: 55px; height: 55px; }
+            .header-logos { height: 65px; }
+            .escudo-comparsa, .logo-asociacion-abajo { width: 70px; height: 70px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabecera organizada: CTV Completo, Título, Ayuntamiento y Mayordomía -->
+    <!-- Cabecera organizada: Regresamos al Logo CTV Normal, Título, Ayuntamiento y Mayordomía -->
     <div class="header-container">
-        <!-- PROBANDO: Logo CTV Completo con nombre -->
-        <img class="header-logos" src="img/logo-ctv-completo.png" alt="Logo Caudete Televisión">
-        
+        <img class="header-logos" src="img/logo-ctv.png" alt="Logo CTV">
         <h1>Caudete Fiestas</h1>
         <img class="header-logos" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         <img class="header-logos" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
     </div>
 
-    <!-- Reproductor nativo HTML5 (Inmune a bloqueos visuales de librerías) -->
+    <!-- CORRECCIÓN: Añadido autoplay, muted y loop para asegurar que cargue y reproduzca al instante -->
     <div class="video-container">
-        <video id="player" controls playsinline></video>
+        <video id="player" controls playsinline autoplay muted loop></video>
     </div>
 
-    <!-- Sección de Comparsas Tradicionales con tamaño corregido y simétrico -->
+    <!-- Sección de Comparsas Tradicionales con tamaño ampliado -->
     <div class="comparsas-seccion">
         <h2>Asociación y Comparsas</h2>
         <div class="comparsas-grid">
@@ -147,16 +147,19 @@
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({
                     xhrSetup: function (xhr, url) {
-                        xhr.withCredentials = false; // Evita conflictos en GitHub Pages
+                        xhr.withCredentials = false;
                     }
                 });
                 hls.loadSource(source);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
                     console.log("Streaming cargado correctamente.");
+                    // Forzar el inicio del vídeo tras procesar el stream
+                    video.play().catch(error => {
+                        console.log("La reproducción automática requería interacción del usuario o silencio previo:", error);
+                    });
                 });
 
-                // Manejo de reconexión por pérdida de red
                 hls.on(Hls.Events.ERROR, function (event, data) {
                     if (data.fatal) {
                         switch (data.type) {
@@ -169,7 +172,7 @@
                                 hls.recoverMediaError();
                                 break;
                             default:
-                                console.log("Error irrecuperable en streaming.");
+                                console.log("Error irrecuperable.");
                                 break;
                         }
                     }
@@ -177,6 +180,9 @@
             } 
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play().catch(err => console.log("Auto-play bloqueado por Safari nativo"));
+                });
             }
 
             if ('serviceWorker' in navigator) {
