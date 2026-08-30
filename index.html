@@ -40,19 +40,20 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         
-        /* LOGOS SUPERIORES DEFINITIVOS */
+        /* LOGOS SUPERIORES */
         .logo-ctv-arriba {
-            height: 120px; /* Ampliado para igualar al ayuntamiento */
+            height: 120px; 
             width: auto;
             object-fit: contain;
         }
+        /* CORRECCIÓN: Ayuntamiento ampliado en ancho y tamaño general */
         .logo-ayuntamiento-arriba {
-            width: 140px;
+            width: 170px;
             height: auto;
             object-fit: contain;
         }
         .logo-mayordomia-arriba {
-            width: 185px; /* Más ancho para forzar el redondeado definitivo */
+            width: 185px; 
             height: auto;
             object-fit: contain;
         }
@@ -103,16 +104,15 @@
             margin: 0 auto;
         }
         
-        /* LOGOS INFERIORES AJUSTADOS AL MILÍMETRO */
-        /* Los dos moldes de referencia perfecta */
+        /* LOGOS INFERIORES: Todos igualados en impacto visual */
+        /* CORRECCIÓN: Aumentados Asociación y Guerreros a 155px para alinearse con los otros 4 */
         .referencia-grande {
-            height: 140px;  
-            width: 140px;   
+            height: 155px;  
+            width: 155px;   
             object-fit: contain;
             filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
             transition: transform 0.2s ease-in-out;
         }
-        /* Las 4 comparsas restantes reducidas para igualarse visualmente a las de referencia */
         .ajuste-pequeno {
             height: 120px;  
             width: 120px;   
@@ -129,9 +129,9 @@
             .header-container { gap: 15px; padding: 15px; }
             h1 { font-size: 1.8rem; width: 100%; order: -1; margin-bottom: 10px; }
             .logo-ctv-arriba { height: 80px; }
-            .logo-ayuntamiento-arriba { width: 95px; }
+            .logo-ayuntamiento-arriba { width: 110px; }
             .logo-mayordomia-arriba { width: 120px; }
-            .referencia-grande { width: 95px; height: 95px; }
+            .referencia-grande { width: 105px; height: 105px; }
             .ajuste-pequeno { width: 80px; height: 80px; }
         }
     </style>
