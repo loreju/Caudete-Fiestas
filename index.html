@@ -40,18 +40,18 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
                  
-        /* BLOQUES SUPERIORES: Alineación inferior fija para nivelar textos y bases de logos */
+        /* BLOQUES SUPERIORES: Alineación idéntica en base para centrado absoluto de textos */
         .header-block {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end; 
             min-width: 180px;
-            height: 230px; /* Altura ajustada para albergar el logo mayor de la Mayordomía */
+            height: 230px; 
             gap: 15px;
         }
                  
-        /* Títulos institucionales con altura simétrica */
+        /* Títulos institucionales e igualados en línea de base */
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.95rem;
@@ -64,12 +64,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 45px; 
+            height: 45px; /* Misma altura para que todos los títulos se mantengan en línea */
         }
                  
-        /* TAMAÑOS DE LOGOS SUPERIORES PERSONALIZADOS */
+        /* TAMAÑOS DE LOGOS SUPERIORES EQUILIBRADOS */
         .logo-ctv-arriba {
-            height: 135px; /* Un pelín más pequeño */
+            height: 135px; 
             width: auto;
             object-fit: contain;
         }
@@ -79,7 +79,7 @@
             object-fit: contain;
         }
         .logo-mayordomia {
-            width: 165px; /* Un poco más grande para compensar visualmente */
+            width: 165px; 
             height: 165px;
             object-fit: contain;
         }
@@ -206,11 +206,12 @@
 </head>
 <body>
 
-    <!-- Cabecera simétrica con corrección de tamaños de logos -->
+    <!-- Cabecera simétrica con títulos alineados e incorporación de Caudete Televisión -->
     <div class="header-container">
-        <!-- Bloque Izquierdo: CTV (Un pelín más pequeño) -->
+        <!-- Bloque Izquierdo: CTV (Con su texto institucional alineado) -->
         <div class="header-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
+            <h3>Caudete<br>Televisión</h3>
         </div>
                  
         <!-- Bloque Central -->
@@ -226,7 +227,7 @@
             <h3>M.I. Ayuntamiento<br>de Caudete</h3>
         </div>
                  
-        <!-- Bloque Derecho: Mayordomía (Un poco más grande y alineado en línea) -->
+        <!-- Bloque Derecho: Mayordomía (Alineado en línea) -->
         <div class="header-block">
             <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
