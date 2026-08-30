@@ -46,10 +46,10 @@
             width: auto;
             object-fit: contain;
         }
-        /* CORRECCIÓN: Ayuntamiento un 35% más grande */
+        /* CORRECCIÓN: Control por ancho para evitar que el Ayuntamiento se estire verticalmente */
         .logo-ayuntamiento-arriba {
-            height: 125px;
-            width: auto;
+            width: 140px;
+            height: auto;
             object-fit: contain;
         }
         
@@ -108,10 +108,10 @@
             transition: transform 0.2s ease-in-out;
         }
         
-        /* CORRECCIÓN: Asociación y Guerreros destacados con tamaño ampliado */
+        /* CORRECCIÓN: Asociación y Guerreros aún más grandes (Aumentados a 155px) */
         .destacado-grande {
-            height: 130px;
-            width: 130px;
+            height: 155px;
+            width: 155px;
         }
         
         .escudo-comparsa:hover, .logo-asociacion-abajo:hover {
@@ -122,15 +122,15 @@
             .header-container { gap: 15px; padding: 15px; }
             h1 { font-size: 1.8rem; width: 100%; order: -1; margin-bottom: 10px; }
             .header-logos { height: 65px; }
-            .logo-ayuntamiento-arriba { height: 90px; }
+            .logo-ayuntamiento-arriba { width: 100px; }
             .escudo-comparsa, .logo-asociacion-abajo { width: 70px; height: 70px; }
-            .destacado-grande { width: 95px; height: 95px; }
+            .destacado-grande { width: 110px; height: 110px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabecera organizada: Logo CTV Normal, Título, Ayuntamiento (Más Grande) y Mayordomía -->
+    <!-- Cabecera organizada: Logo CTV Normal, Título, Ayuntamiento (Ancho corregido) y Mayordomía -->
     <div class="header-container">
         <img class="header-logos" src="img/logo-ctv.png" alt="Logo CTV">
         <h1>Caudete Fiestas</h1>
@@ -143,11 +143,11 @@
         <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
 
-    <!-- Sección de Comparsas: Asociación y Guerreros ampliados en el grid -->
+    <!-- Sección de Comparsas: Asociación y Guerreros destacados con tamaño extra -->
     <div class="comparsas-seccion">
         <h2>Asociación y Comparsas</h2>
         <div class="comparsas-grid">
-            <img class="logo-asociacion-abajo destacado-grande" src="img/logo-asociacion.png" alt="Asociación de Comparsas" title="Asociación de Comparsas Ntra. Sra. de Gracia">
+            <img class="logo-asociacion-abajo documento destacado-grande" src="img/logo-asociacion.png" alt="Asociación de Comparsas" title="Asociación de Comparsas Ntra. Sra. de Gracia">
             <img class="escudo-comparsa destacado-grande" src="img/guerreros.png" alt="Guerreros" title="Comparsa de Guerreros">
             <img class="escudo-comparsa" src="img/mirenos.png" alt="Mirenos" title="Comparsa de Mirenos">
             <img class="escudo-comparsa" src="img/tarik.png" alt="Tarik" title="Comparsa de Tarik">
@@ -176,7 +176,6 @@
                 
                 hls.on(Hls.Events.MANIFEST_PARSED, function() {
                     console.log("Streaming HLS cargado.");
-                    // Intento de reproducción forzada
                     const playPromise = video.play();
                     if (playPromise !== undefined) {
                         playPromise.catch(error => {
@@ -185,7 +184,6 @@
                     }
                 });
 
-                // Auto-recuperación activa frente a caídas del streaming directo
                 hls.on(Hls.Events.ERROR, function (event, data) {
                     if (data.fatal) {
                         switch (data.type) {
@@ -205,7 +203,6 @@
                 });
             } 
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                // Soporte de Safari nativo
                 video.src = source;
                 video.addEventListener('loadedmetadata', () => {
                     video.play().catch(err => console.log("Safari requirió acción manual."));
