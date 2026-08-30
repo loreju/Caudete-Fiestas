@@ -40,23 +40,12 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         
-        /* Bloques de logotipos institucionales con sus textos integrados */
+        /* Bloques de logotipos limpios */
         .header-block {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            min-width: 180px;
-        }
-        .header-block span {
-            font-size: 0.85rem;
-            color: #cccccc;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            max-width: 180px;
-            line-height: 1.2;
+            min-width: 140px;
         }
         
         /* LOGOS SUPERIORES */
@@ -76,13 +65,14 @@
             object-fit: contain;
         }
         
-        /* TÍTULO PRINCIPAL CENTRAL REESTRUCTURADO */
+        /* BLOQUE CENTRAL DE TEXTOS UNIFICADOS */
         .title-block {
             flex: 1;
             min-width: 320px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
+            align-items: center;
         }
         h1 {
             color: #ffcc00;
@@ -92,17 +82,24 @@
             letter-spacing: 1px;
             line-height: 1.2;
         }
+        .honor-text {
+            color: #cccccc;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
         .subtitle-years {
             color: #ffffff;
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: bold;
             letter-spacing: 2px;
-            margin-top: 5px;
-            background: rgba(255, 204, 0, 0.1);
-            padding: 4px 12px;
+            background: rgba(255, 204, 0, 0.15);
+            padding: 4px 16px;
             border-radius: 6px;
             display: inline-block;
-            margin: 5px auto 0 auto;
+            margin-top: 4px;
         }
 
         .video-container {
@@ -164,12 +161,12 @@
         @media (max-width: 768px) {
             .header-container { gap: 20px; padding: 15px; }
             .title-block { order: -1; width: 100%; min-width: 100%; }
-            h1 { font-size: 1.6rem; }
-            .subtitle-years { font-size: 1rem; }
+            h1 { font-size: 1.5rem; }
+            .honor-text { font-size: 0.95rem; }
+            .subtitle-years { font-size: 0.95rem; }
             .logo-ctv-arriba { height: 80px; }
             .logo-ayuntamiento-arriba { width: 110px; }
             .logo-mayordomia-arriba { width: 105px; }
-            .header-block span { font-size: 0.75rem; max-width: 140px; }
             .referencia-grande { width: 105px; height: 105px; }
             .ajuste-pequeno { width: 80px; height: 80px; }
         }
@@ -177,33 +174,32 @@
 </head>
 <body>
 
-    <!-- Cabecera organizada con simetría visual y textos institucionales integrados -->
+    <!-- Cabecera organizada con jerarquía centralizada y limpia -->
     <div class="header-container">
         <!-- Bloque Izquierdo: CTV -->
         <div class="header-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
         </div>
         
-        <!-- Bloque Central: Título y Años Históricos -->
+        <!-- Bloque Central Totalmente Unificado -->
         <div class="title-block">
             <h1>Caudete Fiestas de Moros y Cristianos</h1>
-            <div class="subtitle-years">1974 Y 1983 A 2025</div>
+            <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
+            <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
         
-        <!-- Bloque Derecho Ayuntamiento: Escudo + Texto sobre/lado -->
+        <!-- Bloque Derecho Ayuntamiento: Escudo limpio -->
         <div class="header-block">
-            <span>M.I. Ayuntamiento de Caudete</span>
             <img class="logo-ayuntamiento-arriba" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         </div>
         
-        <!-- Bloque Derecho Mayordomía: Escudo + Dedicatoria -->
+        <!-- Bloque Derecho Mayordomía: Escudo limpio -->
         <div class="header-block">
-            <span>En Honor a Ntra. Sra. de Gracia</span>
             <img class="logo-mayordomia-arriba" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
         </div>
     </div>
 
-    <!-- Reproductor nativo optimizado con la NUEVA URL DE STREAMING CORREGIDA -->
+    <!-- Reproductor nativo con URL de transmisión actualizada -->
     <div class="video-container">
         <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
@@ -224,8 +220,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            // NUEVA URL: Cambiada a http y con la 'C' mayúscula en /Canal-CTV/
-            const source = 'http://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
+            const source = 'http://duckdns.org';
 
             // Configuración optimizada del motor HLS
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -270,3 +265,14 @@
             } 
             else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play().catch(err => console.log("Safari requirió acción manual."));
+                });
+            }
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+            }
+        });
+    </script>
+</body>
