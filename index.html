@@ -66,25 +66,25 @@
             margin-bottom: 0;
         }
 
-        /* CORRECCIÓN DE DISTANCIAS INDIVIDUALES (IGUALADAS A MAYORDOMÍA) */
+        /* CORRECCIÓN: Alineación y bajada del Ayuntamiento en sintonía con Mayordomía */
         .header-block.ctv-block h3 {
             font-size: 1.15rem; 
             font-weight: 700; 
             white-space: nowrap;
             letter-spacing: 0.5px;
             text-shadow: 0px 0px 1px #ffcc00; 
-            margin-top: 5px; /* Ajuste suave para clonar la separación de Mayordomía */
+            margin-top: 5px; 
         }
 
         .header-block.ayuntamiento-block h3 {
-            margin-top: -5px; /* Ajuste suave por el reborde del escudo */
+            margin-top: 5px; /* Bajado con precisión para clavar la línea horizontal de Mayordomía */
         }
 
         .header-block.mayordomia-block h3 {
-            margin-top: -15px; /* Tu margen de referencia original que quedaba perfecto */
+            margin-top: -15px; 
         }
                  
-        /* TAMAÑOS DE LOGOS SUPERIORES */
+        /* TAMAAÑOS DE LOGOS SUPERIORES */
         .logo-ctv-arriba {
             height: 135px; 
             width: auto;
@@ -225,7 +225,7 @@
 </head>
 <body>
 
-    <!-- Cabecera simétrica con alineación de textos individualizada y equilibrada -->
+    <!-- Cabecera definitiva con alineación simétrica absoluta en logotipos y textos -->
     <div class="header-container">
         <!-- Bloque Izquierdo: CTV -->
         <div class="header-block ctv-block">
@@ -240,13 +240,13 @@
             <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
                  
-        <!-- Bloque Derecho: Ayuntamiento -->
+        <!-- Bloque Derecho: Ayuntamiento (Nivelado perfectamente con Mayordomía) -->
         <div class="header-block ayuntamiento-block">
             <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
             <h3>M.I. Ayuntamiento<br>de Caudete</h3>
         </div>
                  
-        <!-- Bloque Derecho: Mayordomía (Tu referencia de espacio perfecta) -->
+        <!-- Bloque Derecho: Mayordomía -->
         <div class="header-block mayordomia-block">
             <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
@@ -290,3 +290,4 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('player');
