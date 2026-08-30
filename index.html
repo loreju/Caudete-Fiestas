@@ -287,7 +287,33 @@
             </div>
         </div>
     </div>
+   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('player');
+        const source = 'https://caudetefiestas.dukpg.dns/Canal-CTV/index.m3u8'; 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('player');
+        if (Hls.isSupported()) {
+            const hls = new Hls({
+                maxBufferLength: 6,           
+                liveSyncDurationCount: 2,     
+                enableWorker: true,
+                lowLatencyMode: true          
+            });
+            hls.loadSource(source);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play().catch(error => {
+                    console.log("Autoplay con audio bloqueado.");
+                });
+            });
+        } 
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = source;
+            video.addEventListener('loadedmetadata', function() {
+                video.play().catch(error => {
+                    console.log("Autoplay bloqueado.");
+                });
+            });
+        }
+    });
+</script>
