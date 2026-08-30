@@ -244,65 +244,35 @@
     <div class="video-container">
         <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
+        <!-- SECCIÓN DE COMPARSAS COMPACTA -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
-            <div class="comparsa-card">
-                <img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación de Comparsas">
-                <p>Asociación de<br>Comparsas</p>
-            </div>
-            <div class="comparsa-card">
-                <img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros">
-                <p>Comparsa de<br>Guerreros</p>
-            </div>
-            <div class="comparsa-card">
-                <img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos">
-                <p>Comparsa de<br>Mirenos</p>
-            </div>
-            <div class="comparsa-card">
-                <img class="logo-comparsa" src="img/tarik.png" alt="Tarik">
-                <p>Comparsa de<br>Tarik</p>
-            </div>
-            <div class="comparsa-card">
-                <img class="logo-comparsa" src="img/moros.png" alt="Moros">
-                <p>Comparsa de<br>Moros</p>
-            </div>
-            <div class="comparsa-card">
-                <img class="logo-comparsa" src="img/antigua.png" alt="La Antigua">
-                <p>Comparsa de<br>LA ANTIGUA</p>
-            </div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
         </div>
     </div>
 
+    <!-- SCRIPT DE VÍDEO REFORZADO -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            // IMPORTANTE: Recuerda poner aquí tu subdominio real de DuckDNS para que el vídeo conecte
+            const source = 'https://dukpg.org'; 
 
-            if (Hls.isSupported()) {
-                const hls = new Hls({
-                    maxBufferLength: 6,           
-                    liveSyncDurationCount: 2,     
-                    enableWorker: true,
-                    lowLatencyMode: true          
-                });
+            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play().catch(error => {
-                        console.log("Autoplay retenido por el navegador.");
-                    });
-                });
-            } 
-                      else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); });
+            } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
-                video.addEventListener('loadedmetadata', function() {
-                    video.play().catch(error => {
-                        console.log("Autoplay retenido.");
-                    });
-                });
+                video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
             }
         });
     </script>
 </body>
 </html>
-
