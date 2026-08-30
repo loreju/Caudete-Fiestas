@@ -40,18 +40,18 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
                  
-        /* BLOQUES SUPERIORES: Alineación inferior para nivelar los textos */
+        /* BLOQUES SUPERIORES: Alineación inferior fija para nivelar textos y bases de logos */
         .header-block {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end; 
             min-width: 180px;
-            height: 220px; /* Espacio suficiente para los logos grandes de 150px + textos */
+            height: 230px; /* Altura ajustada para albergar el logo mayor de la Mayordomía */
             gap: 15px;
         }
                  
-        /* Bloque específico de títulos de cabecera con altura idéntica para nivelación milimétrica */
+        /* Títulos institucionales con altura simétrica */
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.95rem;
@@ -64,18 +64,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 45px; /* Altura fija para que la primera y segunda línea coincidan en altura exacta */
+            height: 45px; 
         }
                  
-        /* LOGOS SUPERIORES DEL MISMO TAMAÑO QUE LOS DE ABAJO */
+        /* TAMAÑOS DE LOGOS SUPERIORES PERSONALIZADOS */
         .logo-ctv-arriba {
-            height: 150px; 
+            height: 135px; /* Un pelín más pequeño */
             width: auto;
             object-fit: contain;
         }
-        .logo-institucional {
+        .logo-ayuntamiento {
             width: 150px;
-            height: 150px; /* Igualado al tamaño de las comparsas (150x150) */
+            height: 150px;
+            object-fit: contain;
+        }
+        .logo-mayordomia {
+            width: 165px; /* Un poco más grande para compensar visualmente */
+            height: 165px;
             object-fit: contain;
         }
                  
@@ -88,7 +93,7 @@
             gap: 8px;
             align-items: center;
             justify-content: center;
-            height: 220px;
+            height: 230px;
         }
         h1 {
             color: #ffcc00;
@@ -148,7 +153,6 @@
             margin: 0 auto;
         }
                  
-        /* Contenedores de comparsas simétricos */
         .comparsa-card {
             display: flex;
             flex-direction: column;
@@ -157,7 +161,6 @@
             gap: 12px;
             width: 185px; 
         }
-        /* Nombres dorados con control de salto de línea uniforme */
         .comparsa-card p {
             color: #ffcc00;
             font-size: 0.85rem;
@@ -169,7 +172,7 @@
             text-align: center;
         }
                  
-        /* LOGOS INFERIORES EXACTAMENTE IGUALES */
+        /* LOGOS INFERIORES SIMÉTRICOS (150x150) */
         .logo-comparsa {
             height: 150px;  
             width: 150px;   
@@ -189,8 +192,9 @@
             .honor-text { font-size: 0.95rem; }
             .subtitle-years { font-size: 0.95rem; }
             .header-block { min-width: 110px; height: auto; gap: 6px; }
-            .logo-ctv-arriba { height: 80px; }
-            .logo-institucional { width: 90px; height: 90px; }
+            .logo-ctv-arriba { height: 75px; }
+            .logo-ayuntamiento { width: 90px; height: 90px; }
+            .logo-mayordomia { width: 100px; height: 100px; }
             .header-block h3 { font-size: 0.7rem; height: auto; }
                          
             .comparsas-grid { gap: 20px; }
@@ -202,9 +206,9 @@
 </head>
 <body>
 
-    <!-- Cabecera simétrica con textos institucionales perfectamente alineados en altura -->
+    <!-- Cabecera simétrica con corrección de tamaños de logos -->
     <div class="header-container">
-        <!-- Bloque Izquierdo: CTV -->
+        <!-- Bloque Izquierdo: CTV (Un pelín más pequeño) -->
         <div class="header-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
         </div>
@@ -216,15 +220,15 @@
             <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
                  
-        <!-- Bloque Derecho: Ayuntamiento (Alineado en línea con Mayordomía) -->
+        <!-- Bloque Derecho: Ayuntamiento (Alineado en línea) -->
         <div class="header-block">
-            <img class="logo-institucional" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+            <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
             <h3>M.I. Ayuntamiento<br>de Caudete</h3>
         </div>
                  
-        <!-- Bloque Derecho: Mayordomía (Alineado en línea con Ayuntamiento) -->
+        <!-- Bloque Derecho: Mayordomía (Un poco más grande y alineado en línea) -->
         <div class="header-block">
-            <img class="logo-institucional" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
+            <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
         </div>
     </div>
@@ -234,7 +238,7 @@
         <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
 
-    <!-- Sección de Comparsas con tamaño 150x150 e interlineado exacto para La Antigua -->
+    <!-- Sección de Comparsas -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
             <div class="comparsa-card">
@@ -259,7 +263,6 @@
             </div>
             <div class="comparsa-card">
                 <img class="logo-comparsa" src="img/antigua.png" alt="La Antigua">
-                <!-- Salto de línea exacto solicitado -->
                 <p>Comparsa de<br>LA ANTIGUA</p>
             </div>
         </div>
