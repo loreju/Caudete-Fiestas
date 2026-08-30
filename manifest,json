@@ -1,0 +1,24 @@
+{
+  "nav_color": "#141414",
+  "background_color": "#141414",
+  "theme_color": "#141414",
+  "description": "Retransmisión oficial en directo de las Fiestas de Moros y Cristianos de Caudete",
+  "display": "standalone",
+  "orientation": "portrait",
+  "name": "Caudete Fiestas CTV",
+  "short_name": "Caudete Fiestas",
+  "start_url": "index.html",
+  "scope": ".",
+  "icons": [
+    {
+      "src": "img/logo-ctv.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo-ctv.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
