@@ -40,7 +40,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
                  
-        /* BLOQUES SUPERIORES: Alineación idéntica en base para centrado absoluto de textos */
+        /* BLOQUES SUPERIORES: Altura fija y alineación al fondo para clavar la línea de texto */
         .header-block {
             display: flex;
             flex-direction: column;
@@ -51,20 +51,17 @@
             gap: 15px;
         }
                  
-        /* Títulos institucionales e igualados en línea de base */
+        /* Títulos institucionales: Todo seguido, mismo tamaño y alineación horizontal idéntica */
         .header-block h3 {
             color: #ffcc00;
-            font-size: 0.95rem;
+            font-size: 0.85rem; /* Tamaño unificado exacto */
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 0;
             font-weight: bold;
-            line-height: 1.4;
+            line-height: 1.2;
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 45px; /* Misma altura para que todos los títulos se mantengan en línea */
+            white-space: nowrap; /* Fuerza a que todo el texto vaya en una sola línea corrida */
         }
                  
         /* TAMAÑOS DE LOGOS SUPERIORES EQUILIBRADOS */
@@ -195,7 +192,7 @@
             .logo-ctv-arriba { height: 75px; }
             .logo-ayuntamiento { width: 90px; height: 90px; }
             .logo-mayordomia { width: 100px; height: 100px; }
-            .header-block h3 { font-size: 0.7rem; height: auto; }
+            .header-block h3 { font-size: 0.65rem; white-space: normal; }
                          
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
@@ -206,12 +203,12 @@
 </head>
 <body>
 
-    <!-- Cabecera simétrica con títulos alineados e incorporación de Caudete Televisión -->
+    <!-- Cabecera simétrica con títulos en línea corrida y textos perfectamente nivelados -->
     <div class="header-container">
-        <!-- Bloque Izquierdo: CTV (Con su texto institucional alineado) -->
+        <!-- Bloque Izquierdo: CTV -->
         <div class="header-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
-            <h3>Caudete<br>Televisión</h3>
+            <h3>Caudete Televisión</h3>
         </div>
                  
         <!-- Bloque Central -->
@@ -221,16 +218,16 @@
             <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
                  
-        <!-- Bloque Derecho: Ayuntamiento (Alineado en línea) -->
+        <!-- Bloque Derecho: Ayuntamiento -->
         <div class="header-block">
             <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
-            <h3>M.I. Ayuntamiento<br>de Caudete</h3>
+            <h3>M.I. Ayuntamiento de Caudete</h3>
         </div>
                  
-        <!-- Bloque Derecho: Mayordomía (Alineado en línea) -->
+        <!-- Bloque Derecho: Mayordomía -->
         <div class="header-block">
             <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
-            <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
+            <h3>M.I. Mayordomía Ntra. Sra. de Gracia</h3>
         </div>
     </div>
 
