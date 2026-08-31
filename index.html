@@ -5,16 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas</title>
          
-    <!-- Metaetiquetas para optimizar el comportamiento en iPhone y Android -->
     <meta name="theme-color" content="#141414">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
     <link rel="manifest" href="manifest.json">
-
-    <!-- CORRECCIÓN: Librería oficial completa cargada de forma correcta -->
-    <script src="https://jsdelivr.net"></script>
          
     <style>
         body {
@@ -49,9 +45,7 @@
             height: 215px; 
         }
 
-        .header-block.ctv-block {
-            min-width: 250px;
-        }
+        .header-block.ctv-block { min-width: 250px; }
                  
         .header-block h3 {
             color: #ffcc00;
@@ -73,29 +67,12 @@
             margin-top: 7px; 
         }
 
-        .header-block.ayuntamiento-block h3 {
-            margin-top: 1px; 
-        }
-
-        .header-block.mayordomia-block h3 {
-            margin-top: -13px; 
-        }
+        .header-block.ayuntamiento-block h3 { margin-top: 1px; }
+        .header-block.mayordomia-block h3 { margin-top: -13px; }
                  
-        .logo-ctv-arriba {
-            height: 135px; 
-            width: auto;
-            object-fit: contain;
-        }
-        .logo-ayuntamiento {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-        }
-        .logo-mayordomia {
-            width: 165px; 
-            height: 165px;
-            object-fit: contain;
-        }
+        .logo-ctv-arriba { height: 135px; width: auto; object-fit: contain; }
+        .logo-ayuntamiento { width: 150px; height: 150px; object-fit: contain; }
+        .logo-mayordomia { width: 165px; height: 165px; object-fit: contain; }
                  
         .title-block {
             flex: 1;
@@ -151,9 +128,7 @@
             background-color: #000;
         }
 
-        .comparsas-seccion {
-            margin-top: 50px;
-        }
+        .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid {
             display: flex;
             justify-content: center;
@@ -191,9 +166,7 @@
             transition: transform 0.2s ease-in-out;
         }
                  
-        .logo-comparsa:hover {
-            transform: scale(1.08);
-        }
+        .logo-comparsa:hover { transform: scale(1.08); }
 
         @media (max-width: 768px) {
             .header-container { gap: 20px; padding: 15px; }
@@ -240,11 +213,11 @@
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
         </div>
     </div>
-
     <div class="video-container">
-        <video id="player" controls playsinline autoplay muted preload="auto"></video>
-</div>
-    <!-- SECCIÓN DE COMPARSAS COMPACTA -->
+        <!-- El reproductor nace vacío sin URL inicial para que GitHub Pages cargue volando -->
+        <video id="player" controls playsinline preload="none" poster="img/logo-ctv.png"></video>
+    </div>
+        
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación" loading="lazy"><p>Asociación de<br>Comparsas</p></div>
@@ -256,32 +229,33 @@
         </div>
     </div>
 
-    <!-- LIBRERÍA HLS OFICIAL COMPLETA -->
+    <!-- Cargamos la librería oficial de vídeo externa -->
     <script src="https://cloudflare.com"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const source = 'https://duckdns.org'; 
 
-            // Control de streaming inmediato
-            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
-                hls.loadSource(source);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); });
-            } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = source;
-                video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
-            }
+            // Pequeña pausa táctica para dejar pintar los gráficos antes de pedir el stream a DuckDNS
+            setTimeout(() => {
+                if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                    const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
+                    hls.loadSource(source);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        console.log("Streaming cargado en diferido con éxito.");
+                    });
+                } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = source;
+                }
+            }, 300);
 
-            // DETONADOR DE SEGURIDAD: Desinstala y borra cualquier Service Worker corrupto del móvil
+            // Borrado automático de cualquier Service Worker antiguo y lento
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
-                        registration.unregister().then(() => {
-                            console.log('Service Worker ruidoso eliminado con éxito.');
-                        });
+                        registration.unregister();
                     }
                 });
             }
@@ -289,4 +263,3 @@
     </script>
 </body>
 </html>
-    
