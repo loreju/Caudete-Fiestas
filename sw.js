@@ -1,6 +1,5 @@
-const CACHE_NAME = 'caudete-fiestas-v1';
+const CACHE_NAME = 'caudete-fiestas-v2'; // Cambiado a v2 para forzar la actualización
 
-// Añadimos los archivos mínimos que tu app necesita para arrancar
 const assets = [
   '/',
   '/index.html',
@@ -8,16 +7,14 @@ const assets = [
   '/img/logo-ctv.png'
 ];
 
-// 1. Evento de instalación: Guarda los archivos esenciales en la memoria del móvil
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(assets);
-    }).then(() => self.skipWaiting()) // Fuerza a la app a actualizarse rápido
+    }).then(() => self.skipWaiting())
   );
 });
 
-// 2. Evento de activación: Limpia cachés antiguas si haces cambios en el futuro
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -32,11 +29,18 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// 3. Evento Fetch (OBLIGATORIO): Intercepta las peticiones para que sea instalable
+// EVENTO FETCH CORREGIDO: Evita que el streaming pase por la caché
 self.addEventListener('fetch', (e) => {
+  const url = e.request.url;
+
+  // REGLA DE EXCLUSIÓN: Si la petición busca el vídeo (.m3u8, .ts o duckdns), va directo a internet
+  if (url.includes('.m3u8') || url.includes('.ts') || url.includes('duckdns.org')) {
+    return fetch(e.request); 
+  }
+
+  // Para el resto de archivos estáticos (html, imágenes), usa la estrategia normal
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
-      // Si el archivo está en caché lo usa, si no, lo busca en internet
       return cachedResponse || fetch(e.request);
     })
   );
