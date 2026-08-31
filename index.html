@@ -261,34 +261,38 @@
 
     <!-- SCRIPT DE VÍDEO REFORZADO Y REGISTRO DE SERVICE WORKER -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+       document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('player');
+    const source = 'https://duckdns.org'; 
 
-            // Configuración del Reproductor de Vídeo Streaming HLS
-            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
-                hls.loadSource(source);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => { 
-           // Quitamos la reproducción forzada que causaba el bloqueo de 30 segundos
-               console.log("Streaming listo para reproducir."); 
-            });
-
-            } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = source;
-                video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
-            }
-
-            // Registro correcto y optimizado del Service Worker para la PWA
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('./sw.js')
-                        .then(reg => console.log('Service Worker registrado correctamente', reg))
-                        .catch(err => console.error('Error al registrar el Service Worker', err));
-                });
-            }
+    // Configuración ULTRA-RÁPIDA para evitar esperas en móviles
+    if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+        const hls = new Hls({
+            maxBufferLength: 3,          // Reduce el búfer a 3 segundos (antes 6) para abrir antes
+            liveSyncDurationCount: 1,    // Sincroniza al instante con el directo más reciente
+            enableWorker: true,
+            lowLatencyMode: true,        // Activa de forma agresiva el modo de baja latencia
+            maxMaxBufferLength: 5,       // Evita que el móvil acumule demasiada memoria de vídeo
+            backBufferLength: 0          // Borra inmediatamente el vídeo ya visto para ahorrar RAM
         });
+        hls.loadSource(source);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => { console.log("Streaming optimizado listo."); });
+    } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+        video.addEventListener('loadedmetadata', () => { console.log("Streaming nativo listo."); });
+    }
+
+    // Registro del Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW registrado', reg))
+                .catch(err => console.error('Error SW', err));
+        });
+    }
+});
+ 
     </script>
 </body>
 </html>
