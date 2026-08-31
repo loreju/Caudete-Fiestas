@@ -270,7 +270,11 @@
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); });
+                hls.on(Hls.Events.MANIFEST_PARSED, () => { 
+           // Quitamos la reproducción forzada que causaba el bloqueo de 30 segundos
+               console.log("Streaming listo para reproducir."); 
+            });
+
             } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
                 video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
