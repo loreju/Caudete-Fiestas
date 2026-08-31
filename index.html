@@ -12,6 +12,9 @@
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
     <link rel="manifest" href="manifest.json">
+
+    <!-- CORRECCIÓN: Librería oficial completa cargada de forma correcta -->
+    <script src="https://jsdelivr.net"></script>
          
     <style>
         body {
@@ -239,11 +242,8 @@
     </div>
 
     <div class="video-container">
-    <!-- Añadimos una imagen de fondo (poster) y quitamos el autoplay conflictivo -->
-    <video id="player" controls playsinline preload="auto" poster="img/logo-ctv.png"></video>
+        <video id="player" controls playsinline autoplay muted preload="auto"></video>
 </div>
-
-    
     <!-- SECCIÓN DE COMPARSAS COMPACTA -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
@@ -256,43 +256,34 @@
         </div>
     </div>
 
-    <!-- LIBRERÍA HLS.JS (Corregida e inyectada antes del script del reproductor) -->
+    <!-- OBLIGATORIO: Cargamos la librería para que el vídeo funcione en Android/PC -->
     <script src="https://jsdelivr.net"></script>
 
-    <!-- SCRIPT DE VÍDEO REFORZADO Y REGISTRO DE SERVICE WORKER -->
+    <!-- SCRIPT DE VÍDEO REFORZADO ORIGINAL -->
     <script>
-       document.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('player');
-    const source = 'https://duckdns.org'; 
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('player');
+            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
 
-    // Configuración ULTRA-RÁPIDA para evitar esperas en móviles
-    if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-        const hls = new Hls({
-            maxBufferLength: 3,          // Reduce el búfer a 3 segundos (antes 6) para abrir antes
-            liveSyncDurationCount: 1,    // Sincroniza al instante con el directo más reciente
-            enableWorker: true,
-            lowLatencyMode: true,        // Activa de forma agresiva el modo de baja latencia
-            maxMaxBufferLength: 5,       // Evita que el móvil acumule demasiada memoria de vídeo
-            backBufferLength: 0          // Borra inmediatamente el vídeo ya visto para ahorrar RAM
-        });
-        hls.loadSource(source);
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, () => { console.log("Streaming optimizado listo."); });
-    } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = source;
-        video.addEventListener('loadedmetadata', () => { console.log("Streaming nativo listo."); });
-    }
+            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
+                hls.loadSource(source);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); });
+            } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = source;
+                video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
+            }
 
-    // Registro del Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('SW registrado', reg))
-                .catch(err => console.error('Error SW', err));
+            // OBLIGATORIO: Registra el Service Worker de la PWA sin tocar el reproductor
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js').catch(err => console.log('Error', err));
+                });
+            }
         });
-    }
-});
- 
     </script>
 </body>
 </html>
+
+    
