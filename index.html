@@ -12,9 +12,6 @@
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
     <link rel="manifest" href="manifest.json">
-
-    <!-- CORRECCIÓN: Librería oficial completa cargada de forma correcta -->
-    <script src="https://jsdelivr.net"></script>
          
     <style>
         body {
@@ -242,11 +239,10 @@
     </div>
 
     <div class="video-container">
-    <video id="player" controls playsinline autoplay muted preload="auto"></video>
-
-
+        <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
-        <!-- SECCIÓN DE COMPARSAS COMPACTA -->
+    
+    <!-- SECCIÓN DE COMPARSAS COMPACTA -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
@@ -258,13 +254,16 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE VÍDEO REFORZADO -->
+    <!-- LIBRERÍA HLS.JS (Corregida e inyectada antes del script del reproductor) -->
+    <script src="https://jsdelivr.net"></script>
+
+    <!-- SCRIPT DE VÍDEO REFORZADO Y REGISTRO DE SERVICE WORKER -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            // IMPORTANTE: Recuerda poner aquí tu subdominio real de DuckDNS para que el vídeo conecte
             const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
 
+            // Configuración del Reproductor de Vídeo Streaming HLS
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
@@ -274,10 +273,15 @@
                 video.src = source;
                 video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
             }
-           if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(err => console.log('Error', err));
-}
- 
+
+            // Registro correcto y optimizado del Service Worker para la PWA
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(reg => console.log('Service Worker registrado correctamente', reg))
+                        .catch(err => console.error('Error al registrar el Service Worker', err));
+                });
+            }
         });
     </script>
 </body>
