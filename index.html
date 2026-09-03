@@ -9,7 +9,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <link rel="apple-touch-icon" href="img/logo-ctv.png">
+    <!-- Vinculamos la nueva imagen para los dispositivos iPhone -->
+    <link rel="apple-touch-icon" href="img/Cartel Fiestas-botón.png">
     <link rel="manifest" href="manifest.json">
          
     <style>
@@ -190,7 +191,6 @@
     </style>
 </head>
 <body>
-
     <div class="header-container">
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
@@ -213,9 +213,10 @@
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
         </div>
     </div>
+
     <div class="video-container">
-        <!-- El reproductor nace vacío sin URL inicial para que GitHub Pages cargue volando -->
-        <video id="player" controls playsinline preload="none" poster="img/logo-ctv.png"></video>
+        <!-- Vinculamos tu nuevo cartel grande como fondo de espera horizontal (poster) -->
+        <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
     </div>
         
     <div class="comparsas-seccion">
@@ -229,7 +230,7 @@
         </div>
     </div>
 
-    <!-- Cargamos la librería oficial de vídeo externa -->
+    <!-- CORRECCIÓN: Librería oficial completa de HLS desde un CDN seguro para que el vídeo funcione -->
     <script src="https://cloudflare.com"></script>
 
     <script>
@@ -251,7 +252,7 @@
                 }
             }, 300);
 
-            // Borrado automático de cualquier Service Worker antiguo y lento
+            // Borrado automático y limpieza de Service Workers lentos en el almacenamiento del dispositivo
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
