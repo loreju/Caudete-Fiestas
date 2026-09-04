@@ -9,7 +9,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <link rel="apple-touch-icon" href="img/Cartel Fiestas-boton.png">
+    <!-- CORRECCIÓ: Enllacem l'icona corregida en JPG per a iPhone -->
+    <link rel="apple-touch-icon" href="img/Cartel Fiestas-boton.jpg">
     <link rel="manifest" href="manifest.json">
          
     <style>
@@ -112,7 +113,6 @@
             margin-top: 4px;
         }
 
-        /* TORNEM AL DISSENY ORIGINAL: Sense forçats rars que deformin el cartell */
         .video-container {
             max-width: 900px;
             margin: 0 auto;
@@ -215,7 +215,7 @@
     </div>
 
     <div class="video-container">
-        <!-- El reproductor original amb el teu cartell de fons exacte -->
+        <!-- El reproductor utilitza la teva imatge gran en format original PNG -->
         <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
     </div>
         
@@ -230,13 +230,13 @@
         </div>
     </div>
 
-    <!-- Llibreria oficial HLS externa de màxima fiabilitat -->
+    <!-- Llibreria oficial HLS externa funcional de màxima velocitat -->
     <script src="https://cloudflare.com"></script>
 
     <script>
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const source = 'https://duckdns.org'; 
 
             setTimeout(() => {
                 if (typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -251,7 +251,7 @@
                 }
             }, 300);
 
-            // Neteja automàtica de Service Workers antics per evitar memòria cau corrupta
+            // Neteja de Service Workers antics per forçar l'actualització de l'icona
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
