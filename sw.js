@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caudete-fiestas-v5';
+const CACHE_NAME = 'caudete-fiestas-v6';
 
 // Solo guardamos la estructura de la web, NADA de vídeos
 const assets = [
