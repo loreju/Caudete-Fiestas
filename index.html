@@ -9,7 +9,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <!-- Enllaç de l'icona en JPG per a iPhone -->
     <link rel="apple-touch-icon" href="img/icono.jpg">
     <link rel="manifest" href="manifest.json">
          
@@ -23,6 +22,26 @@
             margin: 0;
         }
                  
+        /* NOU: Botó d'instal·lació elegant a joc amb la web */
+        .btn-instalar {
+            display: none; /* S'activarà només si és necessari per JavaScript */
+            background-color: #ffcc00;
+            color: #141414;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 0 auto 25px auto;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+            transition: transform 0.2s;
+            width: fit-content;
+        }
+        .btn-instalar:active { transform: scale(0.95); }
+
         .header-container {
             display: flex;
             align-items: center;
@@ -122,13 +141,9 @@
             overflow: hidden;
             padding: 5px;
         }
-        
-        /* FORZAT DE CARTELL: Obliga el teu Cartel Fiestas-espera.png a omplir tot el reproductor */
         video {
-            width: 100% !important;
-            height: 100% !important;
+            width: 100%;
             display: block;
-            object-fit: fill !important;
             border-radius: 8px;
             background-color: #000;
         }
@@ -195,6 +210,9 @@
     </style>
 </head>
 <body>
+    <!-- NOU: Botó d'instal·lació directa visible només quan es pugui instal·lar -->
+    <button id="btnInstalar" class="btn-instalar">⬇️ Instal·lar App Caudete Fiestas</button>
+
     <div class="header-container">
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
@@ -219,7 +237,6 @@
     </div>
 
     <div class="video-container">
-        <!-- El reproductor original enllaçat amb el teu cartell en gran horitzontal -->
         <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
     </div>
         
@@ -234,36 +251,42 @@
         </div>
     </div>
 
-    <!-- Llibreria oficial HLS externa de màxima velocitat -->
     <script src="https://cloudflare.com"></script>
 
     <script>
+        let eventoInstalacion;
+        const botonInstalar = document.getElementById('btnInstalar');
+
+        // Escitem l'esdeveniment natiu de la PWA que ens diu si l'app és instal·lable
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); // Evita que surti el text lleig automàtic de Chrome
+            eventoInstalacion = e; // Guarda l'esdeveniment
+            botonInstalar.style.display = 'block'; // Mostra el nostre botó daurat bonic
+        });
+
+        // Acció en prémer el botó daurat d'instal·lar
+        botonInstalar.addEventListener('click', async () => {
+            if (eventoInstalacion) {
+                eventoInstalacion.prompt(); // Mostra el menú oficial de descàrrega
+                const { outcome } = await eventoInstalacion.userChoice;
+                if (outcome === 'accepted') {
+                    botonInstalar.style.display = 'none'; // S'amaga si l'accepten
+                }
+                eventoInstalacion = null;
+            }
+        });
+
+        // Control pur del reproductor de vídeo HLS a la màxima velocitat
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const source = 'https://duckdns.org'; 
 
-            // Arrencada nativa i directa del senyal de vídeo, evitant filtres lents
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    console.log("Streaming HLS connectat sense traves.");
-                });
             } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
-            }
-
-            // ORDRE DE NETEJA: Elimina el sw.js de la memòria del mòbil per recuperar el 100% de la velocitat
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then((registrations) => {
-                    for (let registration of registrations) {
-                        registration.unregister().then(() => {
-                            console.log('Filtre antic eliminat.');
-                            window.location.reload(); // Recarrega un cop per fer net
-                        });
-                    }
-                });
             }
         });
     </script>
