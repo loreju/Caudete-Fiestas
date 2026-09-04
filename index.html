@@ -9,8 +9,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <!-- Vinculamos la nueva imagen para los dispositivos iPhone -->
-    <link rel="apple-touch-icon" href="img/Cartel Fiestas-botón.png">
+    <!-- Ruta limpia sin acentos ni espacios para iPhone -->
+    <link rel="apple-touch-icon" href="img/cartel-boton.png">
     <link rel="manifest" href="manifest.json">
          
     <style>
@@ -113,20 +113,28 @@
             margin-top: 4px;
         }
 
+        /* CORRECCIÓN: Forzamos la proporción 16:9 en el contenedor para PC y móvil */
         .video-container {
-            max-width: 900px;
+            max-width: 700px;
+            width: 100%;
+            aspect-ratio: 16 / 9;
             margin: 0 auto;
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            background-color: #000;
+            background-color: #000000;
             border-radius: 12px;
             overflow: hidden;
             padding: 5px;
+            box-sizing: border-box;
         }
+        
+        /* CORRECCIÓN: Forzamos al cartel a estirarse y centrarse al 100% */
         video {
-            width: 100%;
+            width: 100% !important;
+            height: 100% !important;
             display: block;
-            border-radius: 8px;
-            background-color: #000;
+            object-fit: cover !important;
+            object-position: center center !important;
+            background-color: #000000;
         }
 
         .comparsas-seccion { margin-top: 50px; }
@@ -214,11 +222,9 @@
         </div>
     </div>
 
-    <!-- OPTIMIZACIÓN: Añadido un ancho máximo para centrar el reproductor a la mitad de tamaño -->
-    <div class="video-container" style="max-width: 650px; margin: 0 auto;">
-        <!-- OPTIMIZACIÓN: Control estricto de altura para que el cartel de 1280x720 quede estilizado -->
-        <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png" style="max-height: 365px; object-fit: cover; width: 100%; display: block; margin: 0 auto; background-position: center;"></video>
-
+    <div class="video-container">
+        <!-- El reproductor ahora lee la ruta limpia sin espacios ni acentos -->
+        <video id="player" controls playsinline preload="none" poster="img/cartel-espera.png"></video>
     </div>
         
     <div class="comparsas-seccion">
@@ -232,15 +238,14 @@
         </div>
     </div>
 
-    <!-- CORRECCIÓN: Enlace oficial y real de la librería hls.js para el streaming en directo -->
+    <!-- Librería oficial HLS externa de máxima fiabilidad -->
     <script src="https://cloudflare.com"></script>
 
     <script>
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const source = 'https://duckdns.org'; 
 
-            // Pausa en diferido para asegurar que la web cargue instantáneamente
             setTimeout(() => {
                 if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                     const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
@@ -254,7 +259,7 @@
                 }
             }, 300);
 
-            // Desinstalador de seguridad de Service Workers antiguos corruptos
+            // Código para desinstalar de forma limpia rastros de service workers lentos antiguos
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
