@@ -6,7 +6,7 @@ const assets = [
   './index.html',
   './index.html?v=2',
   './manifest.json',
-  './img/Cartel Fiestas-botón.png'
+  './img/Cartel Fiestas-boton.png'
 ];
 
 self.addEventListener('install', (e) => {
