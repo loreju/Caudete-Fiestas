@@ -112,28 +112,21 @@
             margin-top: 4px;
         }
 
-        /* CONTENEDOR OPTIMIZADO: Mantiene la proporción horizontal de TV */
+        /* TORNEM AL DISSENY ORIGINAL: Sense forçats rars que deformin el cartell */
         .video-container {
-            max-width: 700px;
-            width: 100%;
-            aspect-ratio: 16 / 9;
+            max-width: 900px;
             margin: 0 auto;
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            background-color: #000000;
+            background-color: #000;
             border-radius: 12px;
             overflow: hidden;
             padding: 5px;
-            box-sizing: border-box;
         }
-        
-        /* VIDEO OPTIMIZADO: Fuerza al cartel a cubrir el 100% de forma centrada */
         video {
-            width: 100% !important;
-            height: 100% !important;
+            width: 100%;
             display: block;
-            object-fit: cover !important;
-            object-position: center center !important;
-            background-color: #000000;
+            border-radius: 8px;
+            background-color: #000;
         }
 
         .comparsas-seccion { margin-top: 50px; }
@@ -222,7 +215,7 @@
     </div>
 
     <div class="video-container">
-        <!-- El reproductor con tu cartel exacto de fondo -->
+        <!-- El reproductor original amb el teu cartell de fons exacte -->
         <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
     </div>
         
@@ -237,13 +230,13 @@
         </div>
     </div>
 
-    <!-- Librería oficial HLS externa funcional -->
+    <!-- Llibreria oficial HLS externa de màxima fiabilitat -->
     <script src="https://cloudflare.com"></script>
 
     <script>
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const source = 'https://duckdns.org'; 
 
             setTimeout(() => {
                 if (typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -251,14 +244,14 @@
                     hls.loadSource(source);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                        console.log("Streaming HLS listo.");
+                        console.log("Streaming HLS llest.");
                     });
                 } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = source;
                 }
             }, 300);
 
-            // Borrado automático preventivo de Service Workers antiguos corruptos
+            // Neteja automàtica de Service Workers antics per evitar memòria cau corrupta
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
