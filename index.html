@@ -9,8 +9,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <!-- Ruta limpia sin acentos ni espacios para iPhone -->
-    <link rel="apple-touch-icon" href="img/cartel-boton.png">
+    <!-- Ruta exacta para iPhone -->
+    <link rel="apple-touch-icon" href="img/Cartel Fiestas-boton.png">
     <link rel="manifest" href="manifest.json">
          
     <style>
@@ -113,7 +113,7 @@
             margin-top: 4px;
         }
 
-        /* CORRECCIÓN: Forzamos la proporción 16:9 en el contenedor para PC y móvil */
+        /* FORZADO 16:9: Para que el reproductor no se encoja en PC ni móvil */
         .video-container {
             max-width: 700px;
             width: 100%;
@@ -127,7 +127,7 @@
             box-sizing: border-box;
         }
         
-        /* CORRECCIÓN: Forzamos al cartel a estirarse y centrarse al 100% */
+        /* FORZADO DE CARTEL: Obliga a la imagen a estirarse cubriendo toda la caja negra */
         video {
             width: 100% !important;
             height: 100% !important;
@@ -223,8 +223,8 @@
     </div>
 
     <div class="video-container">
-        <!-- El reproductor ahora lee la ruta limpia sin espacios ni acentos -->
-        <video id="player" controls playsinline preload="none" poster="img/cartel-espera.png"></video>
+        <!-- CORRECCIÓN: Apunta exactamente a tu archivo con espacios y mayúsculas -->
+        <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
     </div>
         
     <div class="comparsas-seccion">
@@ -238,7 +238,7 @@
         </div>
     </div>
 
-    <!-- Librería oficial HLS externa de máxima fiabilidad -->
+    <!-- Librería oficial HLS externa corregida -->
     <script src="https://cloudflare.com"></script>
 
     <script>
@@ -252,14 +252,14 @@
                     hls.loadSource(source);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                        console.log("Streaming cargado en diferido con éxito.");
+                        console.log("Streaming cargado en diferido.");
                     });
                 } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = source;
                 }
             }, 300);
 
-            // Código para desinstalar de forma limpia rastros de service workers lentos antiguos
+            // Borrado automático de Service Workers viejos lentos
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
