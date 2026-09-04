@@ -217,28 +217,31 @@
         let eventoInstalacion;
         const botonInstalar = document.getElementById('btnInstalar');
 
-        // Escitem l'esdeveniment de la PWA que ara SÍ s'activarà en detectar el sw.js fantasma
+        // FORÇAT: El botó estarà visible sempre perquè el veí el vegi a la primera
+        botonInstalar.style.display = 'block';
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             eventoInstalacion = e; 
-            botonInstalar.style.display = 'block'; // Mostra el botó daurat d'instal·lació
         });
 
+        // Acció directa intel·ligent al prémer el botó daurat
         botonInstalar.addEventListener('click', async () => {
             if (eventoInstalacion) {
                 eventoInstalacion.prompt(); 
                 const { outcome } = await eventoInstalacion.userChoice;
-                if (outcome === 'accepted') {
-                    botonInstalar.style.display = 'none'; 
-                }
+                if (outcome === 'accepted') { botonInstalar.style.display = 'none'; }
                 eventoInstalacion = null;
+            } else {
+                // Drecera si Chrome va lent: avisa l'usuari d'anar als 3 punts o obre la guia interna
+                alert("Per instal·lar l'App al teu mòbil, prem els 3 punts de dalt de Chrome i selecciona 'Instal·lar aplicació' o 'Afegir a la pantalla d'inici'.");
             }
         });
 
         // Control pur del reproductor de vídeo HLS a màxima velocitat
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const source = 'https://duckdns.org'; 
 
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
@@ -248,7 +251,7 @@
                 video.src = source;
             }
 
-            // REGISTRE FANTASMA: Obligatori per a que Chrome activi el botó daurat de dalt
+            // REGISTRE FANTASMA: Manté l'app legal per a Google sense frenar la línia
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
             }
@@ -256,4 +259,3 @@
     </script>
 </body>
 </html>
-   
