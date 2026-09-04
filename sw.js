@@ -33,9 +33,10 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = e.request.url;
 
-  // CORRECCIÓN: Si busca streaming, va directo a internet sin pasar por la caché
+  // CORRECCIÓN: Si busca streaming, va directo a internet de forma nativa
   if (url.includes('.m3u8') || url.includes('.ts') || url.includes('duckdns.org')) {
-    return e.respondWith(fetch(e.request));
+    e.respondWith(fetch(e.request));
+    return; // El return va de baix, indicant que ja hem gestionat aquesta petició
   }
 
   // Para el index.html y assets, servirlo desde la caché del móvil al instante
