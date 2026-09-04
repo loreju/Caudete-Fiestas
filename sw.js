@@ -1,12 +1,12 @@
-const CACHE_NAME = 'caudete-fiestas-v7';
+const CACHE_NAME = 'caudete-fiestas-v9';
 
-// Solo guardamos la estructura de la web, NADA de vídeos
+// Guardem només l'estructura de la web, evitant fitxers de vídeo infinits
 const assets = [
   './',
   './index.html',
-  './index.html?v=2',
+  './index.html?v=5',
   './manifest.json',
-  './img/Cartel Fiestas-boton.png'
+  './img/Cartel Fiestas-boton.jpeg'
 ];
 
 self.addEventListener('install', (e) => {
@@ -29,17 +29,17 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Estrategia: Carga la web instantánea desde el móvil y el vídeo directo desde internet
+// Intercepta les peticions: el vídeo va directe a internet, el disseny va per memòria cau
 self.addEventListener('fetch', (e) => {
   const url = e.request.url;
 
-  // CORRECCIÓN SINCRONIZADA: Si busca tu señal de DuckDNS (.m3u8 o .ts), va directo a internet sin pasar por la caché
+  // Si l'usuari demana el streaming de DuckDNS, el deixem passar sense tocar la memòria cau
   if (url.includes('.m3u8') || url.includes('.ts') || url.includes('caudetefiestas.duckdns.org')) {
     e.respondWith(fetch(e.request));
     return;
   }
 
-  // Para el index.html y assets estáticos, servirlo desde la caché del móvil al instante
+  // Per a la resta de fitxers de disseny, es serveixen a l'instant
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       return cachedResponse || fetch(e.request);
