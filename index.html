@@ -244,8 +244,7 @@
     <script>
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
-
+            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
             setTimeout(() => {
                 if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                     const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
