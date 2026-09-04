@@ -1,10 +1,11 @@
-const CACHE_NAME = 'caudete-fiestas-v4';
+const CACHE_NAME = 'caudete-fiestas-v5';
 
-// Solo guardamos el cascarón de la web, NADA de vídeos
+// Solo guardamos la estructura de la web, NADA de vídeos
 const assets = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './img/Cartel Fiestas-botón.png'
 ];
 
 self.addEventListener('install', (e) => {
@@ -31,12 +32,12 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = e.request.url;
 
-  // Si busca streaming, ignorar por completo e ir a internet directo
+  // CORRECCIÓN: Si busca streaming, va directo a internet sin pasar por la caché
   if (url.includes('.m3u8') || url.includes('.ts') || url.includes('duckdns.org')) {
-    return;
+    return e.respondWith(fetch(e.request));
   }
 
-  // Para el index.html, servirlo desde la caché del móvil al instante
+  // Para el index.html y assets, servirlo desde la caché del móvil al instante
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       return cachedResponse || fetch(e.request);
