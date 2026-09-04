@@ -4,6 +4,7 @@ const CACHE_NAME = 'caudete-fiestas-v6';
 const assets = [
   './',
   './index.html',
+  './index.html?v=2',
   './manifest.json',
   './img/Cartel Fiestas-botón.png'
 ];
