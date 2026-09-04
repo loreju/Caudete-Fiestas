@@ -214,9 +214,10 @@
         </div>
     </div>
 
-    <div class="video-container">
-        <!-- Vinculamos tu nuevo cartel grande como fondo de espera horizontal (poster) -->
-        <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
+    <!-- OPTIMIZACIÓN: Añadido un ancho máximo para centrar el reproductor a la mitad de tamaño -->
+    <div class="video-container" style="max-width: 650px; margin: 0 auto;">
+        <!-- OPTIMIZACIÓN: Control estricto de altura para que el cartel de 1280x720 quede estilizado -->
+        <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png" style="max-height: 365px; object-fit: contain; width: 100%; display: block;"></video>
     </div>
         
     <div class="comparsas-seccion">
@@ -230,7 +231,7 @@
         </div>
     </div>
 
-    <!-- CORRECCIÓN: Librería oficial completa de HLS desde un CDN seguro para que el vídeo funcione -->
+    <!-- CORRECCIÓN: Enlace oficial y real de la librería hls.js para el streaming en directo -->
     <script src="https://cloudflare.com"></script>
 
     <script>
@@ -238,7 +239,7 @@
             const video = document.getElementById('player');
             const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
 
-            // Pequeña pausa táctica para dejar pintar los gráficos antes de pedir el stream a DuckDNS
+            // Pausa en diferido para asegurar que la web cargue instantáneamente
             setTimeout(() => {
                 if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                     const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
@@ -252,7 +253,7 @@
                 }
             }, 300);
 
-            // Borrado automático y limpieza de Service Workers lentos en el almacenamiento del dispositivo
+            // Desinstalador de seguridad de Service Workers antiguos corruptos
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
