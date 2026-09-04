@@ -9,7 +9,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <!-- Ruta exacta para iPhone -->
     <link rel="apple-touch-icon" href="img/Cartel Fiestas-boton.png">
     <link rel="manifest" href="manifest.json">
          
@@ -113,7 +112,7 @@
             margin-top: 4px;
         }
 
-        /* FORZADO 16:9: Para que el reproductor no se encoja en PC ni móvil */
+        /* CONTENEDOR OPTIMIZADO: Mantiene la proporción horizontal de TV */
         .video-container {
             max-width: 700px;
             width: 100%;
@@ -127,7 +126,7 @@
             box-sizing: border-box;
         }
         
-        /* FORZADO DE CARTEL: Obliga a la imagen a estirarse cubriendo toda la caja negra */
+        /* VIDEO OPTIMIZADO: Fuerza al cartel a cubrir el 100% de forma centrada */
         video {
             width: 100% !important;
             height: 100% !important;
@@ -223,7 +222,7 @@
     </div>
 
     <div class="video-container">
-        <!-- CORRECCIÓN: Apunta exactamente a tu archivo con espacios y mayúsculas -->
+        <!-- El reproductor con tu cartel exacto de fondo -->
         <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
     </div>
         
@@ -238,7 +237,7 @@
         </div>
     </div>
 
-    <!-- Librería oficial HLS externa corregida -->
+    <!-- Librería oficial HLS externa funcional -->
     <script src="https://cloudflare.com"></script>
 
     <script>
@@ -252,14 +251,14 @@
                     hls.loadSource(source);
                     hls.attachMedia(video);
                     hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                        console.log("Streaming cargado en diferido.");
+                        console.log("Streaming HLS listo.");
                     });
                 } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = source;
                 }
             }, 300);
 
-            // Borrado automático de Service Workers viejos lentos
+            // Borrado automático preventivo de Service Workers antiguos corruptos
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then((registrations) => {
                     for (let registration of registrations) {
@@ -271,4 +270,3 @@
     </script>
 </body>
 </html>
- 
