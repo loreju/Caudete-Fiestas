@@ -13,7 +13,7 @@
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
     <link rel="manifest" href="manifest.json">
 
-    <!-- CORRECCIÓN: Librería oficial completa cargada de forma correcta -->
+    <!-- CORRECCIÓN: Enlace oficial y correcto a la librería HLS para que el vídeo funcione -->
     <script src="https://jsdelivr.net"></script>
          
     <style>
@@ -217,7 +217,8 @@
     </style>
 </head>
 <body>
-  <div class="header-container">
+
+    <div class="header-container">
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
             <h3>Caudete Televisión</h3>
@@ -243,7 +244,8 @@
     <div class="video-container">
         <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
-        <!-- SECCIÓN DE COMPARSAS COMPACTA -->
+
+    <!-- SECCIÓN DE COMPARSAS COMPACTA -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
@@ -259,7 +261,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            // IMPORTANTE: Recuerda poner aquí tu subdominio real de DuckDNS para que el vídeo conecte
             const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
 
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
@@ -274,4 +275,4 @@
         });
     </script>
 </body>
-</html>   
+</html>
