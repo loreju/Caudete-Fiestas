@@ -234,9 +234,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-           // CAMBIAD LA LÍNEA DEL SOURCE POR ESTA DE PRUEBAS:
-            const source = 'https://mux.dev'; 
-
+            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
 
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
