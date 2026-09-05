@@ -117,8 +117,8 @@
             display: inline-block;
             margin-top: 4px;
         }
-
         .video-container {
+            position: relative;
             max-width: 900px;
             margin: 0 auto;
             box-shadow: 0 15px 35px rgba(0,0,0,0.8);
@@ -133,6 +133,43 @@
             border-radius: 8px;
             background-color: #000;
         }
+
+        /* EL CARTEL AHORA QUEDA ENCAJADO EXCLUSIVAMENTE DENTRO DEL REPRODUCTOR */
+        #capa-espera {
+            position: absolute;
+            top: 5px; left: 5px; 
+            width: calc(100% - 10px); 
+            height: calc(100% - 10px);
+            background-color: #141414;
+            background-image: url('img/Cartel-Fiestas-espera.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 8px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-play {
+            background: rgba(255, 204, 0, 0.95);
+            color: #141414;
+            border: none;
+            width: 80px;
+            height: 80px;
+            font-size: 2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-indent: 5px; 
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
+
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid {
             display: flex;
@@ -173,40 +210,6 @@
                  
         .logo-comparsa:hover { transform: scale(1.08); }
 
-        /* AJUSTE DEL CARTEL DE ESPERA AL TAMAÑO DE LA PANTALLA */
-        #capa-espera {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #141414;
-            background-image: url('img/Cartel-Fiestas-espera.png');
-            background-size: contain;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        /* BOTÓN DE PLAY SÓLO ICONO RECONVERTIDO EN CÍRCULO */
-        .btn-play {
-            background: rgba(255, 204, 0, 0.95);
-            color: #141414;
-            border: none;
-            width: 90px;
-            height: 90px;
-            font-size: 2.2rem;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-indent: 6px; 
-            transition: transform 0.2s, background-color 0.2s;
-        }
-        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
-
         @media (max-width: 768px) {
             .header-container { gap: 20px; padding: 15px; }
             .title-block { order: -1; width: 100%; min-width: 100%; height: auto; }
@@ -225,16 +228,11 @@
             .comparsa-card { width: 115px; gap: 8px; }
             .comparsa-card p { font-size: 0.65rem; }
             .logo-comparsa { width: 90px; height: 90px; }
-            .btn-play { width: 75px; height: 75px; font-size: 1.8rem; text-indent: 4px; }
+            .btn-play { width: 65px; height: 65px; font-size: 1.5rem; text-indent: 3px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- CAPA VISUAL DEL CARTEL DE ESPERA CON BOTÓN CIRCULAR -->
-    <div id="capa-espera">
-        <button class="btn-play" id="start-btn">▶</button>
-    </div>
 
     <div class="header-container">
         <div class="header-block ctv-block">
@@ -259,7 +257,11 @@
         </div>
     </div>
 
+    <!-- EL CARTEL AHORA VIVE DENTRO DE LA CAJA DEL VIDEO -->
     <div class="video-container">
+        <div id="capa-espera">
+            <button class="btn-play" id="start-btn">▶</button>
+        </div>
         <video id="player" controls playsinline></video>
     </div>
 
@@ -267,7 +269,7 @@
         <div class="comparsas-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+            <div class="comparsa-card"><img class="theme logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
