@@ -4,15 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas</title>
-         
-    <meta name="theme-color" content="#141414">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <!-- CORRECCIÓN IPHONE: Enlazado limpio a tu archivo real icono.jpg -->
-    <link rel="apple-touch-icon" href="img/icono.jpg">
-    <link rel="manifest" href="manifest.json">
-         
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -23,33 +14,6 @@
             margin: 0;
         }
                  
-        /* CORRECCIÓN PC: El botón nace oculto por defecto para que no se vea en el ordenador */
-        .btn-instalar {
-            display: none; 
-            background-color: #ffcc00;
-            color: #141414;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            margin: 0 auto 25px auto;
-            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
-            transition: transform 0.2s;
-            width: fit-content;
-        }
-        .btn-instalar:active { transform: scale(0.95); }
-
-        /* OPTIMIZACIÓN: El botón solo pasa a estar visible si la pantalla es de un móvil */
-        @media (max-width: 1024px) {
-            .btn-instalar {
-                display: block !important;
-            }
-        }
-
         .header-container {
             display: flex;
             align-items: center;
@@ -218,24 +182,23 @@
     </style>
 </head>
 <body>
-
-     <!-- El botón ahora nace con el diseño limpio y oculto en PC -->
-    <button id="btnInstalar" class="btn-instalar">⬇️ Instalar App Caudete Fiestas</button>
-
-    <div class="header-container">
+ <div class="header-container">
         <div class="header-block ctv-block">
             <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
             <h3>Caudete Televisión</h3>
         </div>
+                 
         <div class="title-block">
             <h1>Caudete Fiestas de Moros y Cristianos</h1>
             <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
             <div class="subtitle-years">1974 - 1983 A 2025</div>
         </div>
+                 
         <div class="header-block ayuntamiento-block">
             <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
             <h3>M.I. Ayuntamiento<br>de Caudete</h3>
         </div>
+                 
         <div class="header-block mayordomia-block">
             <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
@@ -243,55 +206,35 @@
     </div>
 
     <div class="video-container">
-        <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
+        <video id="player" controls playsinline autoplay muted preload="auto"></video>
     </div>
-        
+        <!-- SECCIÓN DE COMPARSAS COMPACTA -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación" loading="lazy"><p>Asociación de<br>Comparsas</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros" loading="lazy"><p>Comparsa de<br>Guerreros</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos" loading="lazy"><p>Comparsa de<br>Mirenos</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik" loading="lazy"><p>Comparsa de<br>Tarik</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros" loading="lazy"><p>Comparsa de<br>Moros</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua" loading="lazy"><p>Comparsa de<br>LA ANTIGUA</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
         </div>
     </div>
 
-    <!-- Librería oficial HLS externa funcional -->
-    <script src="https://cloudflare.com"></script>
+    <!-- SCRIPT DE VÍDEO REFORZADO -->
     <script>
-        let eventoInstalacion;
-        const botonInstalar = document.getElementById('btnInstalar');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); 
-            eventoInstalacion = e; 
-        });
-
-        botonInstalar.addEventListener('click', async () => {
-            if (eventoInstalacion) {
-                eventoInstalacion.prompt(); 
-                const { outcome } = await eventoInstalacion.userChoice;
-                if (outcome === 'accepted') { botonInstalar.style.display = 'none'; }
-                eventoInstalacion = null;
-            } else {
-                alert("Para instalar la App en tu móvil, pulsa los 3 puntos de arriba de Chrome y selecciona 'Instalar aplicación' o 'Añadir a la pantalla de inicio'.");
-            }
-        });
-
-        window.addEventListener('load', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
+            // IMPORTANTE: Recuerda poner aquí tu subdominio real de DuckDNS para que el vídeo conecte
             const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => { console.log("Streaming HLS listo."); });
+                hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); });
             } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
-            }
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+                video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
             }
         });
     </script>
