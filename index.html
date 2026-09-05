@@ -4,38 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas</title>
+         
     <meta name="theme-color" content="#141414">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <link rel="apple-touch-icon" href="img/Cartel Fiestas-boton.png">
+    <!-- CORRECCIÓN IPHONE: Enlazado limpio a tu archivo real icono.jpg -->
+    <link rel="apple-touch-icon" href="img/icono.jpg">
     <link rel="manifest" href="manifest.json">
+         
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #141414; color: #ffffff; text-align: center; padding: 40px 20px; margin: 0; }
-        .btn-instalar { display: block; background-color: #ffcc00; color: #141414; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; padding: 14px 28px; border: none; border-radius: 30px; cursor: pointer; margin: 0 auto 25px auto; box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4); transition: transform 0.2s; width: fit-content; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #141414;
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+            margin: 0;
+        }
+                 
+        /* CORRECCIÓN PC: El botón nace oculto por defecto para que no se vea en el ordenador */
+        .btn-instalar {
+            display: none; 
+            background-color: #ffcc00;
+            color: #141414;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            margin: 0 auto 25px auto;
+            box-shadow: 0 4px 15px rgba(255, 204, 0, 0.4);
+            transition: transform 0.2s;
+            width: fit-content;
+        }
         .btn-instalar:active { transform: scale(0.95); }
-        .header-container { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 25px; max-width: 1450px; margin: 0 auto 30px auto; background-color: #1e1e1e; padding: 25px 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        .header-block { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-width: 180px; height: 215px; }
+
+        /* OPTIMIZACIÓN: El botón solo pasa a estar visible si la pantalla es de un móvil */
+        @media (max-width: 768px) {
+            .btn-instalar {
+                display: block;
+            }
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 1450px;
+            margin: 0 auto 30px auto;
+            background-color: #1e1e1e;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+                 
+        .header-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; 
+            min-width: 180px;
+            height: 215px; 
+        }
+
         .header-block.ctv-block { min-width: 250px; }
-        .header-block h3 { color: #ffcc00; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; line-height: 1.3; text-align: center; margin-bottom: 0; }
-        .header-block.ctv-block h3 { font-size: 1.15rem; font-weight: 700; white-space: nowrap; letter-spacing: 0.5px; text-shadow: 0px 0px 1px #ffcc00; margin-top: 7px; }
+                 
+        .header-block h3 {
+            color: #ffcc00;
+            font-size: 0.95rem; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            line-height: 1.3;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .header-block.ctv-block h3 {
+            font-size: 1.15rem; 
+            font-weight: 700; 
+            white-space: nowrap;
+            letter-spacing: 0.5px;
+            text-shadow: 0px 0px 1px #ffcc00; 
+            margin-top: 7px; 
+        }
+
         .header-block.ayuntamiento-block h3 { margin-top: 1px; }
         .header-block.mayordomia-block h3 { margin-top: -13px; }
+                 
         .logo-ctv-arriba { height: 135px; width: auto; object-fit: contain; }
         .logo-ayuntamiento { width: 150px; height: 150px; object-fit: contain; }
         .logo-mayordomia { width: 165px; height: 165px; object-fit: contain; }
-        .title-block { flex: 1; min-width: 320px; display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center; height: 215px; }
-        h1 { color: #ffcc00; font-size: 2.2rem; margin: 0; text-transform: uppercase; letter-spacing: 1px; line-height: 1.2; }
-        .honor-text { color: #ffcc00; font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 0; }
-        .subtitle-years { color: #ffffff; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px; background: rgba(255, 204, 0, 0.15); padding: 4px 16px; border-radius: 6px; display: inline-block; margin-top: 4px; }
-        .video-container { max-width: 900px; margin: 0 auto; box-shadow: 0 15px 35px rgba(0,0,0,0.8); background-color: #000; border-radius: 12px; overflow: hidden; padding: 5px; }
-        video { width: 100%; display: block; border-radius: 8px; background-color: #000; }
+                 
+        .title-block {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            height: 215px;
+        }
+        h1 {
+            color: #ffcc00;
+            font-size: 2.2rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+        .honor-text {
+            color: #ffcc00;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
+        .subtitle-years {
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: rgba(255, 204, 0, 0.15);
+            padding: 4px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 5px;
+        }
+        video {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+            background-color: #000;
+        }
+
         .comparsas-seccion { margin-top: 50px; }
-        .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
-        .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
-        .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; margin: 0; line-height: 1.4; text-align: center; }
-        .logo-comparsa { height: 150px; width: 150px; object-fit: contain; filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6)); transition: transform 0.2s ease-in-out; }
+        .comparsas-grid {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 35px;
+            max-width: 1350px;
+            margin: 0 auto;
+        }
+                 
+        .comparsa-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 185px; 
+        }
+        .comparsa-card p {
+            color: #ffcc00;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            margin: 0;
+            line-height: 1.4;
+            text-align: center;
+        }
+                 
+        .logo-comparsa {
+            height: 150px;  
+            width: 150px;   
+            object-fit: contain;
+            filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
+            transition: transform 0.2s ease-in-out;
+        }
+                 
         .logo-comparsa:hover { transform: scale(1.08); }
+
         @media (max-width: 768px) {
             .header-container { gap: 20px; padding: 15px; }
             .title-block { order: -1; width: 100%; min-width: 100%; height: auto; }
@@ -49,6 +209,7 @@
             .logo-mayordomia { width: 100px; height: 100px; }
             .header-block h3 { font-size: 0.7rem; height: auto; margin-top: 5px; }
             .header-block.ctv-block h3 { font-size: 0.75rem; white-space: normal; letter-spacing: 1px; margin-top: 5px; text-shadow: none; }
+                         
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
             .comparsa-card p { font-size: 0.65rem; }
@@ -58,6 +219,7 @@
 </head>
 <body>
 
+     <!-- El botón ahora nace con el diseño limpio y oculto en PC -->
     <button id="btnInstalar" class="btn-instalar">⬇️ Instalar App Caudete Fiestas</button>
 
     <div class="header-container">
@@ -95,14 +257,17 @@
         </div>
     </div>
 
+    <!-- Librería oficial HLS externa funcional -->
     <script src="https://cloudflare.com"></script>
     <script>
         let eventoInstalacion;
         const botonInstalar = document.getElementById('btnInstalar');
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             eventoInstalacion = e; 
         });
+
         botonInstalar.addEventListener('click', async () => {
             if (eventoInstalacion) {
                 eventoInstalacion.prompt(); 
@@ -113,6 +278,7 @@
                 alert("Para instalar la App en tu móvil, pulsa los 3 puntos de arriba de Chrome y selecciona 'Instalar aplicación' o 'Añadir a la pantalla de inicio'.");
             }
         });
+
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
             const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
