@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caudete Fiestas</title>
-    <!-- LIBRERÍA CRÍTICA: Añadida para que el streaming .m3u8 funcione en Chrome, Android, Firefox y Edge -->
+    
+    <!-- LIBRERÍA CRÍTICA: Permite que el streaming .m3u8 funcione rápido en Chrome, Android, Firefox y Edge -->
     <script src="https://jsdelivr.net"></script>
+    
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -48,7 +50,7 @@
             font-weight: bold;
             line-height: 1.3;
             text-align: center;
-            margin: 10px 0 0 0; /* Cambiado de margen negativo a flujo normal */
+            margin: 10px 0 0 0;
         }
         
         .header-block.ctv-block h3 {
@@ -166,8 +168,8 @@
             .header-block { min-width: 110px; height: auto; }
             .header-block.ctv-block { min-width: 110px; }
             .logo-ctv-arriba { height: 75px; }
-            .logo-ayuntamiento { width: 90px; height: auto; } /* Cambiado a height auto para no deformar */
-            .logo-mayordomia { width: 100px; height: auto; } /* Cambiado a height auto para no deformar */
+            .logo-ayuntamiento { width: 90px; height: auto; } 
+            .logo-mayordomia { width: 100px; height: auto; } 
             .header-block h3 { font-size: 0.7rem; height: auto; margin-top: 5px; }
             .header-block.ctv-block h3 { font-size: 0.75rem; white-space: normal; letter-spacing: 1px; margin-top: 5px; text-shadow: none; }
             
@@ -204,7 +206,7 @@
     </div>
 
     <div class="video-container">
-        <!-- Eliminado el autoplay directo para evitar bloqueos del navegador -->
+        <!-- Forzamos los atributos necesarios para el correcto funcionamiento en móviles -->
         <video id="player" controls playsinline muted preload="auto"></video>
     </div>
 
@@ -222,34 +224,51 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
 
-            // Función interna para forzar el play de manera segura
-            const safePlay = () => {
-                video.play().catch(error => {
-                    console.log("El navegador bloqueó el autoplay. Esperando interacción del usuario.");
-                });
-            };
-
-            // HLS.js para la mayoría de navegadores modernos (Chrome, Firefox, Edge, Android)
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ 
-                    maxBufferLength: 6, 
-                    liveSyncDurationCount: 2, 
-                    enableWorker: true, 
-                    lowLatencyMode: true 
+                    maxBufferLength: 2,          // Fuerza el arranque inmediato pidiendo solo 2s de vídeo
+                    maxMaxBufferLength: 4,
+                    liveSyncDurationCount: 1,    // Se acopla al directo al instante
+                    enableWorker: true,
+                    lowLatencyMode: true,
+                    backBufferLength: 0,
+                    
+                    manifestLoadingTimeOut: 3000,
+                    levelLoadingTimeOut: 3000,
+                    fragLoadingTimeOut: 5000,
+                    testBandwidth: false
                 });
+                
                 hls.loadSource(source);
                 hls.attachMedia(video);
+                
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    safePlay();
+                    video.muted = true; 
+                    video.play().catch(() => {});
+                });
+
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                    if (data.fatal) {
+                        switch (data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 });
             } 
-            // Soporte nativo HLS (Principalmente Safari en iOS/Mac)
             else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
+                video.muted = true;
                 video.addEventListener('loadedmetadata', () => {
-                    safePlay();
+                    video.play().catch(() => {});
                 });
             }
         });
