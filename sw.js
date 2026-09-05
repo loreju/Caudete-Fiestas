@@ -1,5 +1,5 @@
 // Service Worker fantasma per activar el botó sense alentir el vídeo
-const CACHE_NAME = 'caudete-fiestas-v99';
+const CACHE_NAME = 'caudete-fiestas-v10';
 
 self.addEventListener('install', (e) => {
   self.skipWaiting();
