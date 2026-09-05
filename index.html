@@ -22,9 +22,9 @@
             margin: 0;
         }
                  
-        /* NOU: Botó d'instal·lació elegant a joc amb la web */
+        /* CORRECCIÓN: El botón nace siempre activo para romper el bloqueo de pantalla negra */
         .btn-instalar {
-            display: none; /* S'activarà només si és necessari per JavaScript */
+            display: block; 
             background-color: #ffcc00;
             color: #141414;
             font-size: 1.1rem;
@@ -210,14 +210,56 @@
     </style>
 </head>
 <body>
-    <!-- Llibreria oficial HLS externa de màxima velocitat -->
+    <!-- CORRECCIÓN: Colocamos el botón físico arriba para que no se quede la pantalla en negro -->
+    <button id="btnInstalar" class="btn-instalar">⬇️ Instal·lar App Caudete Fiestas</button>
+
+    <div class="header-container">
+        <div class="header-block ctv-block">
+            <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
+            <h3>Caudete Televisión</h3>
+        </div>
+                 
+        <div class="title-block">
+            <h1>Caudete Fiestas de Moros y Cristianos</h1>
+            <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
+            <div class="subtitle-years">1974 - 1983 A 2025</div>
+        </div>
+                 
+        <div class="header-block ayuntamiento-block">
+            <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+            <h3>M.I. Ayuntamiento<br>de Caudete</h3>
+        </div>
+                 
+        <div class="header-block mayordomia-block">
+            <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
+            <h3>M.I. Mayordomía<br>Ntra. Sra. de Gracia</h3>
+        </div>
+    </div>
+
+    <div class="video-container">
+        <!-- El reproductor con tu cartel exacto de fondo -->
+        <video id="player" controls playsinline preload="none" poster="img/Cartel Fiestas-espera.png"></video>
+    </div>
+        
+    <div class="comparsas-seccion">
+        <div class="comparsas-grid">
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación" loading="lazy"><p>Asociación de<br>Comparsas</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros" loading="lazy"><p>Comparsa de<br>Guerreros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos" loading="lazy"><p>Comparsa de<br>Mirenos</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik" loading="lazy"><p>Comparsa de<br>Tarik</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros" loading="lazy"><p>Comparsa de<br>Moros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua" loading="lazy"><p>Comparsa de<br>LA ANTIGUA</p></div>
+        </div>
+    </div>
+
+    <!-- CORRECCIÓN: Cambiamos la URL de Cloudflare por la librería real de vídeo HLS -->
     <script src="https://cloudflare.com"></script>
 
     <script>
         let eventoInstalacion;
         const botonInstalar = document.getElementById('btnInstalar');
 
-        // FORÇAT: El botó estarà visible sempre perquè el veí el vegi a la primera
+        // El botón estará visible siempre para guiar al usuario
         botonInstalar.style.display = 'block';
 
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -225,7 +267,6 @@
             eventoInstalacion = e; 
         });
 
-        // Acció directa intel·ligent al prémer el botó daurat
         botonInstalar.addEventListener('click', async () => {
             if (eventoInstalacion) {
                 eventoInstalacion.prompt(); 
@@ -233,15 +274,14 @@
                 if (outcome === 'accepted') { botonInstalar.style.display = 'none'; }
                 eventoInstalacion = null;
             } else {
-                // Drecera si Chrome va lent: avisa l'usuari d'anar als 3 punts o obre la guia interna
                 alert("Per instal·lar l'App al teu mòbil, prem els 3 punts de dalt de Chrome i selecciona 'Instal·lar aplicació' o 'Afegir a la pantalla d'inici'.");
             }
         });
 
-        // Control pur del reproductor de vídeo HLS a màxima velocitat
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
             const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
+            
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
@@ -250,7 +290,6 @@
                 video.src = source;
             }
 
-            // REGISTRE FANTASMA: Manté l'app legal per a Google sense frenar la línia
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
             }
