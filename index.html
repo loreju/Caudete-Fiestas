@@ -212,24 +212,18 @@
 <body>
     <!-- CORRECCIÓN: Botón físico superior completamente en español -->
     <button id="btnInstalar" class="btn-instalar">⬇️ Instalar App Caudete Fiestas</button>
-
     <!-- ... aquí va el teu header-container, el video-container i les comparses ... -->
-
     <!-- Librería oficial HLS externa de máxima velocidad -->
     <script src="https://cloudflare.com"></script>
-
     <script>
         let eventoInstalacion;
         const botonInstalar = document.getElementById('btnInstalar');
-
         // FORZADO: El botón estará visible siempre para guiar al usuario en español
         botonInstalar.style.display = 'block';
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); 
             eventoInstalacion = e; 
         });
-
         // Acción directa inteligente al pulsar el botón dorado (Traducido)
         botonInstalar.addEventListener('click', async () => {
             if (eventoInstalacion) {
@@ -242,12 +236,10 @@
                 alert("Para instalar la App en tu móvil, pulsa los 3 puntos de arriba de Chrome y selecciona 'Instalar aplicación' o 'Añadir a la pantalla de inicio'.");
             }
         });
-
         // Control puro del reproductor de vídeo HLS a máxima velocidad
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://duckdns.org'; 
-
+            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
@@ -259,7 +251,6 @@
             } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
             }
-
             // REGISTRE FANTASMA: Mantiene la app legal para Google sin frenar la línea
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
@@ -267,5 +258,4 @@
         });
     </script>
 </body>
-</html>
-   
+</html>   
