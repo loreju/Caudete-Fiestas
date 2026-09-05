@@ -11,8 +11,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
+    
+    <!-- ENLACE CORREGIDO AL MANIFEST -->
+    <link rel="manifest" href="manifest.json">
 
-    <!-- CORRECCIÓN: Librería oficial de vídeo cargada sin bloqueos -->
+    <!-- Librería oficial de vídeo cargada sin bloqueos -->
     <script src="https://jsdelivr.net"></script>
          
     <style>
@@ -240,7 +243,6 @@
         </div>
     </div>
 
-    <!-- CORRECCIÓN: Quitada la precarga automática para evitar bloqueos visuales -->
     <div class="video-container">
         <video id="player" controls playsinline autoplay muted></video>
     </div>
@@ -261,7 +263,8 @@
     <script>
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
-            const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8';
+            const source = 'https://duckdns.org'; 
+
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
                 const hls = new Hls({ 
                     maxBufferLength: 6, 
