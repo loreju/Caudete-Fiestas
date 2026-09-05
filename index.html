@@ -12,14 +12,14 @@
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
     <link rel="apple-touch-icon" href="img/logo-ctv.png">
     
-    <!-- ENLACE CORREGIDO AL MANIFEST -->
+    <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
 
     <!-- Librería oficial de vídeo cargada sin bloqueos -->
     <script src="https://jsdelivr.net"></script>
          
     <style>
-        body {
+          body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: #141414;
             color: #ffffff;
@@ -51,9 +51,7 @@
             height: 215px; 
         }
 
-        .header-block.ctv-block {
-            min-width: 250px;
-        }
+        .header-block.ctv-block { min-width: 250px; }
                  
         .header-block h3 {
             color: #ffcc00;
@@ -75,29 +73,12 @@
             margin-top: 7px; 
         }
 
-        .header-block.ayuntamiento-block h3 {
-            margin-top: 1px; 
-        }
-
-        .header-block.mayordomia-block h3 {
-            margin-top: -13px; 
-        }
+        .header-block.ayuntamiento-block h3 { margin-top: 1px; }
+        .header-block.mayordomia-block h3 { margin-top: -13px; }
                  
-        .logo-ctv-arriba {
-            height: 135px; 
-            width: auto;
-            object-fit: contain;
-        }
-        .logo-ayuntamiento {
-            width: 150px;
-            height: 150px;
-            object-fit: contain;
-        }
-        .logo-mayordomia {
-            width: 165px; 
-            height: 165px;
-            object-fit: contain;
-        }
+        .logo-ctv-arriba { height: 135px; width: auto; object-fit: contain; }
+        .logo-ayuntamiento { width: 150px; height: 150px; object-fit: contain; }
+        .logo-mayordomia { width: 165px; height: 165px; object-fit: contain; }
                  
         .title-block {
             flex: 1;
@@ -153,9 +134,7 @@
             background-color: #000;
         }
 
-        .comparsas-seccion {
-            margin-top: 50px;
-        }
+        .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid {
             display: flex;
             justify-content: center;
@@ -193,9 +172,37 @@
             transition: transform 0.2s ease-in-out;
         }
                  
-        .logo-comparsa:hover {
-            transform: scale(1.08);
+        .logo-comparsa:hover { transform: scale(1.08); }
+
+        /* PANTALLA CAPA DE ESPERA CON PLAY */
+        #capa-espera {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #141414;
+            background-image: url('img/Cartel-Fiestas-espera.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        .btn-play {
+            background: rgba(255, 204, 0, 0.9);
+            color: #141414;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: transform 0.2s;
+        }
+        .btn-play:hover { transform: scale(1.1); }
 
         @media (max-width: 768px) {
             .header-container { gap: 20px; padding: 15px; }
@@ -219,6 +226,11 @@
     </style>
 </head>
 <body>
+
+    <!-- CAPA VISUAL DEL CARTEL DE ESPERA -->
+    <div id="capa-espera">
+        <button class="btn-play" id="start-btn">▶ Ver Directo</button>
+    </div>
 
     <div class="header-container">
         <div class="header-block ctv-block">
@@ -244,10 +256,9 @@
     </div>
 
     <div class="video-container">
-        <video id="player" controls playsinline autoplay muted></video>
+        <video id="player" controls playsinline></video>
     </div>
 
-    <!-- SECCIÓN DE COMPARSAS COMPACTA -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
@@ -259,25 +270,27 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE VÍDEO OPTIMIZADO (Carga asíncrona tras pintar la web) -->
     <script>
         window.addEventListener('load', () => {
             const video = document.getElementById('player');
             const source = 'https://caudetefiestas.duckdns.org/Canal-CTV/index.m3u8'; 
+            const capaEspera = document.getElementById('capa-espera');
+            const btnPlay = document.getElementById('start-btn');
+
+            let hls;
             if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                const hls = new Hls({ 
-                    maxBufferLength: 6, 
-                    liveSyncDurationCount: 2, 
-                    enableWorker: true, 
-                    lowLatencyMode: true 
-                });
+                hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
                 hls.loadSource(source);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => { video.play().catch(() => {}); });
             } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
-                video.addEventListener('loadedmetadata', () => { video.play().catch(() => {}); });
             }
+
+            btnPlay.addEventListener('click', () => {
+                capaEspera.style.display = 'none'; 
+                video.muted = false;              
+                video.play().catch(() => {});
+            });
         });
     </script>
 </body>
