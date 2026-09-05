@@ -12,13 +12,13 @@
   "icons": [
     {
       "src": "img/Cartel-Fiestas-boton.png",
-      "sizes": "512x512",
+      "sizes": "592x592",
       "type": "image/png",
       "purpose": "any"
     },
     {
       "src": "img/Cartel-Fiestas-espera.png",
-      "sizes": "1720x1080",
+      "sizes": "1280x720",
       "type": "image/png",
       "purpose": "maskable"
     }
