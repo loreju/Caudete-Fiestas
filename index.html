@@ -15,7 +15,7 @@
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- CORRECCIÓN CLAVE: Descarga asíncrona que no frena la web pero asiste al PC -->
+    <!-- Descarga asíncrona de la librería que asiste al PC sin bloquear el móvil -->
     <script async src="https://jsdelivr.net"></script>
          
     <style>
@@ -264,7 +264,7 @@
     </div>
 
     <div class="comparsas-seccion">
-        <div class="comparsam-grid">
+        <div class="comparsas-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
@@ -291,7 +291,6 @@
                     video.src = source;
                     video.play().catch(() => {});
                 } else {
-                    // Si el PC va tan rápido que la librería aún no cargó, reintenta en 200 milisegundos
                     setTimeout(lanzarVideo, 200);
                 }
             }
