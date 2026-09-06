@@ -117,7 +117,7 @@
             display: inline-block;
             margin-top: 4px;
         }
-        .video-container {
+                .video-container {
             position: relative;
             max-width: 900px;
             margin: 0 auto;
@@ -134,7 +134,7 @@
             background-color: #000;
         }
 
-        /* EL CARTEL AHORA QUEDA ENCAJADO EXCLUSIVAMENTE DENTRO DEL REPRODUCTOR */
+        /* EL CARTEL QUEDA ENCAJADO DENTRO DEL REPRODUCTOR */
         #capa-espera {
             position: absolute;
             top: 5px; left: 5px; 
@@ -257,7 +257,6 @@
         </div>
     </div>
 
-    <!-- EL CARTEL AHORA VIVE DENTRO DE LA CAJA DEL VIDEO -->
     <div class="video-container">
         <div id="capa-espera">
             <button class="btn-play" id="start-btn">▶</button>
@@ -267,9 +266,9 @@
 
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+            <div class="comparsa-card"><img class="logo-asociacion" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
-            <div class="comparsa-card"><img class="theme logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
@@ -297,6 +296,11 @@
                 video.muted = false;              
                 video.play().catch(() => {});
             });
+
+            // CORRECCIÓN: Registro seguro del Service Worker sin bloqueos de red
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            }
         });
     </script>
 </body>
