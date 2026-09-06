@@ -15,8 +15,8 @@
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
 
-    <!-- Descarga asíncrona de la librería que asiste al PC sin bloquear el móvil -->
-    <script async src="https://jsdelivr.net"></script>
+    <!-- Librería oficial de vídeo cargada de forma directa y estable -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
          
     <style>
         body {
@@ -117,7 +117,8 @@
             display: inline-block;
             margin-top: 4px;
         }
-                .video-container {
+
+        .video-container {
             position: relative;
             max-width: 900px;
             margin: 0 auto;
@@ -133,7 +134,7 @@
             border-radius: 8px;
             background-color: #000;
         }
-
+                /* CAPA DE ESPERA ACOPLADA PERFECTAMENTE */
         #capa-espera {
             position: absolute;
             top: 5px; left: 5px; 
@@ -281,29 +282,20 @@
             const capaEspera = document.getElementById('capa-espera');
             const btnPlay = document.getElementById('start-btn');
 
-            function lanzarVideo() {
-                if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                    const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
-                    hls.loadSource(source);
-                    hls.attachMedia(video);
-                    video.play().catch(() => {});
-                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = source;
-                    video.play().catch(() => {});
-                } else {
-                    setTimeout(lanzarVideo, 200);
-                }
+            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
+                hls.loadSource(source);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {});
+            } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = source;
             }
 
             btnPlay.addEventListener('click', () => {
                 capaEspera.style.display = 'none'; 
                 video.muted = false;              
-                lanzarVideo();
+                video.play().catch(() => {});
             });
-
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./sw.js').catch(() => {});
-            }
         });
     </script>
 </body>
