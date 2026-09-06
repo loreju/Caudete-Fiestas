@@ -257,6 +257,7 @@
         </div>
     </div>
 
+    <!-- EL CARTEL AHORA VIVE DENTRO DE LA CAJA DEL VIDEO -->
     <div class="video-container">
         <div id="capa-espera">
             <button class="btn-play" id="start-btn">▶</button>
@@ -266,7 +267,8 @@
 
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
-            <div class="comparsa-card"><img class="logo-asociacion" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+            <!-- CORRECCIÓN: Reparada la clase del logo de la asociación -->
+            <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
@@ -297,7 +299,7 @@
                 video.play().catch(() => {});
             });
 
-            // CORRECCIÓN: Registro seguro del Service Worker sin bloqueos de red
+            // Registro automático del Service Worker básico
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./sw.js').catch(() => {});
             }
