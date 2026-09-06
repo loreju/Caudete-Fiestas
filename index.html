@@ -14,9 +14,6 @@
     
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
-
-    <!-- Librería oficial de vídeo cargada sin bloqueos -->
-    <script src="https://jsdelivr.net"></script>
          
     <style>
         body {
@@ -134,7 +131,6 @@
             background-color: #000;
         }
 
-        /* EL CARTEL QUEDA ENCAJADO DENTRO DEL REPRODUCTOR */
         #capa-espera {
             position: absolute;
             top: 5px; left: 5px; 
@@ -257,7 +253,6 @@
         </div>
     </div>
 
-    <!-- EL CARTEL AHORA VIVE DENTRO DE LA CAJA DEL VIDEO -->
     <div class="video-container">
         <div id="capa-espera">
             <button class="btn-play" id="start-btn">▶</button>
@@ -267,7 +262,6 @@
 
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
-            <!-- CORRECCIÓN: Reparada la clase del logo de la asociación -->
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
@@ -284,25 +278,32 @@
             const capaEspera = document.getElementById('capa-espera');
             const btnPlay = document.getElementById('start-btn');
 
-            let hls;
-            if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
-                hls.loadSource(source);
-                hls.attachMedia(video);
-            } else if (video && video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = source;
+            // CARGA INTELIGENTE Y RETRASADA: Primero pinta la web, luego busca el reproductor
+            function initVideo() {
+                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = source;
+                } else {
+                    const script = document.createElement('script');
+                    script.src = "https://jsdelivr.net";
+                    script.onload = () => {
+                        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                            const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
+                            hls.loadSource(source);
+                            hls.attachMedia(video);
+                        }
+                    };
+                    document.head.appendChild(script);
+                }
             }
+
+            // Arrancamos el motor del vídeo en segundo plano sin congelar la pantalla
+            setTimeout(initVideo, 100);
 
             btnPlay.addEventListener('click', () => {
                 capaEspera.style.display = 'none'; 
                 video.muted = false;              
                 video.play().catch(() => {});
             });
-
-            // Registro automático del Service Worker básico
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./sw.js').catch(() => {});
-            }
         });
     </script>
 </body>
