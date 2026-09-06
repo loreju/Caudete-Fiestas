@@ -14,6 +14,9 @@
     
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
+
+    <!-- CORRECCIÓN CLAVE: Descarga asíncrona que no frena la web pero asiste al PC -->
+    <script async src="https://jsdelivr.net"></script>
          
     <style>
         body {
@@ -261,7 +264,7 @@
     </div>
 
     <div class="comparsas-seccion">
-        <div class="comparsas-grid">
+        <div class="comparsam-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
             <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
@@ -278,32 +281,30 @@
             const capaEspera = document.getElementById('capa-espera');
             const btnPlay = document.getElementById('start-btn');
 
-            // CARGA INTELIGENTE Y RETRASADA: Primero pinta la web, luego busca el reproductor
-            function initVideo() {
-                if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            function lanzarVideo() {
+                if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+                    const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
+                    hls.loadSource(source);
+                    hls.attachMedia(video);
+                    video.play().catch(() => {});
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = source;
+                    video.play().catch(() => {});
                 } else {
-                    const script = document.createElement('script');
-                    script.src = "https://jsdelivr.net";
-                    script.onload = () => {
-                        if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-                            const hls = new Hls({ maxBufferLength: 6, liveSyncDurationCount: 2, enableWorker: true, lowLatencyMode: true });
-                            hls.loadSource(source);
-                            hls.attachMedia(video);
-                        }
-                    };
-                    document.head.appendChild(script);
+                    // Si el PC va tan rápido que la librería aún no cargó, reintenta en 200 milisegundos
+                    setTimeout(lanzarVideo, 200);
                 }
             }
-
-            // Arrancamos el motor del vídeo en segundo plano sin congelar la pantalla
-            setTimeout(initVideo, 100);
 
             btnPlay.addEventListener('click', () => {
                 capaEspera.style.display = 'none'; 
                 video.muted = false;              
-                video.play().catch(() => {});
+                lanzarVideo();
             });
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./sw.js').catch(() => {});
+            }
         });
     </script>
 </body>
