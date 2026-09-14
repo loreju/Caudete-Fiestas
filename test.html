@@ -3,70 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prueba Histórico - Fiestas</title>
-    
-    <!-- Reproductor de vídeo moderno (Video.js) -->
-    <link href="https://zencdn.net" rel="stylesheet" />
-    
+    <title>Laboratorio de Pruebas - Vídeos</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #121212; color: white; text-align: center; padding: 20px; margin: 0; }
-        .contenedor { max-width: 800px; margin: 0 auto; padding: 10px; }
-        
-        /* Contenedor del reproductor */
-        .video-dimensiones { width: 100%; aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 25px; }
-        
-        /* Cuadrícula de botones de años */
-        .grid-anios { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 20px; }
-        
-        /* Estilo de los botones */
-        .btn-anio { background-color: #222; color: #fff; border: 1px solid #444; padding: 12px 5px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; }
-        .btn-anio:hover { background-color: #ff9900; border-color: #ff9900; color: #000; }
-        .btn-anio.activo { background-color: #ff9900; border-color: #ff9900; color: #000; box-shadow: 0 0 10px rgba(255,153,0,0.5); }
+        /* Estilos generales minimalistas para integrarse con tu web */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+        }
+
+        /* Contenedor del reproductor de vídeo interactivo */
+        .video-container {
+            position: relative;
+            position: relative;
+            padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 800px;
+            margin: 0 auto 25px auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            background: #000;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Título del vídeo en reproducción */
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #00bcd4; /* Color acento (puedes cambiarlo) */
+        }
+
+        /* Cuadrícula optimizada y adaptativa para los 42 botones */
+        .grid-anios {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        /* Estilo moderno tipo píldora para cada botón */
+        .btn-anio {
+            background-color: #222222;
+            color: #ffffff;
+            border: 1px solid #444444;
+            padding: 12px 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent; /* Optimización móvil */
+        }
+
+        /* Efecto al pasar el ratón (PC) */
+        .btn-anio:hover {
+            background-color: #333333;
+            border-color: #00bcd4;
+        }
+
+        /* Estado del botón seleccionado/activo */
+        .btn-anio.active {
+            background-color: #00bcd4;
+            color: #000000;
+            border-color: #00bcd4;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
     </style>
 </head>
 <body>
 
-    <div class="contenedor">
-        <h2>Histórico de Vídeos</h2>
-        
-        <!-- El Reproductor de Vídeo único -->
-        <div class="video-dimensiones">
-            <video id="reproductor-fiestas" class="video-js vjs-default-skin vjs-big-play-centered vjs-16-9" controls preload="auto">
-                <p class="vjs-no-js">Para ver este vídeo, por favor habilita JavaScript.</p>
-            </video>
-        </div>
+    <h1>Archivo de Pruebas: Selector de Vídeos</h1>
+    
+    <!-- Título dinámico que indica qué año se está reproduciendo -->
+    <div id="current-title" class="video-title">Reproduciendo: Año 1974</div>
 
-        <p>Selecciona un año para reproducir:</p>
-        
-        <!-- Botones compactos (Pon aquí tus 42 años) -->
-        <div class="grid-anios">
-            <button class="btn-anio" onclick="cambiarVideo('TU_ENLACE_BUNNY_1.m3u8', this)">2026</button>
-            <button class="btn-anio" onclick="cambiarVideo('https://player.mediadelivery.net/play/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e', this)">2025</button>
-            <button class="btn-anio" onclick="cambiarVideo('https://player.mediadelivery.net/play/752516/b2c76335-d5ed-44e6-aa45-189cf84a1eca', this)">2024</button>
-            <button class="btn-anio" onclick="cambiarVideo('https://player.mediadelivery.net/play/752516/ea03e0b2-1436-4f58-bc69-c6653f47c5d1', this)">2023</button>
-            <!-- Sigue duplicando esta línea hacia abajo para el resto de años -->
-        </div>
+    <!-- Contenedor del reproductor de Bunny CDN -->
+    <div class="video-container">
+        <iframe 
+            id="bunny-player"
+            src="https://mediadelivery.net" 
+            loading="lazy" 
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
+            allowfullscreen="true">
+        </iframe>
     </div>
 
-    <!-- Scripts del reproductor -->
-    <script src="https://zencdn.net"></script>
+    <!-- Cuadrícula donde el JavaScript generará los 42 botones de forma automática -->
+    <div class="grid-anios" id="contenedor-botones"></div>
 
     <script>
-        // Inicializamos el reproductor
-        var player = videojs('reproductor-fiestas');
+        // Base de datos de tus vídeos (Iremos rellenando los enlaces cuando terminen de subirse)
+        const videosData = {
+            "1974": "https://mediadelivery.net",
+            "1983": "", // <--- Aquí pegarás el enlace del embed de Bunny de 1983 cuando esté listo
+            "1984": "",
+            "1985": "",
+            // El script autogenerará el resto de botones de texto hasta el 2026 de forma limpia
+        };
 
-        function cambiarVideo(urlVideo, botonPresionado) {
-            // 1. Cambiar el vídeo en el reproductor
-            player.src({
-                src: urlVideo,
-                type: 'application/x-mpegURL'
+        const contenedor = document.getElementById('contenedor-botones');
+        const reproductor = document.getElementById('bunny-player');
+        const tituloContenedor = document.getElementById('current-title');
+
+        // 1. Crear el botón histórico de 1974
+        crearBot Anio("1974");
+
+        // 2. Generar el bucle ordenado desde 1983 hasta 2026 de forma automática
+        for (let anio = 1983; anio <= 2026; anio++) {
+            crearBot Anio(anio.toString());
+        }
+
+        // Función para renderizar los botones y añadir la lógica de interacción
+        function crearBot Anio(anio) {
+            const boton = document.createElement('button');
+            boton.classList.add('btn-anio');
+            boton.textContent = anio;
+            boton.setAttribute('data-year', anio);
+
+            // Dejar marcado el año 1974 como activo por defecto al cargar la página
+            if (anio === "1974") {
+                boton.classList.add('active');
+            }
+
+            // Evento al pulsar el botón (funciona al instante en PC y móvil)
+            boton.addEventListener('click', function() {
+                // Quitar el estado activo al botón anterior y ponérselo al actual
+                document.querySelectorAll('.btn-anio').forEach(b => b.classList.remove('active'));
+                boton.classList.add('active');
+
+                // Actualizar el título en pantalla
+                tituloContenedor.textContent = `Reproduciendo: Año ${anio}`;
+
+                // Obtener el enlace correspondiente
+                const urlBase = videosData[anio];
+
+                if (urlBase && urlBase !== "") {
+                    // Si el enlace existe, cambiamos el src del iframe añadiendo parámetros de optimización de Bunny
+                    reproductor.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+                } else {
+                    // Mensaje temporal o vídeo por defecto si aún no has subido ese año
+                    alert(`El vídeo del año ${anio} se está subiendo a Bunny CDN. ¡Estará disponible pronto!`);
+                    // Volvemos al de 1974 para evitar un reproductor roto
+                    reproductor.src = "https://mediadelivery.net?autoplay=false";
+                    document.querySelectorAll('.btn-anio').forEach(b => b.classList.remove('active'));
+                    document.querySelector('[data-year="1974"]').classList.add('active');
+                    tituloContenedor.textContent = `Reproduciendo: Año 1974`;
+                }
             });
-            player.play();
 
-            // 2. Estética: Quitar la marca de "activo" de todos los botones y ponérsela al pulsado
-            var botones = document.querySelectorAll('.btn-anio');
-            botones.forEach(btn => btn.classList.remove('activo'));
-            botonPresionado.classList.add('activo');
+            contenedor.appendChild(boton);
         }
     </script>
 </body>
