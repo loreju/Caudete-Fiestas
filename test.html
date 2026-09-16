@@ -24,6 +24,64 @@
             padding: 40px 20px;
             margin: 0;
         }
+
+        /* --- LOGO CTV ESTÁTICO FIJO (ESQUINA SUPERIOR DERECHA) --- */
+        .ctv-fixed-block {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: none; /* Se activa mediante JavaScript solo al reproducir vídeos */
+            flex-direction: column;
+            align-items: center;
+            z-index: 100;
+            background: rgba(20, 20, 20, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 204, 0, 0.2);
+        }
+        .logo-ctv-fijo {
+            height: 75px;
+            width: auto;
+            object-fit: contain;
+        }
+        .ctv-fixed-block h3 {
+            color: #ffcc00;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 6px 0 0 0;
+            font-weight: bold;
+        }
+
+        /* --- NUEVO RECUADRO FLOTANTE (ESQUINA INFERIOR IZQUIERDA) --- */
+        .badge-anio-reproductor {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: rgba(20, 20, 20, 0.85);
+            color: #ffcc00;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 204, 0, 0.4);
+            z-index: 100;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+            pointer-events: none;
+            display: block;
+            text-transform: uppercase;
+        }
+
+        /* Animación de destello suave para el logotipo y el texto flotante */
+        .efecto-destello {
+            animation: destelloContinuo 3.5s infinite ease-in-out;
+        }
+        @keyframes destelloContinuo {
+            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)) brightness(1); }
+            50% { filter: drop-shadow(0 0 15px rgba(255, 204, 0, 0.7)) brightness(1.3); }
+        }
                  
         .header-container {
             display: flex;
@@ -45,12 +103,9 @@
             align-items: center;
             justify-content: flex-start; 
             min-width: 180px;
-            height: 215px; 
+            height: 160px; 
         }
-
-        .header-block.ctv-block { min-width: 250px; }
-                 
-        .header-block h3 {
+          .header-block h3 {
             color: #ffcc00;
             font-size: 0.95rem; 
             text-transform: uppercase;
@@ -60,22 +115,11 @@
             text-align: center;
             margin-bottom: 0;
         }
-
-        .header-block.ctv-block h3 {
-            font-size: 1.15rem; 
-            font-weight: 700; 
-            white-space: nowrap;
-            letter-spacing: 0.5px;
-            text-shadow: 0px 0px 1px #ffcc00; 
-            margin-top: 7px; 
-        }
-
         .header-block.ayuntamiento-block h3 { margin-top: 1px; }
         .header-block.mayordomia-block h3 { margin-top: -13px; }
                  
-        .logo-ctv-arriba { height: 135px; width: auto; object-fit: contain; }
-        .logo-ayuntamiento { width: 150px; height: 150px; object-fit: contain; }
-        .logo-mayordomia { width: 165px; height: 165px; object-fit: contain; }
+        .logo-ayuntamiento { width: 130px; height: 130px; object-fit: contain; }
+        .logo-mayordomia { width: 145px; height: 145px; object-fit: contain; }
 
         .title-block {
             flex: 1;
@@ -85,7 +129,7 @@
             gap: 8px;
             align-items: center;
             justify-content: center;
-            height: 215px;
+            height: 160px;
         }
         h1 {
             color: #ffcc00;
@@ -103,19 +147,8 @@
             letter-spacing: 1.5px;
             margin: 0;
         }
-        .subtitle-years {
-            color: #ffffff;
-            font-size: 1.2rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            background: rgba(255, 204, 0, 0.15);
-            padding: 4px 16px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-top: 4px;
-        }
 
-        /* CONTENEDOR DEL REPRODUCTOR (Optimizado para Iframe de Bunny) */
+        /* CONTENEDOR DEL REPRODUCTOR OPTIMIZADO */
         .video-container {
             position: relative;
             max-width: 900px;
@@ -127,7 +160,6 @@
             padding: 5px;
         }
 
-        /* Relación de aspecto 16:9 estricta para el iframe */
         .video-wrapper {
             position: relative;
             padding-bottom: 56.25%;
@@ -138,7 +170,7 @@
             background-color: #000;
         }
 
-        .video-wrapper iframe, .video-wrapper canvas {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -147,15 +179,7 @@
             border: 0;
             z-index: 1;
         }
-
-        /* Lienzo de la secuencia de imágenes CTV por encima del reproductor */
-        .video-wrapper canvas {
-            z-index: 3;
-            background-color: #141414;
-            display: none;
-        }
                 
-        /* CAPA DE ESPERA ACOPLADA PERFECTAMENTE */
         #capa-espera {
             position: absolute;
             top: 0; left: 0; 
@@ -190,31 +214,11 @@
         }
         .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
 
-        /* RECUADRO FLOTANTE CON EL AÑO DEL VÍDEO */
-        .badge-anio-reproductor {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(20, 20, 20, 0.85);
-            color: #ffcc00;
-            padding: 8px 16px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 204, 0, 0.4);
-            z-index: 5;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            letter-spacing: 1px;
-            pointer-events: none;
-            display: block;
-        }
-
-        /* SECCIÓN Y CUADRÍCULA DE LOS BOTONES DE AÑOS */
+        /* SECCIÓN Y CUADRÍCULA DE LOS BOTONES DE AÑOS DOCK DORADOS */
         .archivo-historico-seccion {
             max-width: 900px;
             margin: 40px auto 10px auto;
             padding: 0 5px;
-            text-align: left;
         }
 
         .archivo-historico-seccion h2 {
@@ -235,8 +239,8 @@
 
         .btn-anio-archivo {
             background-color: #1e1e1e;
-            color: #ffffff;
-            border: 1px solid #333333;
+            color: #ffcc00; /* Texto dorado por defecto */
+            border: 1px solid rgba(255, 204, 0, 0.4); /* Borde dorado translúcido */
             padding: 12px 5px;
             font-size: 1rem;
             font-weight: bold;
@@ -247,18 +251,19 @@
         }
 
         .btn-anio-archivo:hover {
-            background-color: #2a2a2a;
+            background-color: #ffcc00;
+            color: #141414;
             border-color: #ffcc00;
-            color: #ffcc00;
         }
 
         .btn-anio-archivo.activo {
             background-color: #ffcc00;
             color: #141414;
             border-color: #ffcc00;
-            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
         }
-      .comparsas-seccion { margin-top: 50px; }
+
+        .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid {
             display: flex;
             justify-content: center;
@@ -298,44 +303,47 @@
                  
         .logo-comparsa:hover { transform: scale(1.08); }
 
+        /* --- ESTILOS ADAPTATIVOS PARA MÓVILES (RESPONSIVE) --- */
         @media (max-width: 768px) {
-            .header-container { gap: 20px; padding: 15px; }
+            .ctv-fixed-block { top: 15px; right: 15px; padding: 6px; }
+            .logo-ctv-fijo { height: 45px; }
+            .ctv-fixed-block h3 { font-size: 0.55rem; margin-top: 3px; }
+
+            .badge-anio-reproductor { bottom: 15px; left: 15px; padding: 8px 16px; font-size: 0.8rem; }
+
+            .header-container { gap: 15px; padding: 15px; margin-top: 80px; }
             .title-block { order: -1; width: 100%; min-width: 100%; height: auto; }
-            h1 { font-size: 1.5rem; }
-            .honor-text { font-size: 0.95rem; }
-            .subtitle-years { font-size: 0.95rem; }
+            h1 { font-size: 1.4rem; }
+            .honor-text { font-size: 0.9rem; }
             .header-block { min-width: 110px; height: auto; }
-            .header-block.ctv-block { min-width: 110px; }
-            .logo-ctv-arriba { height: 75px; }
-            .logo-ayuntamiento { width: 90px; height: 90px; }
-            .logo-mayordomia { width: 100px; height: 100px; }
-            .header-block h3 { font-size: 0.7rem; height: auto; margin-top: 5px; }
-            .header-block.ctv-block h3 { font-size: 0.75rem; white-space: normal; letter-spacing: 1px; margin-top: 5px; text-shadow: none; }
+            .logo-ayuntamiento { width: 80px; height: 80px; }
+            .logo-mayordomia { width: 90px; height: 90px; }
+            .header-block h3 { font-size: 0.65rem; margin-top: 5px; }
                          
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
             .comparsa-card p { font-size: 0.65rem; }
-            .logo-comparsa { width: 90px; height: 90px; }
-            .btn-play { width: 65px; height: 65px; font-size: 1.5rem; text-indent: 3px; }
+            .logo-comparsa { width: 80px; height: 80px; }
             
-            .badge-anio-reproductor { top: 12px; right: 12px; padding: 5px 10px; font-size: 0.85rem; }
-            .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 8px; }
-            .btn-anio-archivo { padding: 10px 3px; font-size: 0.85rem; }
+            .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
+            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-container">
-        <div class="header-block ctv-block">
-            <img class="logo-ctv-arriba" src="img/logo-ctv.png" alt="Logo CTV">
-            <h3>Caudete Televisión</h3>
-        </div>
-                 
+    <!-- BLOQUE FIJO DE CAUDETE TELEVISIÓN (ESQUINA SUPERIOR DERECHA) -->
+    <div class="ctv-fixed-block" id="bloque-logo-ctv">
+        <img class="logo-ctv-fijo" src="img/logo-ctv.png" alt="Logo CTV">
+        <h3>CTV</h3>
+    </div>
+
+    <!-- RECUADRO FLOTANTE PERSONALIZADO (ESQUINA INFERIOR IZQUIERDA) -->
+    <div id="badge-anio" class="badge-anio-reproductor efecto-destello">FIESTAS 1974</div>
+     <div class="header-container">
         <div class="title-block">
             <h1>Caudete Fiestas de Moros y Cristianos</h1>
             <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
-            <div class="subtitle-years">1974 - 1983 A 2026</div>
         </div>
                  
         <div class="header-block ayuntamiento-block">
@@ -351,17 +359,11 @@
 
     <!-- CONTENEDOR DEL REPRODUCTOR OPTIMIZADO -->
     <div class="video-container">
-        <!-- Recuadro flotante que indica el año actual en reproducción -->
-        <div id="badge-anio" class="badge-anio-reproductor">AÑO 1974</div>
-        
         <div class="video-wrapper">
             <!-- Capa de espera con el cartel de fiestas original -->
             <div id="capa-espera">
                 <button class="btn-play" id="start-btn">▶</button>
             </div>
-            
-            <!-- Lienzo de renderizado para la secuencia de imágenes PNG del logotipo de CTV -->
-            <canvas id="canvas-secuencia"></canvas>
             
             <!-- Reproductor de vídeo integrado oficial de Bunny CDN -->
             <iframe 
@@ -373,7 +375,8 @@
             </iframe>
         </div>
     </div>
-         <!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO DE BOTONES COMPACTOS -->
+
+    <!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO DE BOTONES COMPACTOS -->
     <div class="archivo-historico-seccion">
         <h2>Seleccionar Año de las Fiestas</h2>
         <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
@@ -391,7 +394,7 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE CONTROL DINÁMICO -->
+    <!-- SCRIPT DE CONTROL DINÁMICO: LOGICA INTERACTIVA -->
     <script>
     window.addEventListener('load', () => {
         // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
@@ -443,145 +446,94 @@
             "2026": "https://player.mediadelivery.net/play/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
 
-        // Elementos de la interfaz web
+          // Elementos de la interfaz web
         const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
         const contenedorBotones = document.getElementById('contenedor-botones-archivo');
+        const bloqueLogoCTV = document.getElementById('bloque-logo-ctv');
         
-        // Elementos técnicos para la secuencia de imágenes CTV
-        const canvas = document.getElementById('canvas-secuencia');
-        const ctx = canvas.getContext('2d');
-        
-        let imagenesPrecargadas = {};
-        let anioSeleccionadoDestino = "1974";
-        let animacionEnCurso = false;
+        let anioSeleccionadoDestino = "2026"; // Cambiado para arrancar por defecto en 2026
 
-        // Ajustar el tamaño del lienzo de dibujo a una resolución nativa limpia
-        function ajustarCanvas() {
-            canvas.width = 1280;
-            canvas.height = 720;
-        }
-        ajustarCanvas();
-
-        // --- MOTOR DE ANIMACIÓN POR CANVAS (750 FOTOGRAMAS) ---         
-        function reproducirCortinillaCTV(callbackAlTerminar) {
-            if (animacionEnCurso) return;
-            animacionEnCurso = true;
-            
-            canvas.style.display = 'block'; // Mostrar lienzo por encima del vídeo
-            let fotogramaActual = 0;
-            const totalFotogramas = 750; // De 00000 a 00749
-            const fps = 30; // Velocidad de televisión estándar
-            const intervaloTiempo = 1000 / fps;
-            let tiempoAnterior = performance.now();
-
-            function renderizarCuadro(tiempoActual) {
-                if (!animacionEnCurso) return;
-
-                const tiempoTranscurrido = tiempoActual - tiempoAnterior;
-
-                if (tiempoTranscurrido >= intervaloTiempo) {
-                    tiempoAnterior = tiempoActual - (tiempoTranscurrido % intervaloTiempo);
-         // Formato de 5 dígitos (ej: 00023)
-            const numeroFormateado = String(fotogramaActual).padStart(5, '0');
-            
-            // ¡Ruta corregida con tu nombre exacto de archivo!
-            const rutaImagen = `img/secuencia_ctv/caudete ctv 2012_${numeroFormateado}.png`;
-
-            const img = new Image();
-            img.src = rutaImagen;
-            
-            img.onload = () => {
-                if (fotogramaActual > 0) {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                }
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            };
-
-            fotogramaActual++;
-
-            if (fotogramaActual >= totalFotogramas) {
-                animacionEnCurso = false;
-                canvas.style.display = 'none'; // Ocultar lienzo
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                callbackAlTerminar(); // Dar paso al vídeo de Bunny CDN
-                return;
+        // --- FUNCIÓN PARA FORMATEAR EL TEXTO DEL INDICADOR FLOTANTE ---
+        function actualizarTextoBadge(anio) {
+            if (anio === "2020" || anio === "2021") {
+                badgeAnio.textContent = `FIESTAS ${anio} SUSPENDIDAS`;
+            } else if (anio === "2026") {
+                badgeAnio.textContent = `FIESTAS ${anio} PROXIMAMENTE`;
+            } else {
+                badgeAnio.textContent = `FIESTAS ${anio}`;
             }
         }
-        requestAnimationFrame(renderizarCuadro);
-    }
-    requestAnimationFrame(renderizarCuadro);
-}
 
-// --- GENERACIÓN INTERACTIVA DE LOS BOTONES ---
-function cambiarVideoDeAnio(anio) {
-    anioSeleccionadoDestino = anio;
-    badgeAnio.textContent = `AÑO ${anio}`;
-    
-    // Actualizar clases visuales de los botones utilizando la clase unificada .activo
-    document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
-    const botonActivo = document.querySelector(`[data-anio="${anio}"]`);
-    if (botonActivo) botonActivo.classList.add('activo');
+        // --- CARGA DIRECTA E INSTANTÁNEA DEL VÍDEO ---
+        function cambiarVideoDeAnio(anio) {
+            anioSeleccionadoDestino = anio;
+            
+            // Aplicar las reglas condicionales al texto del indicador flotante
+            actualizarTextoBadge(anio);
+            
+            // Hacer visible el logo de CTV fijo en la esquina superior derecha
+            if (bloqueLogoCTV) {
+                bloqueLogoCTV.style.display = 'flex';
+            }
+            
+            // Actualizar estado visual de la botonera dorada
+            document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
+            const botonActivo = document.querySelector(`[data-anio="${anio}"]`);
+            if (botonActivo) botonActivo.classList.add('activo');
 
-    // Arrancar la cortinilla animada y cambiar de vídeo al finalizar
-    reproducirCortinillaCTV(() => {
-        const urlBase = videosData[anio];
-        if (urlBase && urlBase !== "") {
-            iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
-        } else {
-            alert(`El vídeo del año ${anio} se está procesando en Bunny CDN. ¡Estará listo muy pronto!`);
-            // Retorno seguro al vídeo inicial de 2026 si el año está vacío o falla
-            cambiarVideoDeAnio("2026");
+            // Cargar el iframe instantáneamente sin intermediarios de canvas
+            const urlBase = videosData[anio];
+            if (urlBase && urlBase !== "") {
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+            } else {
+                // Retorno seguro al año base si hubiese algún fallo de carga
+                cambiarVideoDeAnio("2026");
+            }
         }
-    });
-}
 
-function crearBotonInteractiva(anio) {
-    const boton = document.createElement('button');
-    boton.classList.add('btn-anio-archivo');
-    boton.textContent = anio;
-    boton.setAttribute('data-anio', anio);
-    
-    // El botón que nace activo por defecto de manera inicial es el "2026"
-    if (anio === "2026") boton.classList.add('activo');
+        // --- GENERADOR AUTOMÁTICO DE BOTONES ---
+        function crearBotonInteractiva(anio) {
+            const boton = document.createElement('button');
+            boton.classList.add('btn-anio-archivo');
+            boton.textContent = anio;
+            boton.setAttribute('data-anio', anio);
+            
+            if (anio === "2026") boton.classList.add('activo');
 
-    boton.addEventListener('click', () => {
-        // Si se pulsa un año mientras está la capa de inicio, la ocultamos inmediatamente
-        if (capaEspera.style.display !== 'none') {
-            capaEspera.style.display = 'none';
+            boton.addEventListener('click', () => {
+                if (capaEspera.style.display !== 'none') {
+                    capaEspera.style.display = 'none';
+                }
+                cambiarVideoDeAnio(anio);
+            });
+            contenedorBotones.appendChild(boton);
         }
-        cambiarVideoDeAnio(anio);
+
+        // 1. Inyectar botón histórico suelto de 1974
+        crearBotonInteractiva("1974");
+
+        // 2. Inyectar secuencia cronológica limpia desde 1983 hasta 2026
+        for (let a = 1983; a <= 2026; a++) {
+            crearBotonInteractiva(a.toString());
+        }
+
+        // --- LOGICA DEL BOTÓN DE PLAY CENTRAL ORIGINAL ---
+        if (btnPlayBase) {
+            btnPlayBase.addEventListener('click', () => {
+                capaEspera.style.display = 'none';
+                
+                // Al pulsar el botón central de la carátula, carga instantáneamente el 2026
+                cambiarVideoDeAnio("2026");
+            });
+        }
+
+        // Configuración inicial al cargar la web por primera vez (Capa de espera activa)
+        actualizarTextoBadge(anioSeleccionadoDestino);
     });
-    contenedorBotones.appendChild(boton);
-}
-
-// 1. Inyectar botón histórico suelto de 1974
-crearBotonInteractiva("1974");
-
-// 2. Inyectar secuencia cronológica desde 1983 hasta 2026 de manera limpia
-for (let a = 1983; a <= 2026; a++) {
-    crearBotonInteractiva(a.toString());
-}
-
-// --- LOGICA DEL BOTÓN DE PLAY CENTRAL ORIGINAL ---
-btnPlayBase.addEventListener('click', () => {
-    capaEspera.style.display = 'none';
-    
-    // Reproducir la cortinilla de televisión en el arranque y activar el reproductor
-    reproducirCortinillaCTV(() => {
-        // Cargar por defecto el vídeo actual de 2026 al pulsar el botón de Play central
-        const urlInicial = videosData["2026"];
-        iframePlayer.src = `${urlInicial}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
-        
-        // Marcar visualmente el botón de 2026 como activo al reproducir
-        document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
-        const botonActivo = document.querySelector(`[data-anio="2026"]`);
-        if (botonActivo) botonActivo.classList.add('activo');
-    });
-});
-});
-</script>
+    </script>
 </body>
 </html>
+                       
