@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Caudete Fiestas</title>
+    <title>Prueba Caudete Fiestas - TEST</title>
     <meta name="theme-color" content="#141414">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -31,7 +31,7 @@
         .destello-texto { animation: destelloContinuoTexto 3s infinite ease-in-out; }
         @keyframes destelloContinuoLogo { 0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); } 50% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) brightness(1.35); } }
         @keyframes destelloContinuoTexto { 0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); } 50% { text-shadow: 0 0 12px rgba(255, 215, 0, 0.6); filter: brightness(1.2); } }
-      /* Cabecera institucional unificada y corregida en horizontal */
+  /* Cabecera institucional unificada y corregida en horizontal */
         .header-container { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 25px; max-width: 1450px; margin: 0 auto 30px auto; background-color: #1e1e1e; padding: 25px 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .header-block { display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-width: 180px; height: 215px; text-align: center; }
         .header-block h3 { color: #ffcc00; font-size: 0.95rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; line-height: 1.3; margin: 10px 0 0 0; width: 100%; }
@@ -43,7 +43,7 @@
         h1 { color: #ffcc00; font-size: 2.2rem; margin: 0; text-transform: uppercase; letter-spacing: 1px; line-height: 1.2; }
         .honor-text { color: #ffcc00; font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 0; }
         
-        /* Nuevo estilo solicitado para el rango de años en letras blancas y pequeñas */
+        /* Texto en letras blancas y pequeñas debajo del enunciado */
         .rango-anios-text { color: #ffffff; font-size: 1rem; font-weight: bold; margin: 4px 0 0 0; letter-spacing: 1.5px; }
 
         #capa-espera { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png'); background-size: contain; background-position: center; background-repeat: no-repeat; z-index: 10; display: flex; align-items: center; justify-content: center; transition: opacity 0.3s ease-in-out; }
@@ -81,7 +81,7 @@
     </style>
 </head>
 <body>
-  <!-- CABECERA INSTITUCIONAL HORIZONTAL -->
+  <!-- CABECERA DE LOGOS EN FILA HORIZONTAL -->
     <div class="header-container">
         <div class="header-block ctv-block-top">
             <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
@@ -91,7 +91,6 @@
         <div class="title-block">
             <h1 class="destello-texto">Caudete Fiestas de Moros y Cristianos</h1>
             <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
-            <!-- Rango de años solicitado en letras blancas y pequeñas -->
             <p class="rango-anios-text">1974 - 1983 A 2026</p>
         </div>
                  
@@ -106,7 +105,7 @@
         </div>
     </div>
 
-    <!-- MARCO CONTENEDOR DEL REPRODUCTOR CON TRANSMISIÓN -->
+    <!-- CONTENEDOR DEL REPRODUCTOR CON PERMISOS DE AUTOPLAY ASIGNADOS -->
     <div class="video-container">
         <div class="video-wrapper">
             <div class="reloj-video-block" id="reloj-video">00:00</div>
@@ -115,22 +114,27 @@
             </div>
             <div id="badge-anio" class="badge-anio-reproductor destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
             
-            <!-- Capa con el poster que reaparece al finalizar los vídeos -->
             <div id="capa-espera">
                 <button class="btn-play" id="start-btn">▶</button>
             </div>
             
-            <iframe id="bunny-player" src="https://mediadelivery.net" loading="lazy" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>
+            <!-- iframe corregido con el atributo allow obligatorio para desbloquear el vídeo automáticamente -->
+            <iframe 
+                id="bunny-player" 
+                src="https://mediadelivery.net" 
+                loading="lazy" 
+                allow="autoplay; accelerometer; gyroscope; encrypted-media; picture-in-picture;" 
+                allowfullscreen="true">
+            </iframe>
         </div>
     </div>
 
-    <!-- BOTONERA DE ARCHIVO HISTÓRICO -->
     <div class="archivo-historico-seccion">
         <h2>Seleccionar Año de las Fiestas</h2>
         <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
     </div>
 
-    <!-- SECCIÓN DE COMPARSAS (TODAS UNIFICADAS EN MAYÚSCULAS DORADAS) -->
+    <!-- SECCIÓN DE COMPARSAS UNIFICADAS -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
             <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>ASOCIACIÓN DE<br>COMPARSAS</p></div>
@@ -141,9 +145,9 @@
             <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>COMPARSA DE<br>LA ANTIGUA</p></div>
         </div>
     </div>
-  <script>
+   <script>
     window.addEventListener('load', () => {
-        // Identificadores de Bunny CDN optimizados en formato compacto
+        // Base de datos compacta con las IDs oficiales de Bunny CDN
         const ids = {
             "1974": "9f37ef07-19a6-493b-afa2-5f167f8df04d", "1983": "d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
             "1984": "7e5772a5-246e-4668-ae96-ebeef1646989", "1985": "1aae0057-4a57-423e-aef7-55e90150bd0c",
@@ -221,7 +225,7 @@
 
             const idVideo = ids[anio];
             if (idVideo) {
-                // Dominio de incrustación unificado y directo corregido
+                // Forzamos el subdominio player con la ruta /embed/ para unificar y evitar bloqueos en navegadores móviles
                 iframePlayer.src = `https://mediadelivery.net{idVideo}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
                 setTimeout(() => {
                     try {
