@@ -28,6 +28,37 @@
             margin: 0;
         }
 
+        /* --- CABECERA SUPERIOR AJUSTADA --- */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end; /* Alinea los bloques al fondo para juntar texto y logos */
+            max-width: 900px;
+            margin: 0 auto 20px auto;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 5px;
+        }
+
+        /* Reducción de márgenes para pegar los textos dorados a la parte inferior de los logos */
+        .header-block img {
+            margin-bottom: 2px !important; 
+            display: block;
+        }
+
+        .header-block h3 {
+            margin: 0 !important;
+            line-height: 1.1 !important;
+            font-size: 0.85rem !important;
+        }
+
         /* --- MARCO CONTENEDOR DEL REPRODUCTOR --- */
         .video-container {
             position: relative;
@@ -57,15 +88,15 @@
             border: 0; z-index: 1;
         }
 
-        /* --- RELOJ DIGITAL EN TIEMPO REAL (ESQUINA SUPERIOR IZQUIERDA DEL VÍDEO) --- */
+        /* --- RELOJ DIGITAL EN TIEMPO REAL --- */
         .reloj-video-block {
             position: absolute;
             top: 20px;
             left: 20px;
-            display: none; /* Visible solo durante reproducción */
+            display: none; 
             background-color: #000000;
             color: #ffffff;
-            border: 1px solid #ff0000; /* Borde rojo fino solicitado */
+            border: 1px solid #ff0000; 
             padding: 6px 12px;
             font-size: 1rem;
             font-weight: bold;
@@ -76,35 +107,35 @@
             letter-spacing: 1px;
         }
 
-        /* --- LOGO CTV INCRUSTADO DIRECTO (ESQUINA SUPERIOR DERECHA DEL VÍDEO) --- */
+        /* --- LOGO CTV INCRUSTADO DIRECTO --- */
         .ctv-video-block {
             position: absolute;
             top: 20px;
             right: 20px;
-            display: none; /* Visible solo durante reproducción */
+            display: none; 
             z-index: 5;
             pointer-events: none;
-            background: transparent; /* Sin recuadro negro */
+            background: transparent; 
             padding: 0;
             border: none;
         }
         .logo-ctv-fijo {
-            height: 48px; /* Más pequeño e incrustado directo */
+            height: 48px; 
             width: auto;
             object-fit: contain;
             opacity: 0.9;
         }
 
-        /* --- MARCADOR MODIFICADO (ESQUINA INFERIOR IZQUIERDA EN FONDO BLANCO Y LETRAS NEGRAS) --- */
+        /* --- MARCADOR MODIFICADO --- */
         .badge-anio-reproductor {
             position: absolute;
             bottom: 20px;
             left: 20px;
-            display: none; /* Visible solo durante reproducción */
-            background: #ffffff; /* Fondo blanco solicitado */
-            color: #141414; /* Letras negras */
-            padding: 12px 24px; /* Aumentado el padding interno */
-            font-size: 1.4rem; /* Texto más grande para rellenar proporcionalmente el cuadro */
+            display: none; 
+            background: #ffffff; 
+            color: #141414; 
+            padding: 12px 24px; 
+            font-size: 1.4rem; 
             font-weight: 900;
             border-radius: 6px;
             border: 1px solid #ffffff;
@@ -116,25 +147,26 @@
             line-height: 1.2;
         }
 
-        /* --- ANIMACIONES DE DESTELLO REPARADAS Y REFORZADAS --- */
-        .efecto-destello, .destello-logo {
-            animation: destelloContinuoLogo 4s infinite ease-in-out;
+        /* --- ANIMACIONES DE DESTELLO REFORZADAS Y MÁS INTENSAS --- */
+        .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
+            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
         
         .destello-texto {
-            animation: destelloContinuoTexto 3s infinite ease-in-out;
+            animation: destelloContinuoTexto 2.5s infinite ease-in-out;
         }
 
         @keyframes destelloContinuoLogo {
             0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
-            50% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)) brightness(1.35); }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) brightness(1.6); }
         }
 
         @keyframes destelloContinuoTexto {
             0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
-            50% { text-shadow: 0 0 12px rgba(255, 215, 0, 0.6); filter: brightness(1.2); }
+            50% { text-shadow: 0 0 18px rgba(255, 215, 0, 0.9); filter: brightness(1.4); }
         }
-          /* --- ESTILOS DE LA CABECERA COMPLETA --- */
+    </style>
+      /* --- ESTILOS DE LA CABECERA COMPLETA --- */
         .header-container {
             display: flex;
             align-items: center;
@@ -153,35 +185,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between; 
+            justify-content: flex-end; /* Corregido: Empuja todo hacia abajo eliminando huecos intermedios */
             min-width: 180px;
-            height: 215px; /* Altura proporcional para mantener la estructura horizontal */
+            height: 215px; 
             text-align: center;
         }
                  
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.95rem; 
-            font-weight: 900; /* Asegura que no se vea pequeño o fino */
-            text-transform: uppercase; /* Fuerza Mayúsculas */
+            font-weight: 900; 
+            text-transform: uppercase; 
             letter-spacing: 1px;
-            line-height: 1.3;
+            line-height: 1.2;
             text-align: center;
-            margin: 10px 0 0 0;
+            margin: 4px 0 0 0; /* Ajustado para pegar el texto al logo */
             width: 100%;
         }
 
         /* Bloques de la cabecera ajustados en perfecta línea vertical interna */
-        .logo-ctv-cabecera { height: 135px; width: auto; object-fit: contain; }
-        .logo-ayuntamiento { width: 150px; height: 150px; object-fit: contain; }
-        .logo-mayordomia { width: 165px; height: 165px; object-fit: contain; }
+        .logo-ctv-cabecera { height: 135px; width: auto; object-fit: contain; margin-bottom: 0; }
+        .logo-ayuntamiento { width: 150px; height: 150px; object-fit: contain; margin-bottom: 0; }
+        .logo-mayordomia { width: 165px; height: 165px; object-fit: contain; margin-bottom: 0; }
 
         .title-block {
             flex: 1;
             min-width: 320px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
             justify-content: center;
             height: 215px;
@@ -201,6 +233,16 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin: 0;
+        }
+        
+        /* CORREGIDO: Nuevo texto informativo en color blanco debajo del honor-text */
+        .years-subtitle-text {
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 2px 0 0 0;
         }
 
         /* CAPA DE ESPERA (POSTER INICIAL Y FINAL) */
@@ -287,22 +329,23 @@
 
         /* --- CONFIGURACIÓN RESPONSIVE EXCLUSIVA MÓVIL --- */
         @media (max-width: 768px) {
-            .header-container { gap: 25px; padding: 15px; flex-direction: row; }
-            .title-block { order: -1; width: 100%; min-width: 100%; height: auto; margin-bottom: 10px; }
+            .header-container { gap: 15px; padding: 15px; flex-direction: row; }
+            .title-block { order: -1; width: 100%; min-width: 100%; height: auto; margin-bottom: 5px; gap: 4px; }
             h1 { font-size: 1.6rem; }
             .honor-text { font-size: 1rem; }
-            .header-block { min-width: 95px; height: 140px; justify-content: space-between; }
-            .logo-ctv-cabecera { height: 75px; }
-            .logo-ayuntamiento { width: 80px; height: 80px; }
-            .logo-mayordomia { width: 90px; height: 90px; }
-            .header-block h3 { font-size: 0.65rem; font-weight: bold; margin-top: 5px; min-height: 28px; }
+            .years-subtitle-text { font-size: 0.85rem; } /* Escala en móvil */
+            
+            .header-block { min-width: 95px; height: 130px; justify-content: flex-end; }
+            .logo-ctv-cabecera { height: 70px; }
+            .logo-ayuntamiento { width: 75px; height: 75px; }
+            .logo-mayordomia { width: 85px; height: 85px; }
+            .header-block h3 { font-size: 0.65rem; font-weight: bold; margin-top: 4px; min-height: auto; }
                          
             .comparsas-grid { gap: 20px; }
             .comparsa-card { width: 115px; gap: 8px; }
             .comparsa-card p { font-size: 0.65rem; }
             .logo-comparsa { width: 90px; height: 90px; }
             
-            /* Ajustes adaptativos internos del reproductor en móviles */
             .ctv-video-block { top: 10px; right: 10px; }
             .logo-ctv-fijo { height: 28px; }
             .reloj-video-block { top: 10px; left: 10px; padding: 4px 8px; font-size: 0.65rem; }
@@ -314,7 +357,7 @@
     </style>
 </head>
 <body>
-          <!-- CABECERA OFICIAL CONFIGURADA -->
+  <!-- CABECERA OFICIAL CONFIGURADA -->
     <div class="header-container">
         <!-- Bloque CTV superior izquierdo con logotipo y texto dorado corporativo -->
         <div class="header-block ctv-block-top">
@@ -325,15 +368,17 @@
         <div class="title-block">
             <h1 class="destello-texto">Caudete Fiestas de Moros y Cristianos</h1>
             <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
+            <!-- CORREGIDO: Inserción del subtítulo en letras blancas fijas solicitado -->
+            <p class="years-subtitle-text">1974 - 1983 A 2026</p>
         </div>
                  
         <div class="header-block ayuntamiento-block">
-            <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+            <img class="logo-ayuntamiento destello-logo" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
             <h3 style="color: #ffcc00; font-weight: 900; text-transform: uppercase;">M.I. AYUNTAMIENTO<br>DE CAUDETE</h3>
         </div>
                  
         <div class="header-block mayordomia-block">
-            <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
+            <img class="logo-mayordomia destello-logo" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
             <h3 style="color: #ffcc00; font-weight: 900; text-transform: uppercase;">M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
         </div>
     </div>
@@ -361,9 +406,10 @@
             </div>
             
             <!-- Reproductor de vídeo integrado oficial de Bunny CDN -->
+            <!-- CORREGIDO: Se añade id explícito para enganche limpio con la API del player en el Script -->
             <iframe 
                 id="bunny-player"
-                src="https://mediadelivery.net" 
+                src="about:blank" 
                 loading="lazy" 
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
                 allowfullscreen="true">
@@ -373,7 +419,7 @@
 
     <!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO DE BOTONES COMPACTOS -->
     <div class="archivo-historico-seccion">
-        <h2>Seleccionar Año de las Fiestas</h2>
+        <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
         <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
     </div>
 
@@ -440,7 +486,7 @@
             "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
             "2026": "https://player.mediadelivery.net/play/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
-    // Elementos de la interfaz web
+         // Elementos de la interfaz web
         const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
@@ -478,8 +524,13 @@
             }
         }
 
-        // --- 3. REINICIAR EL ENTORNO AL FINALIZAR EL VÍDEO (REPARADO) ---
+        // --- 3. REINICIAR EL ENTORNO AL FINALIZAR EL VÍDEO (CORREGIDO DE VERDAD) ---
         function restablecerPantallaEsperaInicial() {
+            // CORREGIDO: Vaciamos el origen del iframe para forzar la visualización limpia de la capa y el cartel de fondo
+            if (iframePlayer) {
+                iframePlayer.src = "about:blank";
+            }
+
             // Mostrar la capa con el cartel de fiestas y botón play
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
@@ -492,19 +543,13 @@
             if (badgeAnio) badgeAnio.style.display = 'none';
             if (relojVideo) relojVideo.style.display = 'none';
             
-            // Dejar el iframe limpio apuntando al año actual por si vuelven a darle al play
-            const urlBase = videosData[anioSeleccionadoDestino];
-            if (urlBase && iframePlayer) {
-                iframePlayer.src = urlBase;
-            }
-            
             // Gestionar estado activo visual de la botonera inferior
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
             if (botonDefecto) botonDefecto.classList.add('activo');
         }
 
-        // --- 4. CARGA DIRECTA E INSTANTÁNEA DEL VÍDEO (REPARADO) ---
+        // --- 4. CARGA DIRECTA E INSTANTÁNEA DEL VÍDEO (REPARADO CON CONTROL DE EVENTOS) ---
         function cambiarVideoDeAnio(anio) {
             anioSeleccionadoDestino = anio;
             actualizarTextoBadge(anio);
@@ -528,21 +573,29 @@
             // Lanzar el Iframe oficial con parámetros óptimos de reproducción automática
             const urlBase = videosData[anio];
             if (urlBase && urlBase !== "") {
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+                // CORREGIDO: Forzamos la habilitación de la API de comunicación PlayerJS agregando enablejsapi=1 a Bunny CDN
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&responsive=true&enablejsapi=1`;
                 
-                // Reconectar de manera asíncrona y segura la API PlayerJS de Bunny CDN
-                setTimeout(() => {
-                    try {
-                        controlReproductorBunny = new Playerjs(iframePlayer);
+                // CORREGIDO: Inicialización limpia y directa de PlayerJS escuchando de forma nativa la finalización del video
+                try {
+                    controlReproductorBunny = new Playerjs(iframePlayer);
+                    controlReproductorBunny.on('ready', () => {
                         controlReproductorBunny.on('ended', () => {
                             restablecerPantallaEsperaInicial();
                         });
-                    } catch (e) {
-                        console.log("Sincronizando canales con Bunny CDN Stream...");
-                    }
-                }, 1200);
+                    });
+                } catch (e) {
+                    // Fallback alternativo mediante detector de mensajes del iframe de Bunny Stream
+                    window.addEventListener('message', function(evento) {
+                        try {
+                            const datos = JSON.parse(evento.data);
+                            if (datos.event === 'ended' || datos.value === 'ended') {
+                                restablecerPantallaEsperaInicial();
+                            }
+                        } catch(err) { }
+                    });
+                }
             } else {
-                // Control preventivo en caso de error de base de datos
                 if (capaEspera) {
                     capaEspera.style.display = 'flex';
                     capaEspera.style.opacity = '1';
@@ -552,6 +605,7 @@
 
         // --- 5. GENERADOR CRONOLÓGICO DE LA BOTONERA DORADA ---
         function crearBotonInteractiva(anio) {
+            if (!contenedorBotones) return;
             const boton = document.createElement('button');
             boton.classList.add('btn-anio-archivo');
             boton.textContent = anio;
@@ -591,4 +645,3 @@
     </script>
 </body>
 </html>
-           
