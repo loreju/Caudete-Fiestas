@@ -361,6 +361,7 @@
             <!-- Reproductor de vídeo integrado oficial de Bunny CDN -->
             <iframe 
                 id="bunny-player"
+                class="bunny-stream-player"
                 src="about:blank" 
                 loading="lazy" 
                 allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
@@ -439,7 +440,7 @@
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
 
-              const iframePlayer = document.getElementById('bunny-player');
+                  const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
@@ -508,29 +509,44 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
+                // CORRECCIÓN CLAVE: Activamos los canales de escucha mandando obligatoriamente los 3 parámetros de la API de Bunny
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&api=1&enablejsapi=true`;
             }
         }
 
-        // --- DETECTOR FIN DE VÍDEO SEGURO Y COMPATIBLE PARA BUNNY CDN ---
+        // --- RECEPTOR EXHAUSTIVO Y TOTAL PARA DETECTAR EL FINAL EN BUNNY ---
         window.addEventListener('message', (evento) => {
             try {
                 let datos = evento.data;
                 
-                // Si el mensaje es un texto JSON válido enviado por el reproductor Bunny, lo procesamos
-                if (typeof datos === 'string' && datos.includes('event')) {
+                // Si Bunny nos envía un string con su estado de reproducción, lo convertimos
+                if (typeof datos === 'string') {
+                    // Si el texto plano contiene la señal de fin sin importar cómo venga estructurado el JSON
+                    if (datos.includes('"ended"') || datos.includes('player:ended') || datos.includes('"event":"ended"')) {
+                        restablecerPantallaEsperaInicial();
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen().catch(() => {});
+                        }
+                        return;
+                    }
                     datos = JSON.parse(datos);
                 }
                 
-                // Filtramos estrictamente que la orden sea el fin de la reproducción ('ended')
-                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.status === 'ended')) {
+                // Si el navegador ya lo parseó automáticamente como un objeto de datos de video
+                if (datos && (
+                    datos.event === 'ended' || 
+                    datos.value === 'ended' || 
+                    datos.status === 'ended' ||
+                    datos.type === 'ended' ||
+                    datos.type === 'player:ended'
+                )) {
                     restablecerPantallaEsperaInicial();
                     if (document.fullscreenElement) {
                         document.exitFullscreen().catch(() => {});
                     }
                 }
             } catch(e) {
-                // Evita que cualquier choque de datos con el navegador cuelgue el reproductor
+                // Evita que otros mensajes del navegador rompan la ejecución
             }
         });
 
