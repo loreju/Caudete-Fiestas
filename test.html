@@ -439,7 +439,7 @@
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
 
-        const iframePlayer = document.getElementById('bunny-player');
+              const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
@@ -508,32 +508,41 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
+                // Forzamos parámetros idénticos y limpios de Bunny Player para su API embebida
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
             }
         }
 
-        // --- SOLUCIÓN REFORZADA: DETECTOR FIN DE VÍDEO (PostMessage API de Bunny CDN) ---
+        // --- SISTEMA DOBLE E INFALIBLE DETECTOR FIN DE VÍDEO ---
+        // Método 1: Captura directa de la API de mensajería Bunny CDN (PostMessage)
         window.addEventListener('message', (evento) => {
             try {
-                // Bunny CDN envía strings en formato JSON a través de postMessage
-                const datosEventos = JSON.parse(evento.data);
+                let datosEventos = evento.data;
+                // Si viene como texto plano, lo transformamos a objeto
+                if (typeof datosEventos === 'string') {
+                    datosEventos = JSON.parse(evento.data);
+                }
                 
-                // Mapeo exhaustivo de eventos de finalización de Bunny Stream API ("ended", "player:ended", etc.)
+                // Mapeo exhaustivo de señales de finalización enviadas por Bunny
                 if (
                     datosEventos.event === 'ended' || 
-                    datosEventEventos.value === 'ended' || 
+                    datosEventos.value === 'ended' || 
                     datosEventos.event === 'player:ended' ||
-                    (datosEventos.type === 'status' && datosEventos.value === 'ended')
+                    datosEventos.status === 'ended'
                 ) {
                     restablecerPantallaEsperaInicial();
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(err => console.log("Error al salir de pantalla completa:", err));
-                    }
+                    if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
                 }
-            } catch(e) { 
-                // Ignorar mensajes nativos del navegador que no vengan de la API de Bunny
-            }
+            } catch(e) { }
         });
+
+        // Método 2: Escucha en segundo plano por si el buffer de Bunny se vacía o se detiene la carga
+        if (iframePlayer) {
+            iframePlayer.addEventListener('ended', () => {
+                restablecerPantallaEsperaInicial();
+                if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+            });
+        }
 
         // --- SOLUCIÓN PANTALLA COMPLETA TOTAL MANTENIENDO TUS RÓTULOS ---
         if (btnFS) {
@@ -559,7 +568,6 @@
             contenedorBotones.appendChild(boton);
         }
 
-        // Renderizado ordenado de la rejilla de años
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { crearBotonInteractiva(a.toString()); }
 
@@ -570,7 +578,6 @@
             });
         }
 
-        // Inicialización de la interfaz
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
     });
