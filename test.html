@@ -452,43 +452,11 @@
         let anioSeleccionadoDestino = "2026";
         let unVideoEstaReproduciendose = false;
         let segundosTranscurridosVideo = 0;
-                  // CORRECCIÓN: Trasladadas las variables operativas en la cabecera exacta de la Parte 5
-        let segundosTranscurridosVideo = 0;
-
-        // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
-        const duracionVideosSegundos = {
-            "1974": 3600, "1983": 3600, "1984": 3600, "1985": 3600, "1986": 3600,
-            "1987": 3600, "1988": 3600, "1989": 3600, "1990": 3600, "1991": 3600,
-            "1992": 3600, "1993": 3600, "1994": 3600, "1995": 3600, "1996": 3600,
-            "1997": 3600, "1998": 3600, "1999": 3600, "2000": 3600, "2001": 3600,
-            "2002": 3600, "2003": 3600, "2004": 3600, "2005": 3600, "2006": 3600,
-            "2007": 3600, "2008": 3600, "2009": 3600, "2010": 3600, "2011": 3600,
-            "2012": 3600, "2013": 3600, "2014": 3600, "2015": 3600, "2016": 3600,
-            "2017": 3600, "2018": 3600, "2019": 3600, 
-            "2020": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
-            "2021": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
-            "2022": 3600, "2023": 3600, "2024": 3600, "2025": 3600, "2026": 3600
-        };
-
-        function arrancarRelojDigital() {
+               function arrancarRelojDigital() {
             setInterval(() => {
                 const ahora = new Date();
                 if (relojVideo) {
                     relojVideo.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-                }
-
-                // --- VIGILANCIA NATIVA POR RELOJ DIGITAL ---
-                if (unVideoEstaReproduciendose) {
-                    segundosTranscurridosVideo++;
-                    const limiteSegundos = duracionVideosSegundos[anioSeleccionadoDestino] || 3600;
-
-                    // Si alcanzamos los segundos de duración del vídeo, el script ejecuta el corte
-                    if (segundosTranscurridosVideo >= limiteSegundos) {
-                        restablecerPantallaEsperaInicial();
-                        if (document.fullscreenElement) {
-                            document.exitFullscreen().catch(() => {});
-                        }
-                    }
                 }
             }, 1000);
         }
@@ -505,10 +473,7 @@
         }
 
         function restablecerPantallaEsperaInicial() {
-            unVideoEstaReproduciendose = false;
-            segundosTranscurridosVideo = 0; // Reseteamos la cuenta a cero
-            
-            if (iframePlayer) iframePlayer.removeAttribute('src'); // Limpieza limpia sin colgar el iframe
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza limpia del reproductor
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -543,11 +508,23 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                segundosTranscurridosVideo = 0; // Iniciamos la cuenta limpia
-                unVideoEstaReproduciendose = true; // Activamos el paso del tiempo
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
+                // Dejamos la URL nativa e ideal recomendada por Bunny Stream
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
             }
         }
+
+        // --- RECEPTOR ESTÁNDAR POR SI VUELVE LA COMUNICACIÓN CON BUNNY ---
+        window.addEventListener('message', (evento) => {
+            try {
+                if (!evento.data || iframePlayer.src.includes("about:blank")) return;
+                let datos = evento.data;
+                if (typeof datos === 'string') { datos = JSON.parse(datos); }
+                if (datos && (datos.event === 'ended' || datos.type === 'player:ended' || datos.value === 'ended')) {
+                    restablecerPantallaEsperaInicial();
+                    if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+                }
+            } catch (e) {}
+        });
 
         // --- CONTROL PANTALLA COMPLETA ---
         if (btnFS) {
@@ -573,9 +550,11 @@
             contenedorBotones.appendChild(boton);
         }
 
+        // Generar botones de años
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { crearBotonInteractiva(a.toString()); }
 
+        // Evento botón Play de la carátula
         if (btnPlayBase) {
             btnPlayBase.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -583,11 +562,10 @@
             });
         }
 
-        // Arrancamos el reloj y limpiamos el iframe inicial de forma directa
+        // Inicialización fina
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
     });
     </script>
 </body>
 </html>
-         
