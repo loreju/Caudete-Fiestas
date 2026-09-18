@@ -439,7 +439,7 @@
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
 
-            const iframePlayer = document.getElementById('bunny-player');
+               const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
@@ -490,7 +490,7 @@
         }
 
         function cambiarVideoDeAnio(anio) {
-            anioSeleccionadoDestino = m = anio;
+            anioSeleccionadoDestino = anio;
             actualizarTextoBadge(anio);
             
             if (capaEspera) {
@@ -508,37 +508,30 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // Sincronizamos los parámetros idénticos que abren los canales de mensajería del iFrame
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&api=1&enablejsapi=true`;
+                // CORRECCIÓN: Añadido &enablejsapi=true para activar el canal de comunicación nativo del iFrame
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
             }
         }
 
-        // --- DETECTOR FIN DE VÍDEO UNIVERSAL PARA BUNNY CDN ---
+        // --- DETECTOR FIN DE VÍDEO COMPATIBLE CON NUEVAS APIS ---
         window.addEventListener('message', (evento) => {
             try {
-                let datos = evento.data;
+                const datosRaw = evento.data;
                 
-                // Si la señal de Bunny viene codificada como texto plano JSON, la abrimos
-                if (typeof datos === 'string') {
-                    datos = JSON.parse(datos);
-                }
-                
-                // Verificación exhaustiva de propiedades nativas del reproductor Bunny Stream (postMessage API)
-                if (
-                    datos.event === 'ended' || 
-                    datos.value === 'ended' || 
-                    datos.status === 'ended' ||
-                    datos.type === 'ended' ||
-                    datos.type === 'player:ended' ||
-                    (datos.context === 'player.js' && datos.event === 'ended')
-                ) {
-                    restablecerPantallaEsperaInicial();
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(() => {});
+                // Si el mensaje es un objeto o una cadena de texto que contiene órdenes de Bunny
+                if (datosRaw) {
+                    const mensajeString = typeof datosRaw === 'string' ? datosRaw : JSON.stringify(datosRaw);
+                    
+                    // CORRECCIÓN: Analizador de texto plano para capturar cualquier variante de finalización ("ended", "player:ended")
+                    if (mensajeString.includes('"ended"') || mensajeString.includes('player:ended') || mensajeString.includes('"event":"ended"')) {
+                        restablecerPantallaEsperaInicial();
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen().catch(() => {});
+                        }
                     }
                 }
             } catch(e) {
-                // Evitamos que cualquier otra alerta ajena a Bunny detenga el script
+                // Evita interferencias con otros scripts de la página
             }
         });
 
@@ -582,3 +575,4 @@
     </script>
 </body>
 </html>
+    
