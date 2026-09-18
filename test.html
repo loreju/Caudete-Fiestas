@@ -440,7 +440,7 @@
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
 
-                      const iframePlayer = document.getElementById('bunny-player');
+                    const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
@@ -464,7 +464,8 @@
 
         function actualizarTextoBadge(anio) {
             if (!badgeAnio) return;
-            if (anio === "2020" || r = anio === "2021") {
+            // CORREGIDO: Eliminada la "r =" que rompía el código por completo
+            if (anio === "2020" || anio === "2021") {
                 badgeAnio.textContent = `FIESTAS ${anio} SUSPENDIDAS`;
             } else if (anio === "2026") {
                 badgeAnio.textContent = `FIESTAS ${anio} PROXIMAMENTE`;
@@ -509,25 +510,24 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // Cargamos el vídeo puro sin parámetros que interfieran en el arranque inicial
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
             }
         }
 
-        // --- RECEPTOR MEJORADO: DETECTA EL FINAL REAL EXCLUSIVAMENTE ---
+        // --- RECEPTOR MEJORADO Y FILTRADO DE ADVERTENCIAS ---
         window.addEventListener('message', (evento) => {
             try {
-                // Evitamos procesar llamadas si el iframe está vacío o en proceso de carga
-                if (!iframePlayer.src || iframePlayer.src === "about:blank") return;
+                // Si el iframe está vacío o no ha arrancado, ignoramos cualquier mensaje espía inicial
+                if (!iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
 
                 let datos = evento.data;
                 
-                // Si el mensaje es una cadena JSON válida de Bunny Stream, la convertimos
+                // Forzamos conversión si Bunny envía texto plano
                 if (typeof datos === 'string' && (datos.includes('"ended"') || datos.includes('player:ended'))) {
                     datos = JSON.parse(datos);
                 }
                 
-                // Filtro estricto: solo si es un evento verídico de finalización de vídeo
+                // Filtro limpio y directo para el final del vídeo
                 if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
                     restablecerPantallaEsperaInicial();
                     if (document.fullscreenElement) {
@@ -535,7 +535,7 @@
                     }
                 }
             } catch(e) {
-                // Ignora choques de datos de extensiones o del navegador
+                // Evita problemas de comunicación cruzada
             }
         });
 
@@ -579,4 +579,4 @@
     </script>
 </body>
 </html>
- 
+   
