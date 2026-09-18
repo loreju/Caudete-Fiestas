@@ -455,7 +455,7 @@
                        // Variable de seguridad para romper el bucle y evitar bloqueos falsos
         let unVideoEstaReproduciendose = false;
 
-        function arrancarRelojDigital() {
+             function arrancarRelojDigital() {
             function actualizarHora() {
                 const ahora = new Date();
                 if (relojVideo) {
@@ -477,7 +477,7 @@
         }
 
         function restablecerPantallaEsperaInicial() {
-            unVideoEstaReproduciendose = false; // Apagamos el interruptor
+            unVideoEstaReproduciendose = false;
             if (iframePlayer) iframePlayer.src = "about:blank";
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
@@ -513,22 +513,22 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                unVideoEstaReproduciendose = true; // Encendemos el interruptor de vídeo real
+                unVideoEstaReproduciendose = true;
+                // Cargamos el vídeo agregando el parámetro nativo api=1 requerido
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&api=1`;
             }
         }
 
-        // --- DETECTOR FIN DE VÍDEO BLINDADO ANTE FALSOS ARRANQUES ---
+        // --- DETECTOR FIN DE VÍDEO SEGURO Y PROTEGIDO ---
         window.addEventListener('message', (evento) => {
             try {
-                // Si no hay ningún vídeo real reproduciéndose, ignoramos llamadas fantasma del navegador
-                if (!unVideoEstaReproduciendose) return;
-                if (!iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
+                // Si el reproductor no tiene un vídeo válido cargado de Bunny CDN, ignoramos
+                if (!unVideoEstaReproduciendose || !iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
 
                 const rawData = evento.data;
                 const mensajeTexto = typeof rawData === 'string' ? rawData : JSON.stringify(rawData);
 
-                // Solo actuamos si el mensaje contiene de verdad el evento "ended" de Bunny CDN
+                // Comprobamos si Bunny CDN manda el evento real de finalización
                 if (mensajeTexto && (
                     mensajeTexto.includes('"ended"') || 
                     mensajeTexto.includes('player:ended') || 
@@ -540,11 +540,11 @@
                     }
                 }
             } catch(e) {
-                // Silencia errores externos
+                // Ignora llamadas cruzadas ajenas
             }
         });
 
-        // --- SOLUCIÓN PANTALLA COMPLETA TOTAL MANTENIENDO TUS RÓTULOS ---
+        // --- CONTROL PANTALLA COMPLETA ---
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
