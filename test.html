@@ -452,7 +452,7 @@
         let anioSeleccionadoDestino = "2026";
         let unVideoEstaReproduciendose = false;
         let segundosTranscurridosVideo = 0;
-               function arrancarRelojDigital() {
+                   function arrancarRelojDigital() {
             setInterval(() => {
                 const ahora = new Date();
                 if (relojVideo) {
@@ -460,6 +460,7 @@
                 }
             }, 1000);
         }
+
         function actualizarTextoBadge(anio) {
             if (!badgeAnio) return;
             if (anio === "2020" || anio === "2021") {
@@ -470,8 +471,9 @@
                 badgeAnio.textContent = `FIESTAS ${anio}`;
             }
         }
+
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza estándar del reproductor
+            // CORRECCIÓN ELIMINADA: Ya no tocamos el src del iframe para evitar colgar el reproductor de Bunny
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -480,14 +482,17 @@
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'none';
             if (badgeAnio) badgeAnio.style.display = 'none';
             if (relojVideo) relojVideo.style.display = 'none';
-            if (btnFS) btnFS.style.display = 'none';          
+            if (btnFS) btnFS.style.display = 'none';
+            
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
             if (botonDefecto) botonDefecto.classList.add('activo');
         }
+
         function cambiarVideoDeAnio(anio) {
             anioSeleccionadoDestino = anio;
-            actualizarTextoBadge(anio);         
+            actualizarTextoBadge(anio);
+            
             if (capaEspera) {
                 capaEspera.style.display = 'none';
                 capaEspera.style.pointerEvents = 'none';
@@ -495,39 +500,43 @@
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'block';
             if (badgeAnio) badgeAnio.style.display = 'block';
             if (relojVideo) relojVideo.style.display = 'block';
-            if (btnFS) btnFS.style.display = 'block';            
+            if (btnFS) btnFS.style.display = 'block';
+            
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonActivo = document.querySelector(`[data-anio="${anio}"]`);
             if (botonActivo) botonActivo.classList.add('activo');
+
             const urlBase = videosData[anio];
             if (urlBase) {
-                // CORRECCIÓN CLAVE: Mandamos el parámetro enablejsapi=true para que Bunny nos avise al terminar
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
+                // CORRECCIÓN: Cargamos la URL limpia para que Bunny no bloquee el reproductor
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
             }
         }
 
-        // --- INTERCEPTOR DE RED SEGURO PARA REPRODUCTOR BUNNY CDN ---
+        // --- CAPTURA DE EVENTOS DE RED OFICIAL DE BUNNY STREAM ---
         window.addEventListener('message', (evento) => {
             try {
-                // Si el mensaje no trae datos o el reproductor está vacío, no hacemos nada
-                if (!evento.data || iframePlayer.src.includes("about:blank")) return;
+                // Si el mensaje no trae datos válidos, salimos
+                if (!evento.data) return;
 
+                // Bunny Stream envía siempre los datos del reproductor ya estructurados
                 let datos = evento.data;
-                // Si Bunny nos manda los datos como una cadena de texto, los transformamos a objeto
                 if (typeof datos === 'string') {
                     datos = JSON.parse(datos);
                 }
-                // Si el evento que envía Bunny indica de forma real que el vídeo ha finalizado (ended)
-                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
+
+                // Captura exacta del fotograma final enviado por el servidor de Bunny (player:ended)
+                if (datos && (datos.event === 'ended' || datos.type === 'player:ended' || datos.value === 'ended')) {
                     restablecerPantallaEsperaInicial();
                     if (document.fullscreenElement) {
                         document.exitFullscreen().catch(() => {});
                     }
                 }
             } catch (e) {
-                // Silenciamos errores por datos ajenos a Bunny CDN
+                // Silenciamos mensajes ajenos que no sean JSON válidos
             }
         });
+
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -539,6 +548,7 @@
                 }
             });
         }
+
         function crearBotonInteractiva(anio) {
             if (!contenedorBotones) return;
             const boton = document.createElement('button');
@@ -549,6 +559,7 @@
             boton.addEventListener('click', () => cambiarVideoDeAnio(anio));
             contenedorBotones.appendChild(boton);
         }
+
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { crearBotonInteractiva(a.toString()); }
 
@@ -558,12 +569,15 @@
                 cambiarVideoDeAnio(anioSeleccionadoDestino);
             });
         }
-        // Arrancamos el reloj del sistema de fondo
+
+        // Arrancamos el reloj de fondo
         arrancarRelojDigital();
         
-        // CORRECCIÓN: Dejamos el iFrame inicialmente limpio de forma directa sin llamar a bucles molestos
-        iframePlayer.src = "about:blank";
+        // CORRECCIÓN DEFINITIVA: Dejamos el iFrame cargado con el primer video de la lista de fondo de forma invisible.
+        // Así el reproductor de Bunny se precalienta solo y no se queda bloqueado en negro con el play colgado.
+        iframePlayer.src = `${videosData[anioSeleccionadoDestino]}?autoplay=false&loop=false&muted=false`;
     });
     </script>
 </body>
 </html>
+ 
