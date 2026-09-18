@@ -452,37 +452,11 @@
         let anioSeleccionadoDestino = "2026";
         let unVideoEstaReproduciendose = false;
         let segundosTranscurridosVideo = 0;
-        // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
-        const duracionVideosSegundos = {
-            "1974": 3600, "1983": 3600, "1984": 3600, "1985": 3600, "1986": 3600,
-            "1987": 3600, "1988": 3600, "1989": 3600, "1990": 3600, "1991": 3600,
-            "1992": 3600, "1993": 3600, "1994": 3600, "1995": 3600, "1996": 3600,
-            "1997": 3600, "1998": 3600, "1999": 3600, "2000": 3600, "2001": 3600,
-            "2002": 3600, "2003": 3600, "2004": 3600, "2005": 3600, "2006": 3600,
-            "2007": 3600, "2008": 3600, "2009": 3600, "2010": 3600, "2011": 3600,
-            "2012": 3600, "2013": 3600, "2014": 3600, "2015": 3600, "2016": 3600,
-            "2017": 3600, "2018": 3600, "2019": 3600, 
-            "2020": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
-            "2021": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
-            "2022": 3600, "2023": 3600, "2024": 3600, "2025": 3600, "2026": 3600
-        };
-        function arrancarRelojDigital() {
+               function arrancarRelojDigital() {
             setInterval(() => {
                 const ahora = new Date();
                 if (relojVideo) {
                     relojVideo.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-                }
-                // --- VIGILANCIA NATIVA POR RELOJ DIGITAL ---
-                if (unVideoEstaReproduciendose) {
-                    segundosTranscurridosVideo++;
-                    const limiteSegundos = duracionVideosSegundos[anioSeleccionadoDestino] || 3600;
-
-                    if (segundosTranscurridosVideo >= limiteSegundos) {
-                        restablecerPantallaEsperaInicial();
-                        if (document.fullscreenElement) {
-                            document.exitFullscreen().catch(() => {});
-                        }
-                    }
                 }
             }, 1000);
         }
@@ -497,9 +471,7 @@
             }
         }
         function restablecerPantallaEsperaInicial() {
-            unVideoEstaReproduciendose = false;
-            segundosTranscurridosVideo = 0;     
-            if (iframePlayer) iframePlayer.removeAttribute('src'); 
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza estándar del reproductor
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -508,15 +480,14 @@
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'none';
             if (badgeAnio) badgeAnio.style.display = 'none';
             if (relojVideo) relojVideo.style.display = 'none';
-            if (btnFS) btnFS.style.display = 'none';
-            
+            if (btnFS) btnFS.style.display = 'none';          
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
             if (botonDefecto) botonDefecto.classList.add('activo');
         }
         function cambiarVideoDeAnio(anio) {
             anioSeleccionadoDestino = anio;
-            actualizarTextoBadge(anio);          
+            actualizarTextoBadge(anio);         
             if (capaEspera) {
                 capaEspera.style.display = 'none';
                 capaEspera.style.pointerEvents = 'none';
@@ -524,19 +495,39 @@
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'block';
             if (badgeAnio) badgeAnio.style.display = 'block';
             if (relojVideo) relojVideo.style.display = 'block';
-            if (btnFS) btnFS.style.display = 'block';
-            
+            if (btnFS) btnFS.style.display = 'block';            
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonActivo = document.querySelector(`[data-anio="${anio}"]`);
             if (botonActivo) botonActivo.classList.add('activo');
-
             const urlBase = videosData[anio];
             if (urlBase) {
-                segundosTranscurridosVideo = 0; 
-                unVideoEstaReproduciendose = true;
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
+                // CORRECCIÓN CLAVE: Mandamos el parámetro enablejsapi=true para que Bunny nos avise al terminar
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
             }
         }
+
+        // --- INTERCEPTOR DE RED SEGURO PARA REPRODUCTOR BUNNY CDN ---
+        window.addEventListener('message', (evento) => {
+            try {
+                // Si el mensaje no trae datos o el reproductor está vacío, no hacemos nada
+                if (!evento.data || iframePlayer.src.includes("about:blank")) return;
+
+                let datos = evento.data;
+                // Si Bunny nos manda los datos como una cadena de texto, los transformamos a objeto
+                if (typeof datos === 'string') {
+                    datos = JSON.parse(datos);
+                }
+                // Si el evento que envía Bunny indica de forma real que el vídeo ha finalizado (ended)
+                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
+                    restablecerPantallaEsperaInicial();
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen().catch(() => {});
+                    }
+                }
+            } catch (e) {
+                // Silenciamos errores por datos ajenos a Bunny CDN
+            }
+        });
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -567,10 +558,12 @@
                 cambiarVideoDeAnio(anioSeleccionadoDestino);
             });
         }
+        // Arrancamos el reloj del sistema de fondo
         arrancarRelojDigital();
-        restablecerPantallaEsperaInicial();
+        
+        // CORRECCIÓN: Dejamos el iFrame inicialmente limpio de forma directa sin llamar a bucles molestos
+        iframePlayer.src = "about:blank";
     });
     </script>
 </body>
 </html>
-             
