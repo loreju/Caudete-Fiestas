@@ -439,7 +439,6 @@
             "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
-
         const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
@@ -448,14 +447,12 @@
         const bloqueLogoCTVVideo = document.getElementById('bloque-logo-ctv-video');
         const relojVideo = document.getElementById('reloj-video');
         const marcoContenedor = document.getElementById('marco-contenedor');
-        const btnFS = document.getElementById('btn-pantalla-completa');
-        
+        const btnFS = document.getElementById('btn-pantalla-completa');   
+        // CORREGIDO: Declaradas juntas las variables globales de control de estado del reproductor
         let anioSeleccionadoDestino = "2026";
-
-                       // Variable de seguridad para romper el bucle y evitar bloqueos falsos
         let unVideoEstaReproduciendose = false;
-
-                // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
+        let segundosTranscurridosVideo = 0;
+        // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
         const duracionVideosSegundos = {
             "1974": 3600, "1983": 3600, "1984": 3600, "1985": 3600, "1986": 3600,
             "1987": 3600, "1988": 3600, "1989": 3600, "1990": 3600, "1991": 3600,
@@ -465,27 +462,21 @@
             "2007": 3600, "2008": 3600, "2009": 3600, "2010": 3600, "2011": 3600,
             "2012": 3600, "2013": 3600, "2014": 3600, "2015": 3600, "2016": 3600,
             "2017": 3600, "2018": 3600, "2019": 3600, 
-            "2020": 607,  // Ajustado: 10 minutos y 7 segundos reales para tu test
-            "2021": 607,  // Ajustado: 10 minutos y 7 segundos reales para tu test
+            "2020": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
+            "2021": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
             "2022": 3600, "2023": 3600, "2024": 3600, "2025": 3600, "2026": 3600
         };
-
-        let segundosTranscurridosVideo = 0;
-
         function arrancarRelojDigital() {
             setInterval(() => {
                 const ahora = new Date();
                 if (relojVideo) {
                     relojVideo.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
                 }
-
-                // --- VIGILANCIA NATIVA POR RELOJ ---
-                // Si el interruptor está activo, sumamos un segundo de forma limpia
+                // --- VIGILANCIA NATIVA POR RELOJ DIGITAL ---
                 if (unVideoEstaReproduciendose) {
                     segundosTranscurridosVideo++;
                     const limiteSegundos = duracionVideosSegundos[anioSeleccionadoDestino] || 3600;
 
-                    // Si se alcanza el tiempo del vídeo, forzamos el reset sin depender de Bunny
                     if (segundosTranscurridosVideo >= limiteSegundos) {
                         restablecerPantallaEsperaInicial();
                         if (document.fullscreenElement) {
@@ -495,7 +486,6 @@
                 }
             }, 1000);
         }
-
         function actualizarTextoBadge(anio) {
             if (!badgeAnio) return;
             if (anio === "2020" || anio === "2021") {
@@ -506,12 +496,10 @@
                 badgeAnio.textContent = `FIESTAS ${anio}`;
             }
         }
-
         function restablecerPantallaEsperaInicial() {
             unVideoEstaReproduciendose = false;
-            segundosTranscurridosVideo = 0; 
-            
-            if (iframePlayer) iframePlayer.removeAttribute('src'); // Método limpio para vaciar el reproductor
+            segundosTranscurridosVideo = 0;     
+            if (iframePlayer) iframePlayer.removeAttribute('src'); 
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -526,11 +514,9 @@
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
             if (botonDefecto) botonDefecto.classList.add('activo');
         }
-
         function cambiarVideoDeAnio(anio) {
             anioSeleccionadoDestino = anio;
-            actualizarTextoBadge(anio);
-            
+            actualizarTextoBadge(anio);          
             if (capaEspera) {
                 capaEspera.style.display = 'none';
                 capaEspera.style.pointerEvents = 'none';
@@ -551,8 +537,6 @@
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
             }
         }
-
-        // --- CONTROL PANTALLA COMPLETA ---
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -564,7 +548,6 @@
                 }
             });
         }
-
         function crearBotonInteractiva(anio) {
             if (!contenedorBotones) return;
             const boton = document.createElement('button');
@@ -575,7 +558,6 @@
             boton.addEventListener('click', () => cambiarVideoDeAnio(anio));
             contenedorBotones.appendChild(boton);
         }
-
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { crearBotonInteractiva(a.toString()); }
 
@@ -585,13 +567,10 @@
                 cambiarVideoDeAnio(anioSeleccionadoDestino);
             });
         }
-
-        // Arrancamos el reloj y forzamos la ocultación limpia inicial
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
     });
     </script>
 </body>
 </html>
-
-                
+             
