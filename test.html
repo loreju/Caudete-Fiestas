@@ -452,8 +452,10 @@
         let anioSeleccionadoDestino = "2026";
         let unVideoEstaReproduciendose = false;
         let segundosTranscurridosVideo = 0;
-                    // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
-        // Al usar un reloj activo en pantalla, el navegador nunca dormirá este contador
+                  // CORRECCIÓN: Trasladadas las variables operativas en la cabecera exacta de la Parte 5
+        let segundosTranscurridosVideo = 0;
+
+        // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
         const duracionVideosSegundos = {
             "1974": 3600, "1983": 3600, "1984": 3600, "1985": 3600, "1986": 3600,
             "1987": 3600, "1988": 3600, "1989": 3600, "1990": 3600, "1991": 3600,
@@ -463,8 +465,8 @@
             "2007": 3600, "2008": 3600, "2009": 3600, "2010": 3600, "2011": 3600,
             "2012": 3600, "2013": 3600, "2014": 3600, "2015": 3600, "2016": 3600,
             "2017": 3600, "2018": 3600, "2019": 3600, 
-            "2020": 607,  // Ajustado: 10 minutos y 7 segundos de tu prueba real
-            "2021": 607,  // Ajustado: 10 minutos y 7 segundos de tu prueba real
+            "2020": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
+            "2021": 607,  // Ajustado: 10 minutos y 7 segundos reales del test
             "2022": 3600, "2023": 3600, "2024": 3600, "2025": 3600, "2026": 3600
         };
 
@@ -476,12 +478,11 @@
                 }
 
                 // --- VIGILANCIA NATIVA POR RELOJ DIGITAL ---
-                // Si hay un vídeo activo, sumamos un segundo cada vez que el reloj cambia en pantalla
                 if (unVideoEstaReproduciendose) {
                     segundosTranscurridosVideo++;
                     const limiteSegundos = duracionVideosSegundos[anioSeleccionadoDestino] || 3600;
 
-                    // Si alcanzamos los segundos de duración, el script ejecuta el corte a la fuerza
+                    // Si alcanzamos los segundos de duración del vídeo, el script ejecuta el corte
                     if (segundosTranscurridosVideo >= limiteSegundos) {
                         restablecerPantallaEsperaInicial();
                         if (document.fullscreenElement) {
@@ -589,3 +590,4 @@
     </script>
 </body>
 </html>
+         
