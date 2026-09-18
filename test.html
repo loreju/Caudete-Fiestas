@@ -455,8 +455,7 @@
                        // Variable de seguridad para romper el bucle y evitar bloqueos falsos
         let unVideoEstaReproduciendose = false;
 
-                     // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
-        // Al usar un reloj activo en pantalla, el navegador nunca dormirá este contador
+                // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
         const duracionVideosSegundos = {
             "1974": 3600, "1983": 3600, "1984": 3600, "1985": 3600, "1986": 3600,
             "1987": 3600, "1988": 3600, "1989": 3600, "1990": 3600, "1991": 3600,
@@ -466,28 +465,27 @@
             "2007": 3600, "2008": 3600, "2009": 3600, "2010": 3600, "2011": 3600,
             "2012": 3600, "2013": 3600, "2014": 3600, "2015": 3600, "2016": 3600,
             "2017": 3600, "2018": 3600, "2019": 3600, 
-            "2020": 607,  // Ajustado: 10 minutos y 7 segundos reales de tu prueba
-            "2021": 607,  // Ajustado: 10 minutos y 7 segundos reales de tu prueba
+            "2020": 607,  // Ajustado: 10 minutos y 7 segundos reales para tu test
+            "2021": 607,  // Ajustado: 10 minutos y 7 segundos reales para tu test
             "2022": 3600, "2023": 3600, "2024": 3600, "2025": 3600, "2026": 3600
         };
 
         let segundosTranscurridosVideo = 0;
-        let intervaloVigilanciaReloj = null;
 
         function arrancarRelojDigital() {
-            function actualizarHora() {
+            setInterval(() => {
                 const ahora = new Date();
                 if (relojVideo) {
                     relojVideo.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
                 }
 
-                // --- SISTEMA DE VIGILANCIA VINCULADO AL RELOJ DIGITAL ---
-                // Si hay un vídeo activo, sumamos un segundo cada vez que el reloj cambia en pantalla
+                // --- VIGILANCIA NATIVA POR RELOJ ---
+                // Si el interruptor está activo, sumamos un segundo de forma limpia
                 if (unVideoEstaReproduciendose) {
                     segundosTranscurridosVideo++;
                     const limiteSegundos = duracionVideosSegundos[anioSeleccionadoDestino] || 3600;
 
-                    // Si alcanzamos los segundos de duración, el script ejecuta el corte a la fuerza
+                    // Si se alcanza el tiempo del vídeo, forzamos el reset sin depender de Bunny
                     if (segundosTranscurridosVideo >= limiteSegundos) {
                         restablecerPantallaEsperaInicial();
                         if (document.fullscreenElement) {
@@ -495,10 +493,7 @@
                         }
                     }
                 }
-            }
-            actualizarHora(); 
-            if (intervaloLectorReloj) clearInterval(intervaloLectorReloj);
-            var intervaloLectorReloj = setInterval(actualizarHora, 1000);
+            }, 1000);
         }
 
         function actualizarTextoBadge(anio) {
@@ -514,9 +509,9 @@
 
         function restablecerPantallaEsperaInicial() {
             unVideoEstaReproduciendose = false;
-            segundosTranscurridosVideo = 0; // Reseteamos la cuenta a cero
+            segundosTranscurridosVideo = 0; 
             
-            if (iframePlayer) iframePlayer.src = "about:blank";
+            if (iframePlayer) iframePlayer.removeAttribute('src'); // Método limpio para vaciar el reproductor
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -551,35 +546,11 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                segundosTranscurridosVideo = 0; // Iniciamos la cuenta limpia
+                segundosTranscurridosVideo = 0; 
                 unVideoEstaReproduciendose = true;
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
             }
         }
-
-        // --- DETECTOR COMPLEMENTARIO POR MENSAJE ---
-        window.addEventListener('message', (evento) => {
-            try {
-                if (!unVideoEstaReproduciendose || !iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
-
-                let datos = evento.data;
-                if (typeof datos === 'string') {
-                    datos = JSON.parse(datos);
-                }
-
-                if (datos && (
-                    datos.event === 'ended' || 
-                    datos.value === 'ended' || 
-                    datos.type === 'player:ended' ||
-                    datos.status === 'ended'
-                )) {
-                    restablecerPantallaEsperaInicial();
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(() => {});
-                    }
-                }
-            } catch(e) { }
-        });
 
         // --- CONTROL PANTALLA COMPLETA ---
         if (btnFS) {
@@ -615,13 +586,12 @@
             });
         }
 
+        // Arrancamos el reloj y forzamos la ocultación limpia inicial
         arrancarRelojDigital();
-        
-        setTimeout(() => {
-            restablecerPantallaEsperaInicial();
-        }, 200);
+        restablecerPantallaEsperaInicial();
     });
     </script>
 </body>
 </html>
-    
+
+                
