@@ -405,7 +405,7 @@
             "1991": "https://player.mediadelivery.net/embed/752516/9ad6401b-409e-449a-8086-a298d81389e3",
             "1992": "https://player.mediadelivery.net/embed/752516/093517cd-5334-45f5-8303-815d631f5a0f",
             "1993": "https://player.mediadelivery.net/embed/752516/bd60ca59-e9e9-42c5-9a5e-08d67ee02747",
-            "1994": "https://player.mediadelivery.net/embed/752516/b55eb549-486b-4d7a-8f76-f69a97b817ae",
+            "1994": "https://mediadelivery.net",
             "1995": "https://player.mediadelivery.net/embed/752516/787d6f78-28fa-4a67-ae3c-d7fe5ffb51ce",
             "1996": "https://player.mediadelivery.net/embed/752516/97970eff-10af-49d6-8368-a8acc4336c76",
             "1997": "https://player.mediadelivery.net/embed/752516/aa5552db-0e40-4ffc-a925-781700f41886",
@@ -439,7 +439,8 @@
             "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
-                 const iframePlayer = document.getElementById('bunny-player');
+
+        const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
@@ -451,7 +452,10 @@
         
         let anioSeleccionadoDestino = "2026";
 
-                function arrancarRelojDigital() {
+                       // Variable de seguridad para romper el bucle y evitar bloqueos falsos
+        let unVideoEstaReproduciendose = false;
+
+        function arrancarRelojDigital() {
             function actualizarHora() {
                 const ahora = new Date();
                 if (relojVideo) {
@@ -473,6 +477,7 @@
         }
 
         function restablecerPantallaEsperaInicial() {
+            unVideoEstaReproduciendose = false; // Apagamos el interruptor
             if (iframePlayer) iframePlayer.src = "about:blank";
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
@@ -508,20 +513,22 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // Modificación: Agregamos api=1 para forzar a Bunny a mandar alertas a nuestra web
+                unVideoEstaReproduciendose = true; // Encendemos el interruptor de vídeo real
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&api=1`;
             }
         }
 
-        // --- DETECTOR FIN DE VÍDEO SEGURO POR ESCUCHA DE CADENA (POSTMESSAGE) ---
+        // --- DETECTOR FIN DE VÍDEO BLINDADO ANTE FALSOS ARRANQUES ---
         window.addEventListener('message', (evento) => {
             try {
+                // Si no hay ningún vídeo real reproduciéndose, ignoramos llamadas fantasma del navegador
+                if (!unVideoEstaReproduciendose) return;
                 if (!iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
 
                 const rawData = evento.data;
                 const mensajeTexto = typeof rawData === 'string' ? rawData : JSON.stringify(rawData);
 
-                // Modificación: Rastreador por texto plano de Bunny. No falla nunca, use la API que use
+                // Solo actuamos si el mensaje contiene de verdad el evento "ended" de Bunny CDN
                 if (mensajeTexto && (
                     mensajeTexto.includes('"ended"') || 
                     mensajeTexto.includes('player:ended') || 
@@ -533,7 +540,7 @@
                     }
                 }
             } catch(e) {
-                // Silencia llamadas ajenas al reproductor de vídeo
+                // Silencia errores externos
             }
         });
 
@@ -577,5 +584,3 @@
     </script>
 </body>
 </html>
-
-       
