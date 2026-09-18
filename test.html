@@ -452,11 +452,42 @@
         let anioSeleccionadoDestino = "2026";
         let unVideoEstaReproduciendose = false;
         let segundosTranscurridosVideo = 0;
-              function arrancarRelojDigital() {
+                    // --- BASE DE DATOS DE DURACIÓN EXACTA (EN SEGUNDOS) ---
+        // Al usar un reloj activo en pantalla, el navegador nunca dormirá este contador
+        const duracionVideosSegundos = {
+            "1974": 3600, "1983": 3600, "1984": 3600, "1985": 3600, "1986": 3600,
+            "1987": 3600, "1988": 3600, "1989": 3600, "1990": 3600, "1991": 3600,
+            "1992": 3600, "1993": 3600, "1994": 3600, "1995": 3600, "1996": 3600,
+            "1997": 3600, "1998": 3600, "1999": 3600, "2000": 3600, "2001": 3600,
+            "2002": 3600, "2003": 3600, "2004": 3600, "2005": 3600, "2006": 3600,
+            "2007": 3600, "2008": 3600, "2009": 3600, "2010": 3600, "2011": 3600,
+            "2012": 3600, "2013": 3600, "2014": 3600, "2015": 3600, "2016": 3600,
+            "2017": 3600, "2018": 3600, "2019": 3600, 
+            "2020": 607,  // Ajustado: 10 minutos y 7 segundos de tu prueba real
+            "2021": 607,  // Ajustado: 10 minutos y 7 segundos de tu prueba real
+            "2022": 3600, "2023": 3600, "2024": 3600, "2025": 3600, "2026": 3600
+        };
+
+        function arrancarRelojDigital() {
             setInterval(() => {
                 const ahora = new Date();
                 if (relojVideo) {
                     relojVideo.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
+                }
+
+                // --- VIGILANCIA NATIVA POR RELOJ DIGITAL ---
+                // Si hay un vídeo activo, sumamos un segundo cada vez que el reloj cambia en pantalla
+                if (unVideoEstaReproduciendose) {
+                    segundosTranscurridosVideo++;
+                    const limiteSegundos = duracionVideosSegundos[anioSeleccionadoDestino] || 3600;
+
+                    // Si alcanzamos los segundos de duración, el script ejecuta el corte a la fuerza
+                    if (segundosTranscurridosVideo >= limiteSegundos) {
+                        restablecerPantallaEsperaInicial();
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen().catch(() => {});
+                        }
+                    }
                 }
             }, 1000);
         }
@@ -473,7 +504,10 @@
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Vaciamos el reproductor de forma limpia
+            unVideoEstaReproduciendose = false;
+            segundosTranscurridosVideo = 0; // Reseteamos la cuenta a cero
+            
+            if (iframePlayer) iframePlayer.removeAttribute('src'); // Limpieza limpia sin colgar el iframe
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -508,41 +542,11 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // Forzamos los parámetros oficiales de la API de Bunny CDN
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
+                segundosTranscurridosVideo = 0; // Iniciamos la cuenta limpia
+                unVideoEstaReproduciendose = true; // Activamos el paso del tiempo
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
             }
         }
-
-        // --- DETECTOR SEGURO PARA EL FINAL DE REPRODUCCIÓN EN BUNNY ---
-        window.addEventListener('message', (evento) => {
-            try {
-                if (!iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
-
-                // Bunny envía mensajes de texto con el estado del reproductor
-                let datos = evento.data;
-                if (typeof datos === 'string') {
-                    // Si el texto plano contiene la señal de finalización, ejecutamos el reset de inmediato
-                    if (datos.includes('"ended"') || datos.includes('player:ended') || datos.includes('"event":"ended"')) {
-                        restablecerPantallaEsperaInicial();
-                        if (document.fullscreenElement) {
-                            document.exitFullscreen().catch(() => {});
-                        }
-                        return;
-                    }
-                    datos = JSON.parse(datos);
-                }
-
-                // Respaldo secundario en caso de recibir el objeto ya parseado por el navegador
-                if (datos && (datos.event === 'ended' || datos.type === 'player:ended' || datos.status === 'ended' || datos.value === 'ended')) {
-                    restablecerPantallaEsperaInicial();
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(() => {});
-                    }
-                }
-            } catch(e) {
-                // Silenciamos advertencias de datos cruzados ajenos a Bunny CDN
-            }
-        });
 
         // --- CONTROL PANTALLA COMPLETA ---
         if (btnFS) {
@@ -578,6 +582,7 @@
             });
         }
 
+        // Arrancamos el reloj y limpiamos el iframe inicial de forma directa
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
     });
