@@ -452,7 +452,7 @@
         let anioSeleccionadoDestino = "2026";
         let unVideoEstaReproduciendose = false;
         let segundosTranscurridosVideo = 0;
-                   function arrancarRelojDigital() {
+              function arrancarRelojDigital() {
             setInterval(() => {
                 const ahora = new Date();
                 if (relojVideo) {
@@ -473,7 +473,7 @@
         }
 
         function restablecerPantallaEsperaInicial() {
-            // CORRECCIÓN ELIMINADA: Ya no tocamos el src del iframe para evitar colgar el reproductor de Bunny
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Vaciamos el reproductor de forma limpia
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -508,35 +508,43 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // CORRECCIÓN: Cargamos la URL limpia para que Bunny no bloquee el reproductor
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
+                // Forzamos los parámetros oficiales de la API de Bunny CDN
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
             }
         }
 
-        // --- CAPTURA DE EVENTOS DE RED OFICIAL DE BUNNY STREAM ---
+        // --- DETECTOR SEGURO PARA EL FINAL DE REPRODUCCIÓN EN BUNNY ---
         window.addEventListener('message', (evento) => {
             try {
-                // Si el mensaje no trae datos válidos, salimos
-                if (!evento.data) return;
+                if (!iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
 
-                // Bunny Stream envía siempre los datos del reproductor ya estructurados
+                // Bunny envía mensajes de texto con el estado del reproductor
                 let datos = evento.data;
                 if (typeof datos === 'string') {
+                    // Si el texto plano contiene la señal de finalización, ejecutamos el reset de inmediato
+                    if (datos.includes('"ended"') || datos.includes('player:ended') || datos.includes('"event":"ended"')) {
+                        restablecerPantallaEsperaInicial();
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen().catch(() => {});
+                        }
+                        return;
+                    }
                     datos = JSON.parse(datos);
                 }
 
-                // Captura exacta del fotograma final enviado por el servidor de Bunny (player:ended)
-                if (datos && (datos.event === 'ended' || datos.type === 'player:ended' || datos.value === 'ended')) {
+                // Respaldo secundario en caso de recibir el objeto ya parseado por el navegador
+                if (datos && (datos.event === 'ended' || datos.type === 'player:ended' || datos.status === 'ended' || datos.value === 'ended')) {
                     restablecerPantallaEsperaInicial();
                     if (document.fullscreenElement) {
                         document.exitFullscreen().catch(() => {});
                     }
                 }
-            } catch (e) {
-                // Silenciamos mensajes ajenos que no sean JSON válidos
+            } catch(e) {
+                // Silenciamos advertencias de datos cruzados ajenos a Bunny CDN
             }
         });
 
+        // --- CONTROL PANTALLA COMPLETA ---
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -570,14 +578,9 @@
             });
         }
 
-        // Arrancamos el reloj de fondo
         arrancarRelojDigital();
-        
-        // CORRECCIÓN DEFINITIVA: Dejamos el iFrame cargado con el primer video de la lista de fondo de forma invisible.
-        // Así el reproductor de Bunny se precalienta solo y no se queda bloqueado en negro con el play colgado.
-        iframePlayer.src = `${videosData[anioSeleccionadoDestino]}?autoplay=false&loop=false&muted=false`;
+        restablecerPantallaEsperaInicial();
     });
     </script>
 </body>
 </html>
- 
