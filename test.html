@@ -439,7 +439,7 @@
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
 
-                  const iframePlayer = document.getElementById('bunny-player');
+            const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
@@ -450,7 +450,6 @@
         const btnFS = document.getElementById('btn-pantalla-completa');
         
         let anioSeleccionadoDestino = "2026";
-        let bunnyPlayerInstance = null; // Instancia de la API Bunny
 
         function arrancarRelojDigital() {
             function actualizarHora() {
@@ -491,7 +490,7 @@
         }
 
         function cambiarVideoDeAnio(anio) {
-            anioSeleccionadoDestino = anio;
+            anioSeleccionadoDestino = m = anio;
             actualizarTextoBadge(anio);
             
             if (capaEspera) {
@@ -509,28 +508,41 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // Cargamos el vídeo vinculando los parámetros de comunicación API obligatorios
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
-                
-                // Inicializamos el receptor PlayerJS sobre el iframe de Bunny
-                setTimeout(() => {
-                    try {
-                        bunnyPlayerInstance = new playerjs.Player(iframePlayer);
-                        bunnyPlayerInstance.on('ready', () => {
-                            // Cuando el reproductor está listo, enganchamos el evento de finalización
-                            bunnyPlayerInstance.on('ended', () => {
-                                restablecerPantallaEsperaInicial();
-                                if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
-                            });
-                        });
-                    } catch (err) {
-                        console.log("Esperando inicialización del Frame");
-                    }
-                }, 500);
+                // Sincronizamos los parámetros idénticos que abren los canales de mensajería del iFrame
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&api=1&enablejsapi=true`;
             }
         }
 
-        // --- MANEJO DE PANTALLA COMPLETA TOTAL MANTENIENDO TUS RÓTULOS ---
+        // --- DETECTOR FIN DE VÍDEO UNIVERSAL PARA BUNNY CDN ---
+        window.addEventListener('message', (evento) => {
+            try {
+                let datos = evento.data;
+                
+                // Si la señal de Bunny viene codificada como texto plano JSON, la abrimos
+                if (typeof datos === 'string') {
+                    datos = JSON.parse(datos);
+                }
+                
+                // Verificación exhaustiva de propiedades nativas del reproductor Bunny Stream (postMessage API)
+                if (
+                    datos.event === 'ended' || 
+                    datos.value === 'ended' || 
+                    datos.status === 'ended' ||
+                    datos.type === 'ended' ||
+                    datos.type === 'player:ended' ||
+                    (datos.context === 'player.js' && datos.event === 'ended')
+                ) {
+                    restablecerPantallaEsperaInicial();
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen().catch(() => {});
+                    }
+                }
+            } catch(e) {
+                // Evitamos que cualquier otra alerta ajena a Bunny detenga el script
+            }
+        });
+
+        // --- SOLUCIÓN PANTALLA COMPLETA TOTAL MANTENIENDO TUS RÓTULOS ---
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -548,7 +560,7 @@
             const boton = document.createElement('button');
             boton.classList.add('btn-anio-archivo');
             boton.textContent = anio;
-            boton.setAttribute('data-anio', l = anio);
+            boton.setAttribute('data-anio', anio);
             if (anio === "2026") boton.classList.add('activo');
             boton.addEventListener('click', () => cambiarVideoDeAnio(anio));
             contenedorBotones.appendChild(boton);
