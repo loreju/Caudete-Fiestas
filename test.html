@@ -388,7 +388,7 @@
             <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
         </div>
     </div>
-     <!-- SCRIPT DE CONTROL DINÁMICO: LÓGICA INTERACTIVA -->
+       <!-- SCRIPT DE CONTROL DINÁMICO: LÓGICA INTERACTIVA -->
     <script>
     window.addEventListener('load', () => {
         // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
@@ -439,8 +439,7 @@
             "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
             "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
         };
-
-                    const iframePlayer = document.getElementById('bunny-player');
+                 const iframePlayer = document.getElementById('bunny-player');
         const capaEspera = document.getElementById('capa-espera');
         const btnPlayBase = document.getElementById('start-btn');
         const badgeAnio = document.getElementById('badge-anio');
@@ -452,7 +451,7 @@
         
         let anioSeleccionadoDestino = "2026";
 
-        function arrancarRelojDigital() {
+                function arrancarRelojDigital() {
             function actualizarHora() {
                 const ahora = new Date();
                 if (relojVideo) {
@@ -464,7 +463,6 @@
 
         function actualizarTextoBadge(anio) {
             if (!badgeAnio) return;
-            // CORREGIDO: Eliminada la "r =" que rompía el código por completo
             if (anio === "2020" || anio === "2021") {
                 badgeAnio.textContent = `FIESTAS ${anio} SUSPENDIDAS`;
             } else if (anio === "2026") {
@@ -510,32 +508,32 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false`;
+                // Modificación: Agregamos api=1 para forzar a Bunny a mandar alertas a nuestra web
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&api=1`;
             }
         }
 
-        // --- RECEPTOR MEJORADO Y FILTRADO DE ADVERTENCIAS ---
+        // --- DETECTOR FIN DE VÍDEO SEGURO POR ESCUCHA DE CADENA (POSTMESSAGE) ---
         window.addEventListener('message', (evento) => {
             try {
-                // Si el iframe está vacío o no ha arrancado, ignoramos cualquier mensaje espía inicial
                 if (!iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
 
-                let datos = evento.data;
-                
-                // Forzamos conversión si Bunny envía texto plano
-                if (typeof datos === 'string' && (datos.includes('"ended"') || datos.includes('player:ended'))) {
-                    datos = JSON.parse(datos);
-                }
-                
-                // Filtro limpio y directo para el final del vídeo
-                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
+                const rawData = evento.data;
+                const mensajeTexto = typeof rawData === 'string' ? rawData : JSON.stringify(rawData);
+
+                // Modificación: Rastreador por texto plano de Bunny. No falla nunca, use la API que use
+                if (mensajeTexto && (
+                    mensajeTexto.includes('"ended"') || 
+                    mensajeTexto.includes('player:ended') || 
+                    mensajeTexto.includes('"event":"ended"')
+                )) {
                     restablecerPantallaEsperaInicial();
                     if (document.fullscreenElement) {
                         document.exitFullscreen().catch(() => {});
                     }
                 }
             } catch(e) {
-                // Evita problemas de comunicación cruzada
+                // Silencia llamadas ajenas al reproductor de vídeo
             }
         });
 
@@ -579,4 +577,5 @@
     </script>
 </body>
 </html>
-   
+
+       
