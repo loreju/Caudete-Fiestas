@@ -82,6 +82,7 @@
             letter-spacing: 1px;
             line-height: 1.2;
         }
+        /* Modificado: Añadida la animación destelloContinuoTexto idéntica a la seleccionada */
         .honor-text {
             color: #ffcc00;
             font-size: 1.2rem;
@@ -89,6 +90,7 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin: 0;
+            animation: destelloContinuoTexto 2.5s infinite ease-in-out;
         }
         .years-subtitle-text {
             color: #ffffff;
@@ -117,7 +119,7 @@
             0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
             50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
         }
-  /* --- MARCO CONTENEDOR DEL REPRODUCTOR CON SOPORTE PANTALLA COMPLETA --- */
+   /* --- MARCO CONTENEDOR DEL REPRODUCTOR CON SOPORTE PANTALLA COMPLETA --- */
         .video-container {
             position: relative;
             max-width: 900px;
@@ -166,21 +168,23 @@
         }
 
         /* --- ELEMENTOS DE TRANSMISIÓN SUPERPUESTOS SOBRE EL VÍDEO --- */
+        /* Modificado: Aumentado el tamaño, padding y añadida la animación de destello */
         .reloj-video-block {
             position: absolute;
             top: 20px; left: 20px;
             display: none;
             background-color: #000000;
             color: #ffffff;
-            border: 1px solid #ff0000;
-            padding: 6px 12px;
-            font-size: 1rem;
+            border: 1px solid #ffcc00; /* Cambiado a amarillo para armonizar */
+            padding: 12px 20px;
+            font-size: 1.4rem;
             font-weight: bold;
             font-family: 'Courier New', Courier, monospace;
-            border-radius: 4px;
+            border-radius: 6px;
             z-index: 5;
             pointer-events: none;
             letter-spacing: 1px;
+            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
 
         .ctv-video-block {
@@ -190,8 +194,16 @@
             z-index: 5;
             pointer-events: none;
         }
-        .logo-ctv-fijo { height: 48px; width: auto; object-fit: contain; opacity: 0.9; }
+        /* Modificado: Aumentada la altura de 48px a 65px y añadida la animación de destello */
+        .logo-ctv-fijo { 
+            height: 65px; 
+            width: auto; 
+            object-fit: contain; 
+            opacity: 0.95; 
+            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
+        }
 
+        /* Modificado: Añadida la animación de destello continuo */
         .badge-anio-reproductor {
             position: absolute;
             bottom: 20px; left: 20px;
@@ -204,6 +216,7 @@
             border-radius: 6px;
             z-index: 5;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
 
         /* BOTÓN PERSONALIZADO DE PANTALLA COMPLETA WEB */
@@ -263,7 +276,14 @@
         .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
         .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
         .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
-        .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; }
+        /* Modificado: Añadida la animación de destello continuo a los 6 logos de abajo */
+        .logo-comparsa { 
+            height: 150px; 
+            width: 150px; 
+            object-fit: contain; 
+            transition: transform 0.2s; 
+            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
+        }
         .logo-comparsa:hover { transform: scale(1.08); }
 
         /* --- CONFIGURACIÓN RESPONSIVE EXCLUSIVA MÓVIL --- */
@@ -279,24 +299,26 @@
             
             /* Ajustes en reproducción móvil */
             .ctv-video-block { top: 10px; right: 10px; }
-            .logo-ctv-fijo { height: 28px; }
-            .reloj-video-block { top: 10px; left: 10px; padding: 4px 8px; font-size: 0.65rem; }
+            .logo-ctv-fijo { height: 40px; } /* Ajustado proporcionalmente en móvil */
+            .reloj-video-block { top: 10px; left: 10px; padding: 6px 10px; font-size: 0.85rem; } /* Ajustado proporcionalmente en móvil */
             .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 8px 14px; font-size: 0.9rem; }
             .btn-fullscreen-web { bottom: 10px; right: 10px; padding: 8px 10px; font-size: 0.75rem; }
         }
     </style>
 </head>
 <body>
-         <!-- CABECERA OFICIAL CONFIGURADA -->
+   <!-- CABECERA OFICIAL CONFIGURADA -->
     <div class="header-container">
         <!-- Bloque CTV superior izquierdo con logotipo y texto dorado corporativo -->
         <div class="header-block ctv-block-top">
             <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
-            <h3>CAUDETE<br>TELEVISIÓN</h3>
+            <!-- Modificado: Añadido margen izquierdo para centrar el texto respecto al logo -->
+            <h3 style="margin-left: 14px !important;">CAUDETE<br>TELEVISIÓN</h3>
         </div>
         <div class="title-block">
             <h1 class="destello-texto">Caudete Fiestas de Moros y Cristianos</h1>
-            <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
+            <!-- Modificado: Añadida la clase destello-texto explícitamente -->
+            <p class="honor-text destello-texto">En Honor a Ntra. Sra. de Gracia</p>
             <p class="years-subtitle-text">1974 - 1983 A 2026</p>
         </div>
         <div class="header-block ayuntamiento-block">
@@ -316,7 +338,8 @@
             <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN (Incrustada en el marco del vídeo) -->
             
             <!-- RECUADRO ROJO RELOJ: Fijo arriba a la izquierda del reproductor -->
-            <div class="reloj-video-block" id="reloj-video">00:00</div>
+            <!-- Modificado: Añadida la clase de animación destello-logo según lo acordado -->
+            <div class="reloj-video-block destello-logo" id="reloj-video">00:00</div>
 
             <!-- LOGO CTV TRANSLÚCIDO: Fijo arriba a la derecha del reproductor (Sin fondo negro) -->
             <div class="ctv-video-block" id="bloque-logo-ctv-video">
@@ -324,7 +347,8 @@
             </div>
 
             <!-- MARCADOR DE FIESTAS: Fijo abajo a la izquierda en fondo blanco y letras negras -->
-            <div id="badge-anio" class="badge-anio-reproductor destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
+            <!-- Modificado: Añadida la clase destello-logo para que brille junto a los elementos del reproductor -->
+            <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
             
             <!-- BOTÓN DE PANTALLA COMPLETA PERSONALIZADA (Permite superponer tus elementos) -->
             <button class="btn-fullscreen-web" id="btn-pantalla-completa">Pantalla Completa</button>
@@ -354,15 +378,16 @@
     <!-- SECCIÓN DE COMPARSAS DE CAUDETE -->
     <div class="comparsas-seccion">
         <div class="comparsas-grid">
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
-            <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
+            <!-- Modificado: Asegurada la clase destello-logo en los 6 elementos inferiores -->
+            <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
+            <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
         </div>
     </div>
-   <!-- SCRIPT DE CONTROL DINÁMICO: LÓGICA INTERACTIVA -->
+     <!-- SCRIPT DE CONTROL DINÁMICO: LÓGICA INTERACTIVA -->
     <script>
     window.addEventListener('load', () => {
         // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
@@ -487,15 +512,27 @@
             }
         }
 
-        // --- SOLUCIÓN DETECTOR FIN DE VÍDEO (PostMessage API de Bunny CDN) ---
+        // --- SOLUCIÓN REFORZADA: DETECTOR FIN DE VÍDEO (PostMessage API de Bunny CDN) ---
         window.addEventListener('message', (evento) => {
             try {
+                // Bunny CDN envía strings en formato JSON a través de postMessage
                 const datosEventos = JSON.parse(evento.data);
-                if (datosEventos.event === 'ended' || datosEventos.value === 'ended') {
+                
+                // Mapeo exhaustivo de eventos de finalización de Bunny Stream API ("ended", "player:ended", etc.)
+                if (
+                    datosEventos.event === 'ended' || 
+                    datosEventEventos.value === 'ended' || 
+                    datosEventos.event === 'player:ended' ||
+                    (datosEventos.type === 'status' && datosEventos.value === 'ended')
+                ) {
                     restablecerPantallaEsperaInicial();
-                    if (document.fullscreenElement) document.exitFullscreen();
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen().catch(err => console.log("Error al salir de pantalla completa:", err));
+                    }
                 }
-            } catch(e) { }
+            } catch(e) { 
+                // Ignorar mensajes nativos del navegador que no vengan de la API de Bunny
+            }
         });
 
         // --- SOLUCIÓN PANTALLA COMPLETA TOTAL MANTENIENDO TUS RÓTULOS ---
@@ -522,6 +559,7 @@
             contenedorBotones.appendChild(boton);
         }
 
+        // Renderizado ordenado de la rejilla de años
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { crearBotonInteractiva(a.toString()); }
 
@@ -532,6 +570,7 @@
             });
         }
 
+        // Inicialización de la interfaz
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
     });
