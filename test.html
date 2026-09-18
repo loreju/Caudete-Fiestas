@@ -455,7 +455,7 @@
                        // Variable de seguridad para romper el bucle y evitar bloqueos falsos
         let unVideoEstaReproduciendose = false;
 
-             function arrancarRelojDigital() {
+                     function arrancarRelojDigital() {
             function actualizarHora() {
                 const ahora = new Date();
                 if (relojVideo) {
@@ -513,26 +513,30 @@
 
             const urlBase = videosData[anio];
             if (urlBase) {
+                // Forzamos el encendido manual de la reproducción
                 unVideoEstaReproduciendose = true;
-                // Cargamos el vídeo agregando el parámetro nativo api=1 requerido
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&api=1`;
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&enablejsapi=true`;
             }
         }
 
-        // --- DETECTOR FIN DE VÍDEO SEGURO Y PROTEGIDO ---
+        // --- DETECTOR FIN DE VÍDEO COMPATIBLE CON BUNNY STREAM ---
         window.addEventListener('message', (evento) => {
             try {
-                // Si el reproductor no tiene un vídeo válido cargado de Bunny CDN, ignoramos
+                // Si el iframe está vacío, ignoramos por completo
                 if (!unVideoEstaReproduciendose || !iframePlayer.src || iframePlayer.src.includes("about:blank")) return;
 
-                const rawData = evento.data;
-                const mensajeTexto = typeof rawData === 'string' ? rawData : JSON.stringify(rawData);
+                // Bunny envía mensajes de reproducción estructurados
+                let datos = evento.data;
+                if (typeof datos === 'string') {
+                    datos = JSON.parse(datos);
+                }
 
-                // Comprobamos si Bunny CDN manda el evento real de finalización
-                if (mensajeTexto && (
-                    mensajeTexto.includes('"ended"') || 
-                    mensajeTexto.includes('player:ended') || 
-                    mensajeTexto.includes('"event":"ended"')
+                // Captura las tres formas que tiene Bunny de avisar que el vídeo ha terminado
+                if (datos && (
+                    datos.event === 'ended' || 
+                    datos.value === 'ended' || 
+                    datos.type === 'player:ended' ||
+                    datos.status === 'ended'
                 )) {
                     restablecerPantallaEsperaInicial();
                     if (document.fullscreenElement) {
@@ -540,7 +544,7 @@
                     }
                 }
             } catch(e) {
-                // Ignora llamadas cruzadas ajenas
+                // Silencia mensajes cruzados de extensiones
             }
         });
 
@@ -568,6 +572,7 @@
             contenedorBotones.appendChild(boton);
         }
 
+        // Renderizar los botones en pantalla
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { crearBotonInteractiva(a.toString()); }
 
@@ -578,8 +583,13 @@
             });
         }
 
+        // Inicializamos los valores por defecto
         arrancarRelojDigital();
-        restablecerPantallaEsperaInicial();
+        
+        // Evitamos que la carga inicial bloquee el iFrame forzando un retraso limpio
+        setTimeout(() => {
+            restablecerPantallaEsperaInicial();
+        }, 200);
     });
     </script>
 </body>
