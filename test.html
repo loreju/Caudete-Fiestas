@@ -101,7 +101,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-            /* --- ANIMACIONES DE DESTELLO --- */
+        /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -216,6 +216,10 @@
         .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.6rem; }
         .btn-salir-reproductor:hover { background: #ff0000; }
 
+        /* NUEVO: Estilo para el botón dorado de pausa/play */
+        .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.3rem; }
+        .btn-pausa-reproductor:hover { background: #ff8c00; }
+
         .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.3rem; }
         .btn-fullscreen-web:hover { background: #ffcc00; }
 
@@ -253,7 +257,6 @@
         .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         .logo-comparsa:hover { transform: scale(1.08); }
 
-        /* MODIFICADO: Aumentado de 1.2rem a 1.45rem en PC para igualar a la perfección el peso del rango de años */
         .honor-text {
             color: #ffcc00;
             font-size: 1.45rem;
@@ -264,7 +267,6 @@
             animation: destelloContinuoTexto 2.5s infinite ease-in-out;
         }
 
-        /* El texto de los años en blanco limpio se mantiene en su proporción ideal */
         .years-subtitle-text {
             color: #ffffff;
             font-size: 1.4rem;
@@ -278,10 +280,7 @@
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
-            h1 { font-size: 1.5rem; } 
-            
-            /* MODIFICADO: Ajustados proporcionalmente en móviles ambos textos para que luzcan igual de imponentes */
-            .honor-text { font-size: 1.2rem; }
+            h1 { font-size: 1.5rem; } .honor-text { font-size: 1.2rem; }
             .years-subtitle-text { font-size: 1.2rem; font-weight: 600; }
             
             .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -300,11 +299,12 @@
             .control-buttons-group { bottom: 10px; right: 10px; gap: 8px; }
             .btn-control-tv { width: 38px; height: 38px; }
             .btn-salir-reproductor { font-size: 1.25rem; }
+            .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
         }
     </style>
 </head>
-<body>     
+<body>
 <!-- ========================================== -->
 <!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
 <!-- ========================================== -->
@@ -348,9 +348,10 @@
         <!-- MARCADOR DE FIESTAS: Fijo abajo a la izquierda -->
         <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
         
-        <!-- CORREGIDO: BOTONERA DE CONTROL EN FILA HORIZONTAL UNIFICADA (ABAJO A LA DERECHA) -->
+        <!-- CORREGIDO: TRES BOTONES EN FILA HORIZONTAL (🏠, ⏸, ⛶) -->
         <div class="control-buttons-group" id="grupo-botones-tv">
             <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
+            <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
             <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
         </div>
 
@@ -459,10 +460,11 @@ window.addEventListener('load', () => {
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 DEFINITIVA: BOTONERA HORIZONTAL, DETECTOR TÁCTIL FIJO Y CIERRES
+// PARTE 5 DEFINITIVA: TRES BOTONES, CONTROL DE PAUSA POR SOFTWARE Y CIERRES
 // ==========================================
 
         const btnSalirManual = document.getElementById('btn-salir-video');
+        const btnPausaManual = document.getElementById('btn-pausa-video');
         const grupoBotonesTV = document.getElementById('grupo-botones-tv');
         let sdkActivoBunny = null;
         let estadoVideoPausado = false;
@@ -488,7 +490,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Purga anti-pantalla negra de Bunny
+            if (iframePlayer) iframePlayer.src = "about:blank"; 
             if (capaEspera) {
                 capaEspera.style.visibility = 'visible';
                 capaEspera.style.opacity = '1';
@@ -499,8 +501,10 @@ window.addEventListener('load', () => {
             if (badgeAnio) badgeAnio.style.display = 'none';
             if (relojVideo) relojVideo.style.display = 'none';
             if (grupoBotonesTV) grupoBotonesTV.style.display = 'none'; 
+            
             sdkActivoBunny = null;
             estadoVideoPausado = false;
+            if (btnPausaManual) btnPausaManual.textContent = "⏸"; // Reseteamos el icono a pausa por defecto
             
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
@@ -517,7 +521,7 @@ window.addEventListener('load', () => {
                 setTimeout(() => {
                     capaEspera.style.visibility = 'hidden';
                     capaEspera.style.display = 'none';
-                }, 400); // Duración del desvanecimiento Fade-out
+                }, 400); 
             }
             
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'block';
@@ -533,14 +537,15 @@ window.addEventListener('load', () => {
             if (urlBase) {
                 unVideoEstaReproduciendose = true;
                 estadoVideoPausado = false;
+                if (btnPausaManual) btnPausaManual.textContent = "⏸";
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
 
-                // CORREGIDO: Inicialización explícita y forzada del SDK de Player.js para controlar la pausa cruzada
+                // Vinculación forzada del objeto PlayerJS sobre el iframe
                 setTimeout(() => {
                     try {
                         sdkActivoBunny = new playerjs.Player(iframePlayer);
                     } catch (err) {}
-                }, 1000); // Pausa de 1 segundo para asegurar la apertura estable de sockets en Android
+                }, 1000); 
             }
         }
 
@@ -565,10 +570,9 @@ window.addEventListener('load', () => {
         if (btnSalirManual) {
             btnSalirManual.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log("Escape de seguridad forzado por el usuario.");
                 unVideoEstaReproduciendose = false;
                 
-                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullscreenElement || document.msFullscreenElement) {
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
                     const salirFSGatillo = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
                     if (salirFSGatillo) salirFSGatillo.call(document).catch(() => {});
                 }
@@ -581,26 +585,24 @@ window.addEventListener('load', () => {
             });
         }
 
-        // --- CORREGIDO: DETECTOR INTERACTIVO MULTI-TOQUE PARA PAUSA FORZADA EN ANDROID/XIAOMI ---
-        const areaVideoContenedor = document.getElementById('marco-contenedor');
-        if (areaVideoContenedor) {
-            // Escuchamos el clic físico (PC) y el toque rápido de pantalla (Móvil)
-            const lanzarConmutadorPausa = function (e) {
-                if (e.target.closest('#grupo-botones-tv') || !unVideoEstaReproduciendose || !sdkActivoBunny) return;
-                
+        // --- NUEVO: ACCIÓN DEL BOTÓN MANUAL DE PAUSA (EVITA EL BLOQUEO TÁCTIL EN ANDROID) ---
+        if (btnPausaManual) {
+            btnPausaManual.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (!unVideoEstaReproduciendose || !sdkActivoBunny) return;
+
                 if (!estadoVideoPausado) {
-                    console.log("Gatillo API: Forzando pausa en Bunny Stream.");
-                    sdkActivoBunny.pause(); // Método formal del SDK Player.js
+                    console.log("Botonera: Forzando PAUSA mediante el SDK.");
+                    sdkActivoBunny.pause();
+                    btnPausaManual.textContent = "▶"; // Cambia el icono a Play
                     estadoVideoPausado = true;
                 } else {
-                    console.log("Gatillo API: Forzando reanudación.");
-                    sdkActivoBunny.play(); // Método formal del SDK Player.js
+                    console.log("Botonera: Forzando REPRODUCCIÓN.");
+                    sdkActivoBunny.play();
+                    btnPausaManual.textContent = "⏸"; // Cambia el icono a Pausa
                     estadoVideoPausado = false;
                 }
-            };
-
-            areaVideoContenedor.addEventListener('click', lanzarConmutadorPausa);
+            });
         }
 
         // Receptor de respaldo automático por si el navegador da permisos de salida por postMessage
@@ -641,7 +643,7 @@ window.addEventListener('load', () => {
         if (btnPlayBase) {
             btnPlayBase.addEventListener('click', (e) => {
                 e.preventDefault();
-                cambiarVideoDeAnio(anioSelected = anioSeleccionadoDestino);
+                cambiarVideoDeAnio(anioSeleccionadoDestino);
             });
         }
 
