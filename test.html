@@ -101,7 +101,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-  /* --- ANIMACIONES DE DESTELLO --- */
+ /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -326,7 +326,7 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-  <!-- ========================================== -->
+<!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES -->
 <!-- ========================================== -->
 
@@ -334,7 +334,7 @@
 <script>
 window.addEventListener('load', () => {
     // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
-    const videosData = {
+  const videosData = {
         "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
         "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
         "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
@@ -396,30 +396,7 @@ window.addEventListener('load', () => {
     let anioSeleccionadoDestino = "2026";
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
-
-    // --- RECEPTOR DE EVENTOS INTERNOS DE BUNNY STREAM (DENTRO DEL LOAD) ---
-    window.addEventListener("message", function(event) {
-        // Validamos que los mensajes procedan del dominio seguro del CDN de Bunny
-        if (!event.origin.includes("mediadelivery.net")) return;
-
-        try {
-            const bunnyData = JSON.parse(event.data);
-
-            // Captura el evento cuando finaliza por completo el video
-            if (bunnyData.event === "ended") {
-                console.log("Bunny API: Vídeo terminado con éxito.");
-                unVideoEstaReproduciendose = false;
-                
-                // Forzamos el restablecimiento de la pantalla para que pinte el cartel
-                if (typeof restablecerPantallaEsperaInicial === "function") {
-                    restablecerPantallaEsperaInicial();
-                }
-            }
-        } catch (err) {
-            // Ignoramos cadenas de texto que no pertenezcan al parseo de la API
-        }
-    });
-   // ==========================================
+// ==========================================
 // PARTE 5 COMPLETAMENTE INTEGRADA: CONTROL EXCLUSIVO SDK BUNNY CDN Y AUTO-ROTACIÓN
 // ==========================================
 
@@ -534,7 +511,7 @@ window.addEventListener('load', () => {
             const boton = document.createElement('button');
             boton.classList.add('btn-anio-archivo');
             boton.textContent = anio;
-            boton.setAttribute('data-anio', l = anio);
+            boton.setAttribute('data-anio', anio);
             if (anio === "2026") boton.classList.add('activo');
             boton.addEventListener('click', () => cambiarVideoDeAnio(anio));
             contenedorBotones.appendChild(boton);
@@ -560,4 +537,4 @@ window.addEventListener('load', () => {
     }); // Cierre del window.addEventListener('load') heredado de la Parte 4
     </script>
 </body>
-</html> 
+</html>
