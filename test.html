@@ -195,7 +195,7 @@
             flex-direction: row; 
             gap: 12px; 
             z-index: 6;
-            pointer-events: none; 
+            pointer-events: none; /* Evita que la caja invisible del grupo tape la barra de tiempo */
         }
 
         .btn-control-tv {
@@ -209,19 +209,23 @@
             justify-content: center;
             transition: all 0.2s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            pointer-events: auto; 
+            pointer-events: auto; /* Reactiva los clics dentro de las esferas de botones */
         }
         .btn-control-tv:hover { transform: scale(1.1); }
 
         .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.6rem; }
         .btn-salir-reproductor:hover { background: #ff0000; }
 
-        /* NUEVO: Estilo para el botón dorado de pausa/play */
         .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.3rem; }
         .btn-pausa-reproductor:hover { background: #ff8c00; }
 
         .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.3rem; }
         .btn-fullscreen-web:hover { background: #ffcc00; }
+
+        /* NUEVO: Reglas de asignación de eventos explícitos para el escudo transparente */
+        #escudo-toper {
+            pointer-events: auto !important; /* Fuerza al escudo a absorber los clics en su zona del 80% */
+        }
 
         /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
         #capa-espera {
@@ -309,7 +313,7 @@
 <!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
 <!-- ========================================== -->
 
-<!-- CABECERA OFICIAL CONFIGURADA -->
+<!-- CABECERA OFICIAL COMPLETA -->
 <div class="header-container">
     <!-- Bloque CTV superior izquierdo con logotipo y texto dorado corporativo -->
     <div class="header-block ctv-block-top">
@@ -348,7 +352,10 @@
         <!-- MARCADOR DE FIESTAS: Fijo abajo a la izquierda -->
         <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
         
-        <!-- CORREGIDO: TRES BOTONES EN FILA HORIZONTAL (🏠, ⏸, ⛶) -->
+        <!-- ESCUDO TRANSPARENTE ANTI-CLIC (Cubre el 80% superior protegiendo el centro y dejando libre el 20% de abajo para adelantar/atrasar) -->
+        <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default;"></div>
+
+        <!-- BOTONERA DE CONTROL UNIFICADA EN FILA HORIZONTAL (ABAJO A LA DERECHA) -->
         <div class="control-buttons-group" id="grupo-botones-tv">
             <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
             <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
