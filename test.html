@@ -27,7 +27,6 @@
             padding: 40px 20px;
             margin: 0;
         }
-
         /* --- ESTILOS DE LA CABECERA COMPLETAMENTE CENTRADA CORREGIDA --- */
         .header-container {
             display: flex;
@@ -101,7 +100,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-        /* --- ANIMACIONES DE DESTELLO --- */
+            /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -128,7 +127,7 @@
             padding: 5px;
         }
 
-        /* CORREGIDO: Adaptación total en smartphones para forzar el rellenado de pantalla completa */
+        /* CONFIGURACIÓN EXCLUSIVA FULLSCREEN: Convierte el contenedor en una ventana absoluta sin límites */
         .video-container:fullscreen {
             max-width: 100% !important;
             width: 100vw !important;
@@ -140,11 +139,12 @@
             align-items: center;
             justify-content: center;
             background-color: #000 !important;
+            overflow: hidden !important;
         }
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* Proporción 16:9 */
+            padding-bottom: 56.25%; /* Relación de aspecto estándar de televisión (16:9) */
             height: 0;
             width: 100%;
             border-radius: 8px;
@@ -152,13 +152,16 @@
             background-color: #000;
         }
         
-        /* CORREGIDO: Forzamos al reproductor a estirarse por completo eliminando las líneas negras en móviles */
+        /* CORREGIDO: Al pasar a pantalla completa, ampliamos el wrapper al tamaño del cristal del móvil */
         .video-container:fullscreen .video-wrapper {
             padding-bottom: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
             height: 100dvh !important;
             max-width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         .video-wrapper iframe {
@@ -166,30 +169,40 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             border: 0; z-index: 1;
-            object-fit: cover !important; /* CORREGIDO: Estira el vídeo eliminando las franjas laterales en Xiaomi e iPhone */
         }
 
-        /* --- OVERLAYS SOBRE EL VÍDEO (Alineados con las esquinas reales) --- */
+        /* CORREGIDO Y BLINDADO: Obliga de forma matemática al reproductor interno de Bunny CDN a crecer
+           y tragarse las franjas negras laterales en las pantallas largas de los Xiaomi, Samsung e iPhones */
+        .video-container:fullscreen .video-wrapper iframe {
+            width: 100vw !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            /* El truco del multiplicador: escala el ratio 16:9 interno de Bunny para rellenar los bordes largos del teléfono */
+            transform: scale(1.16) !important; 
+            transform-origin: center center !important;
+        }
+
+        /* --- OVERLAYS SOBRE EL VÍDEO (Fijos en las esquinas de la emisión real) --- */
         .reloj-video-block {
             position: absolute;
-            top: 20px; left: 20px; display: none;
+            top: 25px; left: 25px; display: none;
             background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
             padding: 12px 20px; font-size: 1.4rem; font-weight: bold;
             font-family: 'Courier New', Courier, monospace; border-radius: 6px;
             z-index: 5; pointer-events: none; letter-spacing: 1px;
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
-        .ctv-video-block { position: absolute; top: 20px; right: 20px; display: none; z-index: 5; pointer-events: none; }
+        .ctv-video-block { position: absolute; top: 25px; right: 25px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 78px; width: auto; object-fit: contain; opacity: 0.95; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         
         .badge-anio-reproductor {
-            position: absolute; bottom: 20px; left: 20px; display: none;
+            position: absolute; bottom: 25px; left: 25px; display: none;
             background: #ffffff; color: #141414; padding: 12px 24px; font-size: 1.4rem;
             font-weight: 900; border-radius: 6px; z-index: 5;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4); animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
         .btn-fullscreen-web {
-            position: absolute; bottom: 20px; right: 20px; display: none;
+            position: absolute; bottom: 25px; right: 25px; display: none;
             background: rgba(255, 204, 0, 0.85); color: #141414; border: none;
             padding: 10px 14px; font-weight: bold; font-size: 0.9rem;
             border-radius: 6px; cursor: pointer; z-index: 6;
@@ -197,11 +210,10 @@
         }
         .btn-fullscreen-web:hover { background: #ffcc00; transform: scale(1.05); }
 
-        /* CAPA DE ESPERA (Asegúrate de revisar el nombre exacto de la imagen en tu carpeta img) */
+        /* CAPA DE ESPERA */
         #capa-espera {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #141414; 
-            background-image: url('img/Cartel-Fiestas-espera.png'); /* Si no sale, verifica si se escribe con minúsculas */
+            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
             background-size: contain; background-position: center; background-repeat: no-repeat;
             z-index: 10; display: flex; align-items: center; justify-content: center;
         }
@@ -242,11 +254,12 @@
             .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
             
-            .ctv-video-block { top: 10px; right: 10px; }
-            .logo-ctv-fijo { height: 40px; }
-            .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
-            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
-            .btn-fullscreen-web { bottom: 10px; right: 10px; padding: 6px 10px; font-size: 0.75rem; }
+            /* Ajustes en móvil de los overlays para que sincronicen con el escalado */
+            .ctv-video-block { top: 15px; right: 15px; }
+            .logo-ctv-fijo { height: 44px; }
+            .reloj-video-block { top: 15px; left: 15px; padding: 6px 10px; font-size: 0.85rem; }
+            .badge-anio-reproductor { bottom: 15px; left: 15px; padding: 8px 14px; font-size: 0.85rem; }
+            .btn-fullscreen-web { bottom: 15px; right: 15px; padding: 8px 12px; font-size: 0.75rem; }
         }
     </style>
 </head>
