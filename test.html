@@ -127,7 +127,7 @@
             padding: 5px;
         }
 
-        /* CONFIGURACIÓN EXCLUSIVA FULLSCREEN: Convierte el contenedor en una ventana absoluta sin límites */
+        /* CONFIGURACIÓN FULLSCREEN: Contenedor general en negro */
         .video-container:fullscreen {
             max-width: 100% !important;
             width: 100vw !important;
@@ -139,12 +139,11 @@
             align-items: center;
             justify-content: center;
             background-color: #000 !important;
-            overflow: hidden !important;
         }
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* Relación de aspecto estándar de televisión (16:9) */
+            padding-bottom: 56.25%; /* Relación de aspecto nativa de televisión (16:9) */
             height: 0;
             width: 100%;
             border-radius: 8px;
@@ -152,16 +151,13 @@
             background-color: #000;
         }
         
-        /* CORREGIDO: Al pasar a pantalla completa, ampliamos el wrapper al tamaño del cristal del móvil */
+        /* FIJADO PROPORCIONAL: El marco interno se encoge al tamaño real del vídeo 16:9 en horizontal */
         .video-container:fullscreen .video-wrapper {
             padding-bottom: 0 !important;
-            width: 100vw !important;
             height: 100vh !important;
             height: 100dvh !important;
-            max-width: 100% !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            width: calc(100vh * 16 / 9) !important; /* Mantiene la proporción exacta del vídeo */
+            max-width: 100vw !important;
         }
 
         .video-wrapper iframe {
@@ -171,38 +167,27 @@
             border: 0; z-index: 1;
         }
 
-        /* CORREGIDO Y BLINDADO: Obliga de forma matemática al reproductor interno de Bunny CDN a crecer
-           y tragarse las franjas negras laterales en las pantallas largas de los Xiaomi, Samsung e iPhones */
-        .video-container:fullscreen .video-wrapper iframe {
-            width: 100vw !important;
-            height: 100vh !important;
-            height: 100dvh !important;
-            /* El truco del multiplicador: escala el ratio 16:9 interno de Bunny para rellenar los bordes largos del teléfono */
-            transform: scale(1.16) !important; 
-            transform-origin: center center !important;
-        }
-
-        /* --- OVERLAYS SOBRE EL VÍDEO (Fijos en las esquinas de la emisión real) --- */
+        /* --- OVERLAYS SOBRE EL VÍDEO (Alineados estrictamente en las esquinas de la imagen) --- */
         .reloj-video-block {
             position: absolute;
-            top: 25px; left: 25px; display: none;
+            top: 20px; left: 20px; display: none;
             background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
             padding: 12px 20px; font-size: 1.4rem; font-weight: bold;
             font-family: 'Courier New', Courier, monospace; border-radius: 6px;
             z-index: 5; pointer-events: none; letter-spacing: 1px;
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
-        .ctv-video-block { position: absolute; top: 25px; right: 25px; display: none; z-index: 5; pointer-events: none; }
+        .ctv-video-block { position: absolute; top: 20px; right: 20px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 78px; width: auto; object-fit: contain; opacity: 0.95; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         
         .badge-anio-reproductor {
-            position: absolute; bottom: 25px; left: 25px; display: none;
+            position: absolute; bottom: 20px; left: 20px; display: none;
             background: #ffffff; color: #141414; padding: 12px 24px; font-size: 1.4rem;
             font-weight: 900; border-radius: 6px; z-index: 5;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4); animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
         .btn-fullscreen-web {
-            position: absolute; bottom: 25px; right: 25px; display: none;
+            position: absolute; bottom: 20px; right: 20px; display: none;
             background: rgba(255, 204, 0, 0.85); color: #141414; border: none;
             padding: 10px 14px; font-weight: bold; font-size: 0.9rem;
             border-radius: 6px; cursor: pointer; z-index: 6;
@@ -210,7 +195,7 @@
         }
         .btn-fullscreen-web:hover { background: #ffcc00; transform: scale(1.05); }
 
-        /* CAPA DE ESPERA */
+        /* CAPA DE ESPERA (CARTEL DE FIESTAS) */
         #capa-espera {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
@@ -254,12 +239,12 @@
             .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
             
-            /* Ajustes en móvil de los overlays para que sincronicen con el escalado */
-            .ctv-video-block { top: 15px; right: 15px; }
-            .logo-ctv-fijo { height: 44px; }
-            .reloj-video-block { top: 15px; left: 15px; padding: 6px 10px; font-size: 0.85rem; }
-            .badge-anio-reproductor { bottom: 15px; left: 15px; padding: 8px 14px; font-size: 0.85rem; }
-            .btn-fullscreen-web { bottom: 15px; right: 15px; padding: 8px 12px; font-size: 0.75rem; }
+            /* Ajustes en móvil de los overlays fijos en las esquinas del vídeo real */
+            .ctv-video-block { top: 10px; right: 10px; }
+            .logo-ctv-fijo { height: 40px; }
+            .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
+            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
+            .btn-fullscreen-web { bottom: 10px; right: 10px; padding: 6px 10px; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -415,7 +400,7 @@ window.addEventListener('load', () => {
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 DEFINITIVA: RETORNO TOTAL GARANTIZADO CHROME ANDROID Y CIERRES
+// PARTE 5 DEFINITIVA: SALIDA AUTOMÁTICA COMPATIBLE CHROME ANDROID Y CIERRES
 // ==========================================
 
         function arrancarRelojDigital() {
@@ -439,7 +424,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Forzamos la muerte del player para que no se quede la pantalla negra
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza absoluta para destruir la pantalla negra de Bunny
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -475,7 +460,7 @@ window.addEventListener('load', () => {
             const urlBase = videosData[anio];
             if (urlBase) {
                 unVideoEstaReproduciendose = true;
-                // Parámetros críticos inyectados de forma síncrona
+                // Inicialización con canales de escucha abiertos y playsinline activo
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
             }
         }
@@ -497,29 +482,27 @@ window.addEventListener('load', () => {
             });
         }
 
-        // --- RECEPTOR MAESTRO MEJORADO PARA DETECTAR EL FINAL EN CHROME ANDROID ---
+        // --- RECEPTOR UNIFICADO: CAPTURA EL FINAL EN MÓVILES Y SACA AL USUARIO DE FULLSCREEN ---
         window.addEventListener('message', (evento) => {
-            // Interceptamos cualquier ráfaga que proceda de los dominios de Bunny Stream
+            // Filtrar ráfagas ajenas a los dominios oficiales de Bunny CDN
             if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
             
             try {
                 if (!evento.data || iframePlayer.src.includes("about:blank")) return;
                 
                 let datos = evento.data;
-                // Forzamos el parseo manual si Chrome nos lo entrega en formato de cadena plana
                 if (typeof datos === 'string') { datos = JSON.parse(datos); }
                 
-                // COMPROBACIÓN DIRECTA SIN FILTROS RESTRICTIVOS:
-                // Si el evento reporta finalización bajo el estándar nativo o el encapsulado de PlayerJS
+                // COMPROBACIÓN TOTAL DE SEÑAL EN CHROME/SAFARI MÓVIL:
                 if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended' || (datos.context && datos.event === 'ended'))) {
-                    console.log("Receptor Maestro: Se ha detectado el fin de la reproducción.");
+                    console.log("Detección: Transmisión finalizada con éxito.");
                     unVideoEstaReproduciendose = false;
 
-                    // 1. ROMPER EL MODO PANTALLA COMPLETA INMEDIATAMENTE
+                    // 1. FORZAR ABANDONO DE PANTALLA COMPLETA INMEDIATAMENTE
                     if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-                        const salirDePantallaCompleta = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-                        if (salirDePantallaCompleta) {
-                            salirDePantallaCompleta.call(document).catch(() => {});
+                        const salirFullscreenNativo = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+                        if (salirFullscreenNativo) {
+                            salirFullscreenNativo.call(document).catch(() => {});
                         }
                     }
 
@@ -527,14 +510,12 @@ window.addEventListener('load', () => {
                         screen.orientation.unlock();
                     }
 
-                    // 2. DISPARAR LA CARÁTULA CON EL CARTEL DE FIESTAS DE FONDO
+                    // 2. RECUPERAR EL CARTEL DE FIESTAS Y DESTRUIR EL CUADRO NEGRO
                     setTimeout(() => {
                         restablecerPantallaEsperaInicial();
                     }, 100);
                 }
-            } catch (e) {
-                // Evita romper scripts por mensajes de extensiones del navegador
-            }
+            } catch (e) {}
         });
 
         function crearBotonInteractiva(anio) {
