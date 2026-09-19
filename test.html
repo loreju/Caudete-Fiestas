@@ -101,7 +101,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
- /* --- ANIMACIONES DE DESTELLO --- */
+        /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -128,7 +128,7 @@
             padding: 5px;
         }
 
-        /* CORREGIDO: Forzado dinámico de dimensiones al pasar a Landscape horizontal en móviles (evita bandas negras) */
+        /* CORREGIDO: Adaptación estricta para pantallas panorámicas largas en smartphones */
         .video-container:fullscreen {
             max-width: 100% !important;
             width: 100vw !important;
@@ -144,7 +144,7 @@
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* Relación de aspecto estándar 16:9 */
             height: 0;
             width: 100%;
             border-radius: 8px;
@@ -152,11 +152,21 @@
             background-color: #000;
         }
         
+        /* CORREGIDO: En pantalla completa forzamos a la caja interna a mantener la proporción exacta del vídeo */
         .video-container:fullscreen .video-wrapper {
             padding-bottom: 0 !important;
+            width: 100%;
+            max-width: calc(100vh * 16 / 9); /* Calcula el ancho máximo exacto para que no desborde las franjas */
             height: 100vh !important;
             height: 100dvh !important;
-            width: 100vw !important;
+        }
+
+        /* En caso de que el móvil sea extremadamente ancho en horizontal */
+        @media (min-aspect-ratio: 16/9) {
+            .video-container:fullscreen .video-wrapper {
+                width: calc(100vh * 16 / 9) !important;
+                height: 100vh !important;
+            }
         }
 
         .video-wrapper iframe {
@@ -166,7 +176,7 @@
             border: 0; z-index: 1;
         }
 
-        /* --- OVERLAYS SOBRE EL VÍDEO --- */
+        /* --- OVERLAYS SOBRE EL VÍDEO (Alineados con el marco real) --- */
         .reloj-video-block {
             position: absolute;
             top: 20px; left: 20px; display: none;
@@ -178,6 +188,7 @@
         }
         .ctv-video-block { position: absolute; top: 20px; right: 20px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 78px; width: auto; object-fit: contain; opacity: 0.95; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
+        
         .badge-anio-reproductor {
             position: absolute; bottom: 20px; left: 20px; display: none;
             background: #ffffff; color: #141414; padding: 12px 24px; font-size: 1.4rem;
@@ -225,7 +236,7 @@
         .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         .logo-comparsa:hover { transform: scale(1.08); }
 
-        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (LOGOS AL CENTRO ALINEADOS) --- */
+        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -237,11 +248,12 @@
             .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
             
+            /* CORREGIDO: Ajustes posicionales en móvil para que queden perfectos dentro del vídeo 16:9 */
             .ctv-video-block { top: 10px; right: 10px; }
-            .logo-ctv-fijo { height: 48px; }
-            .reloj-video-block { top: 10px; left: 10px; padding: 6px 10px; font-size: 0.85rem; }
-            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 8px 14px; font-size: 0.9rem; }
-            .btn-fullscreen-web { bottom: 10px; right: 10px; padding: 8px 10px; font-size: 0.75rem; }
+            .logo-ctv-fijo { height: 40px; }
+            .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
+            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
+            .btn-fullscreen-web { bottom: 10px; right: 10px; padding: 6px 10px; font-size: 0.75rem; }
         }
     </style>
 </head>
