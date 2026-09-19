@@ -460,13 +460,12 @@ window.addEventListener('load', () => {
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 DEFINITIVA: TRES BOTONES, CONTROL DE PAUSA POR SOFTWARE Y CIERRES
+// PARTE 5 DEFINITIVA: COMUNICACIÓN CRUDA, CONTROL DE PAUSA DIRECTO Y CIERRES
 // ==========================================
 
         const btnSalirManual = document.getElementById('btn-salir-video');
         const btnPausaManual = document.getElementById('btn-pausa-video');
         const grupoBotonesTV = document.getElementById('grupo-botones-tv');
-        let sdkActivoBunny = null;
         let estadoVideoPausado = false;
 
         function arrancarRelojDigital() {
@@ -490,7 +489,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; 
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Purga anti-pantalla negra de Bunny
             if (capaEspera) {
                 capaEspera.style.visibility = 'visible';
                 capaEspera.style.opacity = '1';
@@ -502,9 +501,8 @@ window.addEventListener('load', () => {
             if (relojVideo) relojVideo.style.display = 'none';
             if (grupoBotonesTV) grupoBotonesTV.style.display = 'none'; 
             
-            sdkActivoBunny = null;
             estadoVideoPausado = false;
-            if (btnPausaManual) btnPausaManual.textContent = "⏸"; // Reseteamos el icono a pausa por defecto
+            if (btnPausaManual) btnPausaManual.textContent = "⏸"; // Reseteamos el icono a pausa
             
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
@@ -538,14 +536,9 @@ window.addEventListener('load', () => {
                 unVideoEstaReproduciendose = true;
                 estadoVideoPausado = false;
                 if (btnPausaManual) btnPausaManual.textContent = "⏸";
+                
+                // Forzamos los parámetros oficiales de Bunny CDN para abrir sus canales de escucha
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
-
-                // Vinculación forzada del objeto PlayerJS sobre el iframe
-                setTimeout(() => {
-                    try {
-                        sdkActivoBunny = new playerjs.Player(iframePlayer);
-                    } catch (err) {}
-                }, 1000); 
             }
         }
 
@@ -572,7 +565,7 @@ window.addEventListener('load', () => {
                 e.preventDefault();
                 unVideoEstaReproduciendose = false;
                 
-                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullscreenElement || document.msFullscreenElement) {
                     const salirFSGatillo = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
                     if (salirFSGatillo) salirFSGatillo.call(document).catch(() => {});
                 }
@@ -585,27 +578,39 @@ window.addEventListener('load', () => {
             });
         }
 
-        // --- NUEVO: ACCIÓN DEL BOTÓN MANUAL DE PAUSA (EVITA EL BLOQUEO TÁCTIL EN ANDROID) ---
+        // --- CORREGIDO: ACCIÓN DEL BOTÓN DE PAUSA CON COMANDOS CRUDOS COMPATIBLES CON CHROME MÓVIL ---
         if (btnPausaManual) {
             btnPausaManual.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (!unVideoEstaReproduciendose || !sdkActivoBunny) return;
+                e.stopPropagation(); // Evita que Chrome asuma que estamos tocando el vídeo y minimice la pantalla
+                
+                if (!unVideoEstaReproduciendose || !iframePlayer.contentWindow) return;
 
                 if (!estadoVideoPausado) {
-                    console.log("Botonera: Forzando PAUSA mediante el SDK.");
-                    sdkActivoBunny.pause();
+                    console.log("Botonera: Inyectando comando crudo PAUSE a Bunny...");
+                    
+                    // Enviamos los tres formatos de mensajes universales de Bunny Stream y PlayerJS simultáneamente para asegurar compatibilidad
+                    iframePlayer.contentWindow.postMessage('{"context":"player.js","method":"pause","value":""}', '*');
+                    iframePlayer.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo' }), '*');
+                    iframePlayer.contentWindow.postMessage('pause', '*');
+                    
                     btnPausaManual.textContent = "▶"; // Cambia el icono a Play
                     estadoVideoPausado = true;
                 } else {
-                    console.log("Botonera: Forzando REPRODUCCIÓN.");
-                    sdkActivoBunny.play();
+                    console.log("Botonera: Inyectando comando crudo PLAY a Bunny...");
+                    
+                    // Enviamos los tres formatos de mensajes universales de Bunny Stream y PlayerJS simultáneamente para asegurar compatibilidad
+                    iframePlayer.contentWindow.postMessage('{"context":"player.js","method":"play","value":""}', '*');
+                    iframePlayer.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
+                    iframePlayer.contentWindow.postMessage('play', '*');
+                    
                     btnPausaManual.textContent = "⏸"; // Cambia el icono a Pausa
                     estadoVideoPausado = false;
                 }
             });
         }
 
-        // Receptor de respaldo automático por si el navegador da permisos de salida por postMessage
+        // Receptor de respaldo automático para salir al terminar
         window.addEventListener('message', (evento) => {
             if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
             try {
@@ -613,7 +618,7 @@ window.addEventListener('load', () => {
                 let datos = evento.data;
                 if (typeof datos === 'string') { datos = JSON.parse(datos); }
                 
-                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
+                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended' || (datos.context && datos.event === 'ended'))) {
                     unVideoEstaReproduciendose = false;
                     if (document.fullscreenElement) {
                         document.exitFullscreen().catch(()=>{});
