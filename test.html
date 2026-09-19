@@ -416,7 +416,7 @@ window.addEventListener('load', () => {
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 COMPLETAMENTE INTEGRADA: CONTROL EXCLUSIVO SDK BUNNY CDN, AUTO-EXIT Y EVENTO ZOOM DOBLE CLIC
+// PARTE 5 COMPLETA Y REPARADA: RETORNO DE PANTALLA, CONTROL SEGURO Y CIERRES
 // ==========================================
 
         function arrancarRelojDigital() {
@@ -440,7 +440,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza radical para liquidar la pantalla negra
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza radical para liquidar la pantalla negra de Bunny
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -450,10 +450,6 @@ window.addEventListener('load', () => {
             if (badgeAnio) badgeAnio.style.display = 'none';
             if (relojVideo) relojVideo.style.display = 'none';
             if (btnFS) btnFS.style.display = 'none';
-            
-            // Forzamos la desactivación del zoom al restablecer el cartel
-            const contenedorInterno = document.querySelector('.video-wrapper');
-            if (contenedorInterno) contenedorInterno.classList.remove('expandido');
             
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
@@ -480,41 +476,8 @@ window.addEventListener('load', () => {
             const urlBase = videosData[anio];
             if (urlBase) {
                 unVideoEstaReproduciendose = true;
-                
-                // Forzamos los parámetros requeridos por Bunny CDN de manera síncrona con el puerto JS abierto
+                // Forzamos los parámetros requeridos por Bunny CDN de manera síncrona con el puerto de la API activado
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
-
-                // --- DETONADOR COMPATIBLE CON CHROME MÓVIL (SDK OFICIAL DE RESPALDO) ---
-                setTimeout(() => {
-                    try {
-                        const reproductorBunny = new playerjs.Player(iframePlayer);
-                        
-                        reproductorBunny.on('ready', () => {
-                            console.log("SDK Bunny: Monitorización activa.");
-                        });
-
-                        // Captura el final real emitido por el streaming de Bunny
-                        reproductorBunny.on('ended', () => {
-                            console.log("SDK Bunny: Fin de reproducción.");
-                            unVideoEstaReproduciendose = false;
-                            
-                            // 1. SACAR DEL MODO PANTALLA COMPLETA AUTOMÁTICAMENTE
-                            if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-                                const cerrarFullscreenMovil = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-                                if (cerrarFullscreenMovil) {
-                                    cerrarFullscreenMovil.call(document).catch(() => {});
-                                }
-                            }
-
-                            if (screen.orientation && screen.orientation.unlock) {
-                                screen.orientation.unlock();
-                            }
-
-                            // 2. RETORNO INMEDIATO DE TU CARTEL DE FIESTAS
-                            restablecerPantallaEsperaInicial();
-                        });
-                    } catch (e) {}
-                }, 800);
             }
         }
 
@@ -535,36 +498,37 @@ window.addEventListener('load', () => {
             });
         }
 
-        // --- INTERCEPTOR DE DOBLE TOQUE: EXPANDE EL VÍDEO AL TAMAÑO TOTAL DE LA PANTALLA (XIAOMI / IPHONE) ---
-        const contenedorInternoWrapper = document.querySelector('.video-wrapper');
-        if (contenedorInternoWrapper) {
-            contenedorInternoWrapper.addEventListener('click', function (e) {
-                // Simulamos un detector de doble pulsación nativa táctil rápido
-                const ahora = new Date().getTime();
-                const tiempoDiferencia = ahora - (contenedorInternoWrapper.dataset.ultimoToque || 0);
-                
-                if (tiempoDiferencia < 300 && tiempoDiferencia > 0) {
-                    if (document.fullscreenElement) {
-                        contenedorInternoWrapper.classList.toggle('expandido');
-                        console.log("Ajuste de pantalla: Cambiando modo de escalado del vídeo.");
-                    }
-                }
-                contenedorInternoWrapper.dataset.ultimoToque = ahora;
-            });
-        }
-
-        // Escucha de respaldo estándar por si el navegador bloquea los sockets del SDK de Bunny
+        // --- RECEPTOR UNIFICADO: CAPTURA EL FINAL Y SACA AL USUARIO DE LA PANTALLA COMPLETA ---
         window.addEventListener('message', (evento) => {
-            if (!evento.origin.includes("mediadelivery.net")) return;
+            if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
+            
             try {
+                if (!evento.data || iframePlayer.src.includes("about:blank")) return;
+                
                 let datos = evento.data;
                 if (typeof datos === 'string') { datos = JSON.parse(datos); }
-                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
+                
+                // Captura el final bajo cualquier especificación de Bunny Stream o Player.js
+                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended' || (datos.context && datos.event === 'ended'))) {
+                    console.log("Bunny Stream ha terminado. Volviendo a la interfaz normal de la web.");
                     unVideoEstaReproduciendose = false;
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(()=>{});
+
+                    // 1. CORREGIDO: Cierre seguro multibrand de la pantalla completa móvil y escritorio
+                    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                        const salirFullscreen = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+                        if (salirFullscreen) {
+                            salirFullscreen.call(document).catch(() => {});
+                        }
                     }
-                    restablecerPantallaEsperaInicial();
+
+                    if (screen.orientation && screen.orientation.unlock) {
+                        screen.orientation.unlock();
+                    }
+
+                    // 2. RESTAURACIÓN DEL CARTEL DE FIESTAS ORIGINAL
+                    setTimeout(() => {
+                        restablecerPantallaEsperaInicial();
+                    }, 150);
                 }
             } catch (e) {}
         });
@@ -580,13 +544,13 @@ window.addEventListener('load', () => {
             contenedorBotones.appendChild(boton);
         }
 
-        // Generar rejilla completa de años
+        // Generar rejilla completa de botones de años
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { 
             crearBotonInteractiva(a.toString()); 
         }
 
-        // Evento botón Play de la carátula inicial
+        // Evento botón Play de la carátula inicial de espera
         if (btnPlayBase) {
             btnPlayBase.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -594,10 +558,10 @@ window.addEventListener('load', () => {
             });
         }
 
-        // Arranque fino inicial
+        // Arranque fino inicial del reloj y carátula
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
-    }); // Cierre del window.addEventListener('load') heredado de la Parte 4
+    }); // Cierre definitivo del window.addEventListener('load') heredado de la Parte 4
     </script>
 </body>
 </html>
