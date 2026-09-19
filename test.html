@@ -480,7 +480,7 @@ window.addEventListener('load', () => {
         }
     });
 // ==========================================
-// PARTE 5 DEFINITIVA: LÓGICA DE CONTROL, BOTONES DINÁMICOS Y CIERRES
+// PARTE 5 COMPLETA: LÓGICA DE CONTROL, SISTEMA ANTI-PANTALLA NEGRA Y CIERRES
 // ==========================================
 
         function arrancarRelojDigital() {
@@ -504,7 +504,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza e inicialización del reproductor
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza e inicialización absoluta del reproductor
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -539,30 +539,52 @@ window.addEventListener('load', () => {
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // CORREGIDO: Parámetros nativos optimizados para habilitar de forma forzada la API de Javascript en Bunny
+                // Forzamos los parámetros de inicialización de la API de mensajería de Bunny Stream
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true`;
                 unVideoEstaReproduciendose = true;
             }
         }
 
-        // --- RECEPTOR AUXILIAR DE RESPALDO PARA TEXTO PLANO ---
+        // --- RECEPTOR MULTI-PROTOCOLO: SACA DE PANTALLA COMPLETA Y ELIMINA LA PANTALLA NEGRA ---
         window.addEventListener('message', (evento) => {
             if (!evento.origin.includes("mediadelivery.net")) return;
+            
             try {
                 if (!evento.data || iframePlayer.src.includes("about:blank")) return;
-                let datos = evento.data;
-                if (typeof datos === 'string') { datos = JSON.parse(datos); }
                 
-                // Si detecta la finalización por cualquiera de las variantes de datos que arroja Bunny
-                if (datos && (datos.event === 'ended' || datos.type === 'player:ended' || datos.value === 'ended')) {
-                    console.log("Respaldo API: Finalización detectada.");
-                    unVideoEstaReproduciendose = false;
-                    restablecerPantallaEsperaInicial();
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(()=>{});
-                    }
+                let datos = evento.data;
+                // Si Bunny transmite como cadena de texto plano, lo parseamos a JSON
+                if (typeof datos === 'string') { 
+                    datos = JSON.parse(datos); 
                 }
-            } catch (e) {}
+                
+                // VALIDACIÓN GLOBAL DE EVENTOS (Nativo, Player.js y Mensajería Plana de Bunny)
+                if (datos && (
+                    datos.event === 'ended' || 
+                    datos.value === 'ended' || 
+                    datos.type === 'player:ended' ||
+                    (datos.context === 'player.js' && datos.event === 'ended')
+                )) {
+                    console.log("Bunny CDN: Final detectado de forma interactiva.");
+                    unVideoEstaReproduciendose = false;
+
+                    // 1. FORZAR LA SALIDA AUTOMÁTICA DE PANTALLA COMPLETA EN CUALQUIER NAVEGADOR (Evita pulsar Escape)
+                    const tieneFS = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+                    if (tieneFS) {
+                        const salirPantallaCompleta = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+                        if (salirPantallaCompleta) {
+                            salirPantallaCompleta.call(document).catch((err) => console.log("Error al salir de Fullscreen:", err));
+                        }
+                    }
+                    
+                    // 2. RESTABLECER LA WEB: Destruye el reproductor negro y devuelve tu cartel de fiestas
+                    setTimeout(() => {
+                        restablecerPantallaEsperaInicial();
+                    }, 150); // Margen de seguridad de 150ms para que el navegador procese el cambio de tamaño de la ventana
+                }
+            } catch (e) {
+                // Silencia errores si entran mensajes ajenos a la API de vídeo
+            }
         });
 
         // --- CONTROL PANTALLA COMPLETA ---
@@ -606,7 +628,7 @@ window.addEventListener('load', () => {
         // Inicialización del entorno visual
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
-    }); // Cierre del window.addEventListener('load') abierto en la Parte 4
+    }); // Cierre del window.addEventListener('load') heredado de la Parte 4
     </script>
 </body>
 </html>
