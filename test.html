@@ -101,7 +101,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-         /* --- ANIMACIONES DE DESTELLO --- */
+           /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -253,10 +253,10 @@
         .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         .logo-comparsa:hover { transform: scale(1.08); }
 
-        /* CORREGIDO: Igualado exactamente a la escala de .honor-text (1.2rem) en color blanco limpio */
+        /* MODIFICADO: Subido 3 píxeles más (1.4rem) en PC con peso visual limpio para remarcarlas de forma perfecta */
         .years-subtitle-text {
             color: #ffffff;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1.5px;
@@ -269,8 +269,8 @@
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
             h1 { font-size: 1.5rem; } .honor-text { font-size: 1rem; } 
             
-            /* CORREGIDO: Igualado exactamente a la proporción móvil del letrero de la Virgen (1rem) */
-            .years-subtitle-text { font-size: 1rem; font-weight: 600; }
+            /* MODIFICADO: Subido de 1rem a 1.2rem en responsive móvil para compensar visualmente la ausencia de negrita */
+            .years-subtitle-text { font-size: 1.2rem; font-weight: 600; }
             
             .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
             .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 75px; }
@@ -292,7 +292,7 @@
         }
     </style>
 </head>
-<body>
+<body>  
 <!-- ========================================== -->
 <!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
 <!-- ========================================== -->
@@ -447,7 +447,7 @@ window.addEventListener('load', () => {
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 DEFINITIVA: PAUSA TÁCTIL FORZADA ANDROID, ENTORNO HORIZONTAL Y CIERRES
+// PARTE 5 DEFINITIVA: BOTONERA HORIZONTAL, DETECTOR TÁCTIL FIJO Y CIERRES
 // ==========================================
 
         const btnSalirManual = document.getElementById('btn-salir-video');
@@ -476,7 +476,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; 
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Purga anti-pantalla negra de Bunny
             if (capaEspera) {
                 capaEspera.style.visibility = 'visible';
                 capaEspera.style.opacity = '1';
@@ -505,7 +505,7 @@ window.addEventListener('load', () => {
                 setTimeout(() => {
                     capaEspera.style.visibility = 'hidden';
                     capaEspera.style.display = 'none';
-                }, 400); 
+                }, 400); // Duración del desvanecimiento Fade-out
             }
             
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'block';
@@ -523,35 +523,16 @@ window.addEventListener('load', () => {
                 estadoVideoPausado = false;
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
 
-                // Vinculamos el SDK en la carga para el control manual táctil de la pausa
+                // CORREGIDO: Inicialización explícita y forzada del SDK de Player.js para controlar la pausa cruzada
                 setTimeout(() => {
                     try {
                         sdkActivoBunny = new playerjs.Player(iframePlayer);
-                    } catch(err){}
-                }, 800);
+                    } catch (err) {}
+                }, 1000); // Pausa de 1 segundo para asegurar la apertura estable de sockets en Android
             }
         }
 
-        // --- CORREGIDO: INTERCEPTOR TÁCTIL PARA ACTIVAR PAUSA EN MÓVILES AL TOCAR EL MARCO ---
-        const capaMarcoContenedor = document.getElementById('marco-contenedor');
-        if (capaMarcoContenedor) {
-            capaMarcoContenedor.addEventListener('touchend', function (e) {
-                // Si el toque fue sobre los botones de control de la esquina, lo ignoramos para que hagan su acción
-                if (e.target.closest('#grupo-botones-tv') || !unVideoEstaReproduciendose || !sdkActivoBunny) return;
-                
-                e.preventDefault();
-                if (!estadoVideoPausado) {
-                    console.log("Toque detectado: Pausando emisión de forma controlada.");
-                    sdkActivoBunny.send('pause');
-                    estadoVideoPausado = true;
-                } else {
-                    console.log("Toque detectado: Reanudando emisión.");
-                    sdkActivoBunny.send('play');
-                    estadoVideoPausado = false;
-                }
-            });
-        }
-
+        // --- MANEJO DE PANTALLA COMPLETA Y GIRO AUTOMÁTICO EN MÓVILES ---
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -568,9 +549,11 @@ window.addEventListener('load', () => {
             });
         }
 
+        // --- ACCIÓN DEL BOTÓN INICIO (INTERACCIÓN FÍSICA DIRECTA MOBILE) ---
         if (btnSalirManual) {
             btnSalirManual.addEventListener('click', (e) => {
                 e.preventDefault();
+                console.log("Escape de seguridad forzado por el usuario.");
                 unVideoEstaReproduciendose = false;
                 
                 if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullscreenElement || document.msFullscreenElement) {
@@ -586,6 +569,29 @@ window.addEventListener('load', () => {
             });
         }
 
+        // --- CORREGIDO: DETECTOR INTERACTIVO MULTI-TOQUE PARA PAUSA FORZADA EN ANDROID/XIAOMI ---
+        const areaVideoContenedor = document.getElementById('marco-contenedor');
+        if (areaVideoContenedor) {
+            // Escuchamos el clic físico (PC) y el toque rápido de pantalla (Móvil)
+            const lanzarConmutadorPausa = function (e) {
+                if (e.target.closest('#grupo-botones-tv') || !unVideoEstaReproduciendose || !sdkActivoBunny) return;
+                
+                e.preventDefault();
+                if (!estadoVideoPausado) {
+                    console.log("Gatillo API: Forzando pausa en Bunny Stream.");
+                    sdkActivoBunny.pause(); // Método formal del SDK Player.js
+                    estadoVideoPausado = true;
+                } else {
+                    console.log("Gatillo API: Forzando reanudación.");
+                    sdkActivoBunny.play(); // Método formal del SDK Player.js
+                    estadoVideoPausado = false;
+                }
+            };
+
+            areaVideoContenedor.addEventListener('click', lanzarConmutadorPausa);
+        }
+
+        // Receptor de respaldo automático por si el navegador da permisos de salida por postMessage
         window.addEventListener('message', (evento) => {
             if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
             try {
@@ -623,7 +629,7 @@ window.addEventListener('load', () => {
         if (btnPlayBase) {
             btnPlayBase.addEventListener('click', (e) => {
                 e.preventDefault();
-                cambiarVideoDeAnio(anioSeleccionadoDestino);
+                cambiarVideoDeAnio(anioSelected = anioSeleccionadoDestino);
             });
         }
 
