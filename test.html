@@ -101,7 +101,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-           /* --- ANIMACIONES DE DESTELLO --- */
+            /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -253,7 +253,18 @@
         .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         .logo-comparsa:hover { transform: scale(1.08); }
 
-        /* MODIFICADO: Subido 3 píxeles más (1.4rem) en PC con peso visual limpio para remarcarlas de forma perfecta */
+        /* MODIFICADO: Aumentado de 1.2rem a 1.45rem en PC para igualar a la perfección el peso del rango de años */
+        .honor-text {
+            color: #ffcc00;
+            font-size: 1.45rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+            animation: destelloContinuoTexto 2.5s infinite ease-in-out;
+        }
+
+        /* El texto de los años en blanco limpio se mantiene en su proporción ideal */
         .years-subtitle-text {
             color: #ffffff;
             font-size: 1.4rem;
@@ -267,9 +278,10 @@
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
-            h1 { font-size: 1.5rem; } .honor-text { font-size: 1rem; } 
+            h1 { font-size: 1.5rem; } 
             
-            /* MODIFICADO: Subido de 1rem a 1.2rem en responsive móvil para compensar visualmente la ausencia de negrita */
+            /* MODIFICADO: Ajustados proporcionalmente en móviles ambos textos para que luzcan igual de imponentes */
+            .honor-text { font-size: 1.2rem; }
             .years-subtitle-text { font-size: 1.2rem; font-weight: 600; }
             
             .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -292,7 +304,7 @@
         }
     </style>
 </head>
-<body>  
+<body>     
 <!-- ========================================== -->
 <!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
 <!-- ========================================== -->
