@@ -101,7 +101,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-   /* --- ANIMACIONES DE DESTELLO --- */
+        /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -128,7 +128,7 @@
             padding: 5px;
         }
 
-        /* CORREGIDO: Adaptación estricta para pantallas panorámicas largas en smartphones */
+        /* CORREGIDO: Adaptación total en smartphones para forzar el rellenado de pantalla completa */
         .video-container:fullscreen {
             max-width: 100% !important;
             width: 100vw !important;
@@ -144,7 +144,7 @@
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* Relación de aspecto estándar 16:9 */
+            padding-bottom: 56.25%; /* Proporción 16:9 */
             height: 0;
             width: 100%;
             border-radius: 8px;
@@ -152,21 +152,13 @@
             background-color: #000;
         }
         
-        /* CORREGIDO: En pantalla completa forzamos a la caja interna a mantener la proporción exacta del vídeo */
+        /* CORREGIDO: Forzamos al reproductor a estirarse por completo eliminando las líneas negras en móviles */
         .video-container:fullscreen .video-wrapper {
             padding-bottom: 0 !important;
-            width: 100%;
-            max-width: calc(100vh * 16 / 9); /* Calcula el ancho máximo exacto para que no desborde las franjas */
+            width: 100vw !important;
             height: 100vh !important;
             height: 100dvh !important;
-        }
-
-        /* En caso de que el móvil sea extremadamente ancho en horizontal */
-        @media (min-aspect-ratio: 16/9) {
-            .video-container:fullscreen .video-wrapper {
-                width: calc(100vh * 16 / 9) !important;
-                height: 100vh !important;
-            }
+            max-width: 100% !important;
         }
 
         .video-wrapper iframe {
@@ -174,16 +166,10 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             border: 0; z-index: 1;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Zoom suave e interactivo */
+            object-fit: cover !important; /* CORREGIDO: Estira el vídeo eliminando las franjas laterales en Xiaomi e iPhone */
         }
 
-        /* NUEVA REGLA: Forzado inteligente para estirar la transmisión al borde completo del smartphone sin dejar bandas negras */
-        .video-container:fullscreen .video-wrapper.expandido iframe {
-            transform: scale(1.15) !important; 
-            object-fit: cover !important;
-        }
-
-        /* --- OVERLAYS SOBRE EL VÍDEO (Alineados con el marco real) --- */
+        /* --- OVERLAYS SOBRE EL VÍDEO (Alineados con las esquinas reales) --- */
         .reloj-video-block {
             position: absolute;
             top: 20px; left: 20px; display: none;
@@ -211,10 +197,11 @@
         }
         .btn-fullscreen-web:hover { background: #ffcc00; transform: scale(1.05); }
 
-        /* CAPA DE ESPERA */
+        /* CAPA DE ESPERA (Asegúrate de revisar el nombre exacto de la imagen en tu carpeta img) */
         #capa-espera {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
+            background-color: #141414; 
+            background-image: url('img/Cartel-Fiestas-espera.png'); /* Si no sale, verifica si se escribe con minúsculas */
             background-size: contain; background-position: center; background-repeat: no-repeat;
             z-index: 10; display: flex; align-items: center; justify-content: center;
         }
@@ -243,7 +230,7 @@
         .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         .logo-comparsa:hover { transform: scale(1.08); }
 
-        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (LOGOS AL CENTRO ALINEADOS) --- */
+        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -255,7 +242,6 @@
             .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
             
-            /* Ajustes posicionales en móvil para que queden fijos dentro del vídeo 16:9 real */
             .ctv-video-block { top: 10px; right: 10px; }
             .logo-ctv-fijo { height: 40px; }
             .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
@@ -416,7 +402,7 @@ window.addEventListener('load', () => {
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 COMPLETA Y REPARADA: RETORNO DE PANTALLA, CONTROL SEGURO Y CIERRES
+// PARTE 5 DEFINITIVA: RETORNO TOTAL GARANTIZADO CHROME ANDROID Y CIERRES
 // ==========================================
 
         function arrancarRelojDigital() {
@@ -440,7 +426,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza radical para liquidar la pantalla negra de Bunny
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Forzamos la muerte del player para que no se quede la pantalla negra
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -476,7 +462,7 @@ window.addEventListener('load', () => {
             const urlBase = videosData[anio];
             if (urlBase) {
                 unVideoEstaReproduciendose = true;
-                // Forzamos los parámetros requeridos por Bunny CDN de manera síncrona con el puerto de la API activado
+                // Parámetros críticos inyectados de forma síncrona
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
             }
         }
@@ -498,26 +484,29 @@ window.addEventListener('load', () => {
             });
         }
 
-        // --- RECEPTOR UNIFICADO: CAPTURA EL FINAL Y SACA AL USUARIO DE LA PANTALLA COMPLETA ---
+        // --- RECEPTOR MAESTRO MEJORADO PARA DETECTAR EL FINAL EN CHROME ANDROID ---
         window.addEventListener('message', (evento) => {
+            // Interceptamos cualquier ráfaga que proceda de los dominios de Bunny Stream
             if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
             
             try {
                 if (!evento.data || iframePlayer.src.includes("about:blank")) return;
                 
                 let datos = evento.data;
+                // Forzamos el parseo manual si Chrome nos lo entrega en formato de cadena plana
                 if (typeof datos === 'string') { datos = JSON.parse(datos); }
                 
-                // Captura el final bajo cualquier especificación de Bunny Stream o Player.js
+                // COMPROBACIÓN DIRECTA SIN FILTROS RESTRICTIVOS:
+                // Si el evento reporta finalización bajo el estándar nativo o el encapsulado de PlayerJS
                 if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended' || (datos.context && datos.event === 'ended'))) {
-                    console.log("Bunny Stream ha terminado. Volviendo a la interfaz normal de la web.");
+                    console.log("Receptor Maestro: Se ha detectado el fin de la reproducción.");
                     unVideoEstaReproduciendose = false;
 
-                    // 1. CORREGIDO: Cierre seguro multibrand de la pantalla completa móvil y escritorio
+                    // 1. ROMPER EL MODO PANTALLA COMPLETA INMEDIATAMENTE
                     if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-                        const salirFullscreen = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-                        if (salirFullscreen) {
-                            salirFullscreen.call(document).catch(() => {});
+                        const salirDePantallaCompleta = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+                        if (salirDePantallaCompleta) {
+                            salirDePantallaCompleta.call(document).catch(() => {});
                         }
                     }
 
@@ -525,12 +514,14 @@ window.addEventListener('load', () => {
                         screen.orientation.unlock();
                     }
 
-                    // 2. RESTAURACIÓN DEL CARTEL DE FIESTAS ORIGINAL
+                    // 2. DISPARAR LA CARÁTULA CON EL CARTEL DE FIESTAS DE FONDO
                     setTimeout(() => {
                         restablecerPantallaEsperaInicial();
-                    }, 150);
+                    }, 100);
                 }
-            } catch (e) {}
+            } catch (e) {
+                // Evita romper scripts por mensajes de extensiones del navegador
+            }
         });
 
         function crearBotonInteractiva(anio) {
