@@ -100,7 +100,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-            /* --- ANIMACIONES DE DESTELLO --- */
+             /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -127,7 +127,6 @@
             padding: 5px;
         }
 
-        /* CONFIGURACIÓN FULLSCREEN: Contenedor general en negro */
         .video-container:fullscreen {
             max-width: 100% !important;
             width: 100vw !important;
@@ -143,7 +142,7 @@
 
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* Relación de aspecto nativa de televisión (16:9) */
+            padding-bottom: 56.25%; /* Relación de aspecto nativa (16:9) */
             height: 0;
             width: 100%;
             border-radius: 8px;
@@ -151,12 +150,11 @@
             background-color: #000;
         }
         
-        /* FIJADO PROPORCIONAL: El marco interno se encoge al tamaño real del vídeo 16:9 en horizontal */
         .video-container:fullscreen .video-wrapper {
             padding-bottom: 0 !important;
             height: 100vh !important;
             height: 100dvh !important;
-            width: calc(100vh * 16 / 9) !important; /* Mantiene la proporción exacta del vídeo */
+            width: calc(100vh * 16 / 9) !important;
             max-width: 100vw !important;
         }
 
@@ -167,7 +165,7 @@
             border: 0; z-index: 1;
         }
 
-        /* --- OVERLAYS SOBRE EL VÍDEO (Alineados estrictamente en las esquinas de la imagen) --- */
+        /* --- OVERLAYS SOBRE EL VÍDEO --- */
         .reloj-video-block {
             position: absolute;
             top: 20px; left: 20px; display: none;
@@ -195,7 +193,21 @@
         }
         .btn-fullscreen-web:hover { background: #ffcc00; transform: scale(1.05); }
 
-        /* CAPA DE ESPERA (CARTEL DE FIESTAS) */
+        /* NUEVO: ESTILO PARA EL BOTÓN INTERACTIVO DE VOLVER */
+        .btn-salir-reproductor {
+            position: absolute;
+            top: 85px; left: 20px; /* Posicionado justo debajo del reloj en horizontal */
+            display: none;
+            background: rgba(255, 0, 0, 0.85);
+            color: #ffffff; border: 1px solid #ffffff;
+            padding: 10px 16px; font-weight: bold; font-size: 0.9rem;
+            border-radius: 6px; cursor: pointer; z-index: 7;
+            text-transform: uppercase; transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .btn-salir-reproductor:hover { background: #ff0000; transform: scale(1.05); }
+
+        /* CAPA DE ESPERA */
         #capa-espera {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
@@ -239,18 +251,20 @@
             .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
             
-            /* Ajustes en móvil de los overlays fijos en las esquinas del vídeo real */
             .ctv-video-block { top: 10px; right: 10px; }
             .logo-ctv-fijo { height: 40px; }
             .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
-            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
             .btn-fullscreen-web { bottom: 10px; right: 10px; padding: 6px 10px; font-size: 0.75rem; }
+            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
+            
+            /* Ajuste posicional del botón volver en móviles */
+            .btn-salir-reproductor { top: 50px; left: 10px; padding: 6px 10px; font-size: 0.7rem; }
         }
     </style>
 </head>
-<body>
+<body>    
 <!-- ========================================== -->
-<!-- PARTE 3: ESTRUCTURA INTERACTIVA LIMPIA -->
+<!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
 <!-- ========================================== -->
 
 <!-- CABECERA OFICIAL CONFIGURADA -->
@@ -294,6 +308,9 @@
         
         <!-- BOTÓN DE PANTALLA COMPLETA PERSONALIZADA -->
         <button class="btn-fullscreen-web" id="btn-pantalla-completa">Pantalla Completa</button>
+
+        <!-- NUEVO BOTÓN DE ESCAPE MANUAL PARA EVITAR BLOQUEO DE NAVEGADORES MÓVILES -->
+        <button class="btn-salir-reproductor" id="btn-salir-video">✕ Volver</button>
 
         <!-- Capa de espera con el cartel de fiestas original -->
         <div id="capa-espera">
@@ -400,8 +417,10 @@ window.addEventListener('load', () => {
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 DEFINITIVA: SALIDA AUTOMÁTICA COMPATIBLE CHROME ANDROID Y CIERRES
+// PARTE 5 DEFINITIVA: ESCAPE BIOMÉTRICO MANUAL REPARADO Y CIERRES
 // ==========================================
+
+        const btnSalirManual = document.getElementById('btn-salir-video');
 
         function arrancarRelojDigital() {
             setInterval(() => {
@@ -424,7 +443,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza absoluta para destruir la pantalla negra de Bunny
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Purga radical anti-pantalla negra de Bunny CDN
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -434,6 +453,7 @@ window.addEventListener('load', () => {
             if (badgeAnio) badgeAnio.style.display = 'none';
             if (relojVideo) relojVideo.style.display = 'none';
             if (btnFS) btnFS.style.display = 'none';
+            if (btnSalirManual) btnSalirManual.style.display = 'none'; // Apagamos el botón volver al resetear
             
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
@@ -452,6 +472,7 @@ window.addEventListener('load', () => {
             if (badgeAnio) badgeAnio.style.display = 'block';
             if (relojVideo) relojVideo.style.display = 'block';
             if (btnFS) btnFS.style.display = 'block';
+            if (btnSalirManual) btnSalirManual.style.display = 'block'; // Encendemos el botón de escape manual al reproducir
             
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonActivo = document.querySelector(`[data-anio="${anio}"]`);
@@ -460,7 +481,6 @@ window.addEventListener('load', () => {
             const urlBase = videosData[anio];
             if (urlBase) {
                 unVideoEstaReproduciendose = true;
-                // Inicialización con canales de escucha abiertos y playsinline activo
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
             }
         }
@@ -482,38 +502,41 @@ window.addEventListener('load', () => {
             });
         }
 
-        // --- RECEPTOR UNIFICADO: CAPTURA EL FINAL EN MÓVILES Y SACA AL USUARIO DE FULLSCREEN ---
+        // --- ACCIÓN DEL BOTÓN VOLVER: GATILLO MANUAL CON INTERACCIÓN FÍSICA ---
+        if (btnSalirManual) {
+            btnSalirManual.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log("Escape activado por el usuario. Rompiendo Fullscreen de forma nativa.");
+                unVideoEstaReproduciendose = false;
+                
+                // Al ser un clic real, el navegador móvil procesa la salida al 100% sin bloqueos
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                    const salirFSGatillo = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
+                    if (salirFSGatillo) salirFSGatillo.call(document).catch(() => {});
+                }
+
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
+
+                restablecerPantallaEsperaInicial();
+            });
+        }
+
+        // Receptor de mensajes automático tradicional para PC / Dispositivos sin restricciones
         window.addEventListener('message', (evento) => {
-            // Filtrar ráfagas ajenas a los dominios oficiales de Bunny CDN
             if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
-            
             try {
                 if (!evento.data || iframePlayer.src.includes("about:blank")) return;
-                
                 let datos = evento.data;
                 if (typeof datos === 'string') { datos = JSON.parse(datos); }
                 
-                // COMPROBACIÓN TOTAL DE SEÑAL EN CHROME/SAFARI MÓVIL:
-                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended' || (datos.context && datos.event === 'ended'))) {
-                    console.log("Detección: Transmisión finalizada con éxito.");
+                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
                     unVideoEstaReproduciendose = false;
-
-                    // 1. FORZAR ABANDONO DE PANTALLA COMPLETA INMEDIATAMENTE
-                    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
-                        const salirFullscreenNativo = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-                        if (salirFullscreenNativo) {
-                            salirFullscreenNativo.call(document).catch(() => {});
-                        }
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen().catch(()=>{});
                     }
-
-                    if (screen.orientation && screen.orientation.unlock) {
-                        screen.orientation.unlock();
-                    }
-
-                    // 2. RECUPERAR EL CARTEL DE FIESTAS Y DESTRUIR EL CUADRO NEGRO
-                    setTimeout(() => {
-                        restablecerPantallaEsperaInicial();
-                    }, 100);
+                    restablecerPantallaEsperaInicial();
                 }
             } catch (e) {}
         });
@@ -529,13 +552,12 @@ window.addEventListener('load', () => {
             contenedorBotones.appendChild(boton);
         }
 
-        // Generar rejilla completa de botones de años
+        // Generar botones de años
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { 
             crearBotonInteractiva(a.toString()); 
         }
 
-        // Evento botón Play de la carátula inicial de espera
         if (btnPlayBase) {
             btnPlayBase.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -543,10 +565,9 @@ window.addEventListener('load', () => {
             });
         }
 
-        // Arranque fino inicial del reloj y carátula
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
-    }); // Cierre definitivo del window.addEventListener('load') heredado de la Parte 4
+    });
     </script>
 </body>
 </html>
