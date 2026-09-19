@@ -3,21 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Caudete Fiestas</title>
-         
+    <title>Caudete Fiestas</title>         
     <!-- Metaetiquetas para optimizar el comportamiento en iPhone y Android -->
     <meta name="theme-color" content="#141414">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <link rel="apple-touch-icon" href="img/logo-ctv.png">
-    
+    <link rel="apple-touch-icon" href="img/logo-ctv.png">   
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
-
     <!-- SDK OFICIAL DE BUNNY STREAM (PLAYER.JS): Obligatorio para forzar la escucha de eventos en Chrome Móvil -->
-    <script type="text/javascript" src="https://mediadelivery.net"></script>
-         
+    <script type="text/javascript" src="https://mediadelivery.net"></script>         
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -40,8 +36,7 @@
             padding: 25px 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-                 
+        }             
         .header-block {
             display: flex;
             flex-direction: column;
@@ -49,8 +44,7 @@
             justify-content: center; /* Alineación interna al centro */
             min-width: 180px;
             text-align: center;
-        }
-                 
+        }             
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.85rem; 
@@ -62,9 +56,7 @@
             margin: 8px 0 0 0 !important;
             width: 100%;
         }
-
         .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 110px; width: auto; object-fit: contain; }
-
         .title-block {
             flex: 1;
             min-width: 320px;
@@ -100,12 +92,11 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-             /* --- ANIMACIONES DE DESTELLO --- */
+          /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
         .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
-
         @keyframes destelloContinuoLogo {
             0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
             50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.6); }
@@ -114,7 +105,6 @@
             0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
             50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
         }
-
         /* --- MARCO DEL REPRODUCTOR CON SOPORTE COMPLETO AL GIRAR ORIENTACIÓN --- */
         .video-container {
             position: relative;
@@ -126,7 +116,6 @@
             overflow: hidden;
             padding: 5px;
         }
-
         .video-container:fullscreen {
             max-width: 100% !important;
             width: 100vw !important;
@@ -139,7 +128,6 @@
             justify-content: center;
             background-color: #000 !important;
         }
-
         .video-wrapper {
             position: relative;
             padding-bottom: 56.25%; /* Relación de aspecto nativa (16:9) */
@@ -148,8 +136,7 @@
             border-radius: 8px;
             overflow: hidden;
             background-color: #000;
-        }
-        
+        }        
         .video-container:fullscreen .video-wrapper {
             padding-bottom: 0 !important;
             height: 100vh !important;
@@ -157,14 +144,12 @@
             width: calc(100vh * 16 / 9) !important;
             max-width: 100vw !important;
         }
-
         .video-wrapper iframe {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
             border: 0; z-index: 1;
         }
-
         /* --- OVERLAYS SOBRE EL VÍDEO --- */
         .reloj-video-block {
             position: absolute;
@@ -184,35 +169,39 @@
             font-weight: 900; border-radius: 6px; z-index: 5;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4); animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
+        /* --- BOTONES MODERNOS CIRCULARES CON ICONOS ABAJO A LA DERECHA --- */
         .btn-fullscreen-web {
-            position: absolute; bottom: 20px; right: 20px; display: none;
-            background: rgba(255, 204, 0, 0.85); color: #141414; border: none;
-            padding: 10px 14px; font-weight: bold; font-size: 0.9rem;
-            border-radius: 6px; cursor: pointer; z-index: 6;
-            text-transform: uppercase; transition: all 0.2s;
-        }
-        .btn-fullscreen-web:hover { background: #ffcc00; transform: scale(1.05); }
-
-        /* NUEVO: ESTILO PARA EL BOTÓN INTERACTIVO DE VOLVER */
-        .btn-salir-reproductor {
-            position: absolute;
-            top: 85px; left: 20px; /* Posicionado justo debajo del reloj en horizontal */
+            position: absolute; 
+            bottom: 20px; right: 20px; 
             display: none;
-            background: rgba(255, 0, 0, 0.85);
-            color: #ffffff; border: 1px solid #ffffff;
-            padding: 10px 16px; font-weight: bold; font-size: 0.9rem;
-            border-radius: 6px; cursor: pointer; z-index: 7;
-            text-transform: uppercase; transition: all 0.2s;
+            background: rgba(255, 204, 0, 0.85); color: #141414; border: none;
+            width: 44px; height: 44px; font-size: 1.3rem;
+            border-radius: 50%; cursor: pointer; z-index: 6;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        .btn-salir-reproductor:hover { background: #ff0000; transform: scale(1.05); }
-
-        /* CAPA DE ESPERA */
+        .btn-fullscreen-web:hover { background: #ffcc00; transform: scale(1.1); }
+        .btn-salir-reproductor {
+            position: absolute;
+            bottom: 74px; right: 20px; 
+            display: none;
+            background: rgba(229, 9, 20, 0.85); color: #ffffff; border: none;
+            width: 44px; height: 44px; font-size: 1.2rem;
+            border-radius: 50%; cursor: pointer; z-index: 6;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .btn-salir-reproductor:hover { background: #ff0000; transform: scale(1.1); }
+        /* CORREGIDO: Añadidas propiedades de transición para soportar el fundido suave (Fade-out) */
         #capa-espera {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
             background-size: contain; background-position: center; background-repeat: no-repeat;
             z-index: 10; display: flex; align-items: center; justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease, visibility 0.4s ease; /* Transición suave de fundido */
         }
         .btn-play {
             background: rgba(255, 204, 0, 0.95); color: #141414; border: none;
@@ -220,8 +209,7 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
             text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
         }
-        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
-
+        .btn-play:hover { transform: scale(1.1); background: #ffcc00;
         /* REJILLAS HISTÓRICAS Y COMPARSAS */
         .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
         .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
@@ -238,7 +226,6 @@
         .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
         .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         .logo-comparsa:hover { transform: scale(1.08); }
-
         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
@@ -246,27 +233,23 @@
             h1 { font-size: 1.5rem; } .honor-text { font-size: 1rem; } .years-subtitle-text { font-size: 0.85rem; }
             .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
             .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 75px; }
-            .header-block h3 { font-size: 0.65rem; margin-top: 4px !important; }
-            
+            .header-block h3 { font-size: 0.65rem; margin-top: 4px !important; }        
             .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
-            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
-            
+            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }      
             .ctv-video-block { top: 10px; right: 10px; }
             .logo-ctv-fijo { height: 40px; }
             .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
-            .btn-fullscreen-web { bottom: 10px; right: 10px; padding: 6px 10px; font-size: 0.75rem; }
-            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
-            
-            /* Ajuste posicional del botón volver en móviles */
-            .btn-salir-reproductor { top: 50px; left: 10px; padding: 6px 10px; font-size: 0.7rem; }
+            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }     
+            /* Ajustes circulares en pantallas móviles Xiaomi / iPhone */
+            .btn-fullscreen-web { bottom: 10px; right: 10px; width: 38px; height: 38px; font-size: 1.1rem; }
+            .btn-salir-reproductor { bottom: 54px; right: 10px; width: 38px; height: 38px; font-size: 1.1rem; }
         }
     </style>
 </head>
-<body>    
+<body>  
 <!-- ========================================== -->
 <!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
 <!-- ========================================== -->
-
 <!-- CABECERA OFICIAL CONFIGURADA -->
 <div class="header-container">
     <!-- Bloque CTV superior izquierdo con logotipo y texto dorado corporativo -->
@@ -288,35 +271,26 @@
         <h3>M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
     </div>
 </div>
-
 <!-- CONTENEDOR DEL REPRODUCTOR OPTIMIZADO -->
 <div class="video-container" id="marco-contenedor">
-    <div class="video-wrapper">
-        
+    <div class="video-wrapper">      
         <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN (Incrustada en el marco del vídeo) -->
         
-        <!-- RECUADRO ROJO RELOJ: Fijo arriba a la izquierda del reproductor -->
+        <!-- RECUADRO ROJE RELOJ: Fijo arriba a la izquierda del reproductor -->
         <div class="reloj-video-block destello-logo" id="reloj-video">00:00</div>
-
         <!-- LOGO CTV TRANSLÚCIDO: Fijo arriba a la derecha del reproductor -->
         <div class="ctv-video-block" id="bloque-logo-ctv-video">
             <img class="logo-ctv-fijo destello-logo" src="img/logo-ctv.png" alt="CTV">
         </div>
-
         <!-- MARCADOR DE FIESTAS: Fijo abajo a la izquierda -->
-        <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
-        
-        <!-- BOTÓN DE PANTALLA COMPLETA PERSONALIZADA -->
-        <button class="btn-fullscreen-web" id="btn-pantalla-completa">Pantalla Completa</button>
-
-        <!-- NUEVO BOTÓN DE ESCAPE MANUAL PARA EVITAR BLOQUEO DE NAVEGADORES MÓVILES -->
-        <button class="btn-salir-reproductor" id="btn-salir-video">✕ Volver</button>
-
-        <!-- Capa de espera con el cartel de fiestas original -->
+        <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto">FIESTAS 2026 PROXIMAMENTE</div>      
+        <!-- BOTONERA DE CONTROL UNIFICADA CON ICONOS MODERNOS (ABAJO A LA DERECHA) -->
+        <button class="btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
+        <button class="btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
+        <!-- Capa de espera con el cartel de fiestas original (Soporta fundido) -->
         <div id="capa-espera">
             <button class="btn-play" id="start-btn">▶</button>
-        </div>
-        
+        </div> 
         <!-- Reproductor de vídeo integrado oficial de Bunny CDN -->
         <iframe 
             id="bunny-player"
@@ -328,13 +302,11 @@
         </iframe>
     </div>
 </div>
-
 <!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO DE BOTONES COMPACTOS -->
 <div class="archivo-historico-seccion">
     <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
     <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
 </div>
-
 <!-- SECCIÓN DE COMPARSAS DE CAUDETE -->
 <div class="comparsas-seccion">
     <div class="comparsas-grid">
@@ -349,7 +321,6 @@
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES -->
 <!-- ========================================== -->
-
 <!-- SCRIPT DE CONTROL DINÁMICO: LÓGICA INTERACTIVA -->
 <script>
 window.addEventListener('load', () => {
@@ -401,7 +372,6 @@ window.addEventListener('load', () => {
         "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
         "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
     };
-
     const iframePlayer = document.getElementById('bunny-player');
     const capaEspera = document.getElementById('capa-espera');
     const btnPlayBase = document.getElementById('start-btn');
@@ -411,17 +381,14 @@ window.addEventListener('load', () => {
     const relojVideo = document.getElementById('reloj-video');
     const marcoContenedor = document.getElementById('marco-contenedor');
     const btnFS = document.getElementById('btn-pantalla-completa');   
-
     // Variables globales de control de estado del reproductor
     let anioSeleccionadoDestino = "2026";
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
 // ==========================================
-// PARTE 5 DEFINITIVA: ESCAPE BIOMÉTRICO MANUAL REPARADO Y CIERRES
+// PARTE 5 DEFINITIVA: SISTEMA FADE-OUT SUAVE, CONTROL CON ICONOS Y CIERRES
 // ==========================================
-
         const btnSalirManual = document.getElementById('btn-salir-video');
-
         function arrancarRelojDigital() {
             setInterval(() => {
                 const ahora = new Date();
@@ -430,7 +397,6 @@ window.addEventListener('load', () => {
                 }
             }, 1000);
         }
-
         function actualizarTextoBadge(anio) {
             if (!badgeAnio) return;
             if (anio === "2020" || anio === "2021") {
@@ -441,50 +407,50 @@ window.addEventListener('load', () => {
                 badgeAnio.textContent = `FIESTAS ${anio}`;
             }
         }
-
         function restablecerPantallaEsperaInicial() {
             if (iframePlayer) iframePlayer.src = "about:blank"; // Purga radical anti-pantalla negra de Bunny CDN
             if (capaEspera) {
-                capaEspera.style.display = 'flex';
+                // CORREGIDO: Retorno suave del cartel subiendo opacidad
+                capaEspera.style.visibility = 'visible';
                 capaEspera.style.opacity = '1';
+                capaEspera.style.display = 'flex';
                 capaEspera.style.pointerEvents = 'auto';
             }
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'none';
             if (badgeAnio) badgeAnio.style.display = 'none';
             if (relojVideo) relojVideo.style.display = 'none';
             if (btnFS) btnFS.style.display = 'none';
-            if (btnSalirManual) btnSalirManual.style.display = 'none'; // Apagamos el botón volver al resetear
-            
+            if (btnSalirManual) btnSalirManual.style.display = 'none'; // Apagamos los iconos flotantes            
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
             if (botonDefecto) botonDefecto.classList.add('activo');
         }
-
         function cambiarVideoDeAnio(anio) {
             anioSeleccionadoDestino = anio;
-            actualizarTextoBadge(anio);
-            
+            actualizarTextoBadge(anio);       
+            // CORREGIDO: Activación de la animación Fade-out bajando opacidad a 0 de forma limpia
             if (capaEspera) {
-                capaEspera.style.display = 'none';
+                capaEspera.style.opacity = '0';
                 capaEspera.style.pointerEvents = 'none';
-            }
+                setTimeout(() => {
+                    capaEspera.style.visibility = 'hidden';
+                    capaEspera.style.display = 'none';
+                }, 400); // Sincronizado exactamente con los 0.4s del CSS
+            }   
             if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'block';
             if (badgeAnio) badgeAnio.style.display = 'block';
             if (relojVideo) relojVideo.style.display = 'block';
-            if (btnFS) btnFS.style.display = 'block';
-            if (btnSalirManual) btnSalirManual.style.display = 'block'; // Encendemos el botón de escape manual al reproducir
-            
+            if (btnFS) btnFS.style.display = 'flex';
+            if (btnSalirManual) btnSalirManual.style.display = 'flex'; // Activamos la botonera circular      
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
             const botonActivo = document.querySelector(`[data-anio="${anio}"]`);
             if (botonActivo) botonActivo.classList.add('activo');
-
             const urlBase = videosData[anio];
             if (urlBase) {
                 unVideoEstaReproduciendose = true;
                 iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
             }
         }
-
         // --- MANEJO DE PANTALLA COMPLETA Y GIRO AUTOMÁTICO EN MÓVILES ---
         if (btnFS) {
             btnFS.addEventListener('click', () => {
@@ -501,36 +467,29 @@ window.addEventListener('load', () => {
                 }
             });
         }
-
-        // --- ACCIÓN DEL BOTÓN VOLVER: GATILLO MANUAL CON INTERACCIÓN FÍSICA ---
+        // --- ACCIÓN DEL BOTÓN INICIO (INTERACCIÓN FÍSICA DIRECTA CIRCUITO MÓVIL) ---
         if (btnSalirManual) {
             btnSalirManual.addEventListener('click', (e) => {
                 e.preventDefault();
-                console.log("Escape activado por el usuario. Rompiendo Fullscreen de forma nativa.");
-                unVideoEstaReproduciendose = false;
-                
-                // Al ser un clic real, el navegador móvil procesa la salida al 100% sin bloqueos
-                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+                console.log("Escape de seguridad forzado por el usuario.");
+                unVideoEstaReproduciendose = false;               
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullscreenElement || document.msFullscreenElement) {
                     const salirFSGatillo = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
                     if (salirFSGatillo) salirFSGatillo.call(document).catch(() => {});
                 }
-
                 if (screen.orientation && screen.orientation.unlock) {
                     screen.orientation.unlock();
                 }
-
                 restablecerPantallaEsperaInicial();
             });
         }
-
-        // Receptor de mensajes automático tradicional para PC / Dispositivos sin restricciones
+        // Receptor de respaldo por si el sistema operativo no bloquea las llamadas postMessage
         window.addEventListener('message', (evento) => {
             if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
             try {
                 if (!evento.data || iframePlayer.src.includes("about:blank")) return;
                 let datos = evento.data;
-                if (typeof datos === 'string') { datos = JSON.parse(datos); }
-                
+                if (typeof datos === 'string') { datos = JSON.parse(datos); }       
                 if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended')) {
                     unVideoEstaReproduciendose = false;
                     if (document.fullscreenElement) {
@@ -540,7 +499,6 @@ window.addEventListener('load', () => {
                 }
             } catch (e) {}
         });
-
         function crearBotonInteractiva(anio) {
             if (!contenedorBotones) return;
             const boton = document.createElement('button');
@@ -551,20 +509,17 @@ window.addEventListener('load', () => {
             boton.addEventListener('click', () => cambiarVideoDeAnio(anio));
             contenedorBotones.appendChild(boton);
         }
-
         // Generar botones de años
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { 
             crearBotonInteractiva(a.toString()); 
         }
-
         if (btnPlayBase) {
             btnPlayBase.addEventListener('click', (e) => {
                 e.preventDefault();
                 cambiarVideoDeAnio(anioSeleccionadoDestino);
             });
         }
-
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
     });
