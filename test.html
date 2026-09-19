@@ -480,7 +480,7 @@ window.addEventListener('load', () => {
         }
     });
 // ==========================================
-// PARTE 5 COMPLETA: LÓGICA DE CONTROL, SISTEMA ANTI-PANTALLA NEGRA Y CIERRES
+// PARTE 5 CORRECTA: CONTROL DE API DE BUNNY, ANTI-PANTALLA NEGRA Y FORZADO DE SALIDA DE FULLSCREEN
 // ==========================================
 
         function arrancarRelojDigital() {
@@ -504,7 +504,7 @@ window.addEventListener('load', () => {
         }
 
         function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza e inicialización absoluta del reproductor
+            if (iframePlayer) iframePlayer.src = "about:blank"; // Limpieza radical para fulminar la pantalla negra de Bunny
             if (capaEspera) {
                 capaEspera.style.display = 'flex';
                 capaEspera.style.opacity = '1';
@@ -539,55 +539,66 @@ window.addEventListener('load', () => {
 
             const urlBase = videosData[anio];
             if (urlBase) {
-                // Forzamos los parámetros de inicialización de la API de mensajería de Bunny Stream
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true`;
+                // ASEGURADO: Añadidos los atributos obligatorios exigidos por el SDK de Bunny para abrir los canales de comunicación postMessage
+                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=true&enablejsapi=true`;
                 unVideoEstaReproduciendose = true;
             }
         }
 
-        // --- RECEPTOR MULTI-PROTOCOLO: SACA DE PANTALLA COMPLETA Y ELIMINA LA PANTALLA NEGRA ---
+        // --- RECEPTOR MAESTRO DE EVENTOS (INTERCEPTA PROTOCOLO PLAYER.JS DE BUNNY) ---
         window.addEventListener('message', (evento) => {
-            if (!evento.origin.includes("mediadelivery.net")) return;
+            // Aseguramos que la llamada proceda de los servidores de vídeo de Bunny
+            if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
             
             try {
                 if (!evento.data || iframePlayer.src.includes("about:blank")) return;
                 
                 let datos = evento.data;
-                // Si Bunny transmite como cadena de texto plano, lo parseamos a JSON
+                // Si la ráfaga de datos viene codificada en string, la transformamos a objeto legible
                 if (typeof datos === 'string') { 
                     datos = JSON.parse(datos); 
                 }
                 
-                // VALIDACIÓN GLOBAL DE EVENTOS (Nativo, Player.js y Mensajería Plana de Bunny)
+                // CONTROL DE FINALIZACIÓN: Validamos tanto la estructura nativa como el empaquetado formal de Player.js
+                // Player.js de Bunny envía los eventos bajo la estructura: {"context":"player.js","event":"ended","value":""}
                 if (datos && (
                     datos.event === 'ended' || 
                     datos.value === 'ended' || 
                     datos.type === 'player:ended' ||
-                    (datos.context === 'player.js' && datos.event === 'ended')
+                    (datos.context && datos.context.includes('player.js') && datos.event === 'ended')
                 )) {
-                    console.log("Bunny CDN: Final detectado de forma interactiva.");
+                    console.log("Sistema Caudete: Evento de finalización Bunny interceptado.");
                     unVideoEstaReproduciendose = false;
 
-                    // 1. FORZAR LA SALIDA AUTOMÁTICA DE PANTALLA COMPLETA EN CUALQUIER NAVEGADOR (Evita pulsar Escape)
-                    const tieneFS = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-                    if (tieneFS) {
-                        const salirPantallaCompleta = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-                        if (salirPantallaCompleta) {
-                            salirPantallaCompleta.call(document).catch((err) => console.log("Error al salir de Fullscreen:", err));
+                    // 1. EXPULSIÓN INMEDIATA DEL MODO PANTALLA COMPLETA EN CUALQUIER NAVEGADOR (Evita pulsar Escape)
+                    const checksFullscreen = [
+                        document.fullscreenElement,
+                        document.webkitFullscreenElement,
+                        document.mozFullScreenElement,
+                        document.msFullscreenElement
+                    ];
+                    
+                    if (checksFullscreen.some(el => el !== null && el !== undefined)) {
+                        const salirNativoFS = document.exitFullscreen || 
+                                              document.webkitExitFullscreen || 
+                                              document.mozCancelFullScreen || 
+                                              document.msExitFullscreen;
+                        if (salirNativoFS) {
+                            salirNativoFS.call(document).catch((error) => console.log("Error de descompresión FS:", error));
                         }
                     }
                     
-                    // 2. RESTABLECER LA WEB: Destruye el reproductor negro y devuelve tu cartel de fiestas
+                    // 2. DESTRUCCIÓN DE LA PANTALLA NEGRA: Forzamos la restauración del cartel de fiestas de fondo
                     setTimeout(() => {
                         restablecerPantallaEsperaInicial();
-                    }, 150); // Margen de seguridad de 150ms para que el navegador procese el cambio de tamaño de la ventana
+                    }, 100); 
                 }
             } catch (e) {
-                // Silencia errores si entran mensajes ajenos a la API de vídeo
+                // Silencia logs corruptos de extensiones del navegador ajenas a Bunny
             }
         });
 
-        // --- CONTROL PANTALLA COMPLETA ---
+        // --- CONTROL PANTALLA COMPLETA INTERNA ---
         if (btnFS) {
             btnFS.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
@@ -611,13 +622,13 @@ window.addEventListener('load', () => {
             contenedorBotones.appendChild(boton);
         }
 
-        // Generar botones de años
+        // Generar botones de años de la rejilla
         crearBotonInteractiva("1974");
         for (let a = 1983; a <= 2026; a++) { 
             crearBotonInteractiva(a.toString()); 
         }
 
-        // Evento botón Play de la carátula inicial
+        // Evento botón Play de la carátula de espera
         if (btnPlayBase) {
             btnPlayBase.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -625,10 +636,10 @@ window.addEventListener('load', () => {
             });
         }
 
-        // Inicialización del entorno visual
+        // Inicialización fina y pintura de la carátula inicial
         arrancarRelojDigital();
         restablecerPantallaEsperaInicial();
-    }); // Cierre del window.addEventListener('load') heredado de la Parte 4
+    }); // Cierre del window.addEventListener('load') abierto en la Parte 4
     </script>
 </body>
 </html>
