@@ -101,7 +101,7 @@
             letter-spacing: 2px;
             margin: 2px 0 0 0;
         }
-          /* --- ANIMACIONES DE DESTELLO --- */
+        /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -178,8 +178,8 @@
         }
         .ctv-video-block { position: absolute; top: 20px; right: 20px; display: none; z-index: 5; pointer-events: none; }
         
-        /* MODIFICADO: Reducido de 78px a 75px para integrarlo de forma más fina y elegante */
-        .logo-ctv-fijo { height: 75px; width: auto; object-fit: contain; opacity: 0.95; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
+        /* MODIFICADO: Reducido 2 píxeles más (de 75px a 73px) para dejarlo súper fino en pantalla */
+        .logo-ctv-fijo { height: 73px; width: auto; object-fit: contain; opacity: 0.95; animation: destelloContinuoLogo 2.5s infinite ease-in-out; }
         
         .badge-anio-reproductor {
             position: absolute; bottom: 20px; left: 20px; display: none;
@@ -199,7 +199,6 @@
             z-index: 6;
         }
 
-        /* MODIFICADO: Asegurada simetría estricta de 46px para los dos botones circulares */
         .btn-control-tv {
             width: 46px;
             height: 46px;
@@ -214,8 +213,8 @@
         }
         .btn-control-tv:hover { transform: scale(1.1); }
 
-        /* MODIFICADO: Ampliado el tamaño interno de la casita (1.4rem) dentro de la esfera roja */
-        .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
+        /* MODIFICADO: Casita ampliada notablemente a 1.6rem para que destaque e iguale el peso visual del otro botón */
+        .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.6rem; }
         .btn-salir-reproductor:hover { background: #ff0000; }
 
         .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.3rem; }
@@ -261,8 +260,8 @@
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
             h1 { font-size: 1.5rem; } .honor-text { font-size: 1rem; } 
             
-            /* MODIFICADO: Subido de 0.85rem a 1.1rem en smartphone para dar un empaque visual mucho mayor al rango histórico */
-            .years-subtitle-text { font-size: 1.1rem; }
+            /* MODIFICADO: Subido 3 píxeles más (a 1.25rem) en smartphones para potenciar la legibilidad del texto de los años */
+            .years-subtitle-text { font-size: 1.25rem; }
             
             .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
             .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 75px; }
@@ -272,16 +271,16 @@
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
             
             .ctv-video-block { top: 10px; right: 10px; }
-            /* MODIFICADO: Ajustado el logotipo a 37px en responsive móvil manteniendo el reajuste proporcional */
-            .logo-ctv-fijo { height: 37px; }
+            /* MODIFICADO: Ajustada la mosca de CTV a 35px en móvil conforme a la reducción proporcional de 2px */
+            .logo-ctv-fijo { height: 35px; }
             
             .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
             .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
             
-            /* MODIFICADO: Asegurada simetría exacta de 38px en responsive móvil y escalado de casita adaptativo */
+            /* MODIFICADO: Ajuste del icono de la casita escalado a 1.25rem en teléfonos móviles */
             .control-buttons-group { bottom: 10px; right: 10px; gap: 8px; }
             .btn-control-tv { width: 38px; height: 38px; }
-            .btn-salir-reproductor { font-size: 1.1rem; }
+            .btn-salir-reproductor { font-size: 1.25rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
         }
     </style>
