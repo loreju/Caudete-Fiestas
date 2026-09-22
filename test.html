@@ -81,7 +81,7 @@
             letter-spacing: 1px;
             line-height: 1.2;
         }
-    /* --- ANIMACIONES DE DESTELLO --- */
+   /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -288,298 +288,6 @@
     </style>
 </head>
 <body>
-<!-- ========================================== -->
-<!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
-<!-- ========================================== -->
-
-<!-- CABECERA OFICIAL COMPLETA -->
-<div class="header-container">
-    <!-- Bloque CTV superior izquierdo con logotipo y texto dorado corporativo -->
-    <div class="header-block ctv-block-top">
-        <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
-        <h3 style="margin-left: 14px !important;">CAUDETE<br>TELEVISIÓN</h3>
-    </div>
-    <div class="title-block">
-        <h1 class="destello-texto">Caudete Fiestas de Moros y Cristianos</h1>
-        <p class="honor-text destello-texto">En Honor a Ntra. Sra. de Gracia</p>
-        <p class="years-subtitle-text">1974 - 1983 A 2026</p>
-    </div>
-    <div class="header-block ayuntamiento-block">
-        <img class="logo-ayuntamiento destello-logo" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
-        <h3>M.I. AYUNTAMIENTO<br>DE CAUDETE</h3>
-    </div>
-    <div class="header-block mayordomia-block">
-        <img class="logo-mayordomia destello-logo" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
-        <h3>M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
-    </div>
-</div>
-
-<!-- CONTENEDOR DEL REPRODUCTOR OPTIMIZADO -->
-<div class="video-container" id="marco-contenedor">
-    <div class="video-wrapper">
-        
-        <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN (Incrustada en el marco del vídeo) -->
-        
-        <!-- RECUADRO ROJO RELOJ: Fijo arriba a la izquierda del reproductor -->
-        <div class="reloj-video-block destello-logo" id="reloj-video">00:00</div>
-
-        <!-- LOGO CTV TRANSLÚCIDO: Fijo arriba a la derecha del reproductor -->
-        <div class="ctv-video-block" id="bloque-logo-ctv-video">
-            <img class="logo-ctv-fijo destello-logo" src="img/logo-ctv.png" alt="CTV">
-        </div>
-
-        <!-- MARCADOR DE FIESTAS: Fijo abajo a la izquierda -->
-        <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
-        
-        <!-- ESCUDO TRANSPARENTE ANTI-CLIC (Cubre el 80% superior protegiendo el centro y dejando libre el 20% de abajo para adelantar/atrasar) -->
-        <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default;"></div>
-
-        <!-- BOTONERA DE CONTROL UNIFICADA EN FILA HORIZONTAL (ABAJO A LA DERECHA) -->
-        <div class="control-buttons-group" id="grupo-botones-tv">
-            <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
-            <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
-            <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
-        </div>
-
-        <!-- Capa de espera con el cartel de fiestas original (Soporta fundido) -->
-        <div id="capa-espera">
-            <button class="btn-play" id="start-btn">▶</button>
-        </div>
-        
-        <!-- Reproductor de vídeo integrado oficial de Bunny CDN -->
-        <iframe 
-            id="bunny-player"
-            class="bunny-stream-player"
-            src="about:blank" 
-            loading="lazy" 
-            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
-            allowfullscreen="true">
-        </iframe>
-    </div>
-</div>
-
-<!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO DE BOTONES COMPACTOS -->
-<div class="archivo-historico-seccion">
-    <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
-    <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
-</div>
-
-<!-- SECCIÓN DE COMPARSAS DE CAUDETE -->
-<div class="comparsas-seccion">
-    <div class="comparsas-grid">
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
-    </div>
-</div>
-  <!-- ========================================== -->
-<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES -->
-<!-- ========================================== -->
-
-<script>
-window.addEventListener('load', () => {
-    // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
-     const videosData = {
-        "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
-        "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
-        "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
-        "1985": "https://player.mediadelivery.net/embed/752516/1aae0057-4a57-423e-aef7-55e90150bd0c",
-        "1986": "https://player.mediadelivery.net/embed/752516/7abce3ff-11f9-4202-afec-206434cd2854",
-        "1987": "https://player.mediadelivery.net/embed/752516/a1748c0f-3e0c-41c7-993e-134540128dec",
-        "1988": "https://player.mediadelivery.net/embed/752516/7d742860-d35a-4cc5-9dc5-923606fe429d",
-        "1989": "https://player.mediadelivery.net/embed/752516/29520c22-9d93-4b2f-b834-8fe405966dcd",
-        "1990": "https://player.mediadelivery.net/embed/752516/7bc933db-b0b5-4239-b5d3-712c2f7c1620",
-        "1991": "https://player.mediadelivery.net/embed/752516/9ad6401b-409e-449a-8086-a298d81389e3",
-        "1992": "https://player.mediadelivery.net/embed/752516/093517cd-5334-45f5-8303-815d631f5a0f",
-        "1993": "https://player.mediadelivery.net/embed/752516/bd60ca59-e9e9-42c5-9a5e-08d67ee02747",
-        "1994": "https://player.mediadelivery.net/embed/752516/b55eb549-486b-4d7a-8f76-f69a97b817ae",
-        "1995": "https://player.mediadelivery.net/embed/752516/787d6f78-28fa-4a67-ae3c-d7fe5ffb51ce",
-        "1996": "https://player.mediadelivery.net/embed/752516/97970eff-10af-49d6-8368-a8acc4336c76",
-        "1997": "https://player.mediadelivery.net/embed/752516/aa5552db-0e40-4ffc-a925-781700f41886",
-        "1998": "https://player.mediadelivery.net/embed/752516/e12b9237-ca2d-4d0c-9cfa-312f3b64c796",
-        "1999": "https://player.mediadelivery.net/embed/752516/b1b41306-f376-4625-873a-f0e135c7998a",
-        "2000": "https://player.mediadelivery.net/embed/752516/f1e4ebd9-6b69-48f7-bcdd-5b46d4bb0d79",
-        "2001": "https://player.mediadelivery.net/embed/752516/32bcb0a7-3795-4ce8-83ec-1d4e62d3510d",
-        "2002": "https://player.mediadelivery.net/embed/752516/64ef42ef-73bd-4e48-81d2-db6736f4703f",
-        "2003": "https://player.mediadelivery.net/embed/752516/1d5cead7-1757-4ccd-b633-0b6d710fd300",
-        "2004": "https://player.mediadelivery.net/embed/752516/bb132d01-f903-4934-87db-18c68d7b6ee7",
-        "2005": "https://player.mediadelivery.net/embed/752516/03cd9f63-5ae8-4c2c-b4cc-bca4a1e384e9",
-        "2006": "https://player.mediadelivery.net/embed/752516/3c46f5f1-5f3b-4004-9328-1e94a6b29491",
-        "2007": "https://player.mediadelivery.net/embed/752516/0ca09d7a-b16a-4a8d-896b-7cfd8714c86e",
-        "2008": "https://player.mediadelivery.net/embed/752516/dce43cbf-11b6-402e-b40e-c7f685606d7b",
-        "2009": "https://player.mediadelivery.net/embed/752516/90bd8a8f-0a9f-4b4f-9c63-26591951dfd5",
-        "2010": "https://player.mediadelivery.net/embed/752516/200f3343-77c0-4572-a032-c7d18ed5d3c8",
-        "2011": "https://player.mediadelivery.net/embed/752516/cab1eb15-518c-4ebe-9d0b-5eeb518d7376",
-        "2012": "https://player.mediadelivery.net/embed/752516/0ddf1afc-5e6e-4830-8516-8ef66c28c5a3",
-        "2013": "https://player.mediadelivery.net/embed/752516/e82a520f-423c-4193-91d0-d3cb5ababb49",
-        "2014": "https://player.mediadelivery.net/embed/752516/bab31599-0661-4e3d-a3ba-81068ffb07d5",
-        "2015": "https://player.mediadelivery.net/embed/752516/33bba64d-1088-4d40-ae22-5a001c09bc9e",
-        "2016": "https://player.mediadelivery.net/embed/752516/3cf94519-72d4-4fff-aabf-f1ee6361f1d4",
-        "2017": "https://player.mediadelivery.net/embed/752516/f9bbad59-10d5-43fe-bc6e-edd527b85f8f",
-        "2018": "https://player.mediadelivery.net/embed/752516/ce7f1483-f0a7-48e9-816a-24a48d3aaed6",
-        "2019": "https://player.mediadelivery.net/embed/752516/d9dfc8b9-699e-4350-99e4-6f8cd9704225",
-        "2020": "https://player.mediadelivery.net/embed/752516/f188ba8b-c692-43cc-9ece-dac2bd0aa638",
-        "2021": "https://player.mediadelivery.net/embed/752516/f032da78-0945-499b-bbff-2145b88c6b50",
-        "2022": "https://player.mediadelivery.net/embed/752516/ef81c0d6-f6ba-4fdd-8baf-a18ece6b2386",
-        "2023": "https://player.mediadelivery.net/embed/752516/ea03e0b2-1436-4f58-bc69-c6653f47c5d1",
-        "2024": "https://player.mediadelivery.net/embed/752516/b2c76335-d5ed-44e6-aa45-189cf84a1eca",
-        "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
-        "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
-    };
-
-
-    const iframePlayer = document.getElementById('bunny-player');
-    const capaEspera = document.getElementById('capa-espera');
-    const btnPlayBase = document.getElementById('start-btn');
-    const badgeAnio = document.getElementById('badge-anio');
-    const contenedorBotones = document.getElementById('contenedor-botones-archivo');
-    const bloqueLogoCTVVideo = document.getElementById('bloque-logo-ctv-video');
-    const relojVideo = document.getElementById('reloj-video');
-    const marcoContenedor = document.getElementById('marco-contenedor');
-    const btnFS = document.getElementById('btn-pantalla-completa');   
-    const btnPausaVideo = document.getElementById('btn-pausa-video');
-    const btnSalirVideo = document.getElementById('btn-salir-video');
-    const grupoBotonesTv = document.getElementById('grupo-botones-tv');
-
-    let anioSeleccionadoDestino = "2026";
-    let unVideoEstaReproduciendose = false;
-    let segundosTranscurridosVideo = 0;
-    let temporizadorReloj = null;
-    let videoPausado = false;
-  // --- FUNCIÓN ADAPTADA: ENVIAR COMANDOS AL IFRAME DE BUNNY ---
-    function enviarComandoBunny(comando, valor = null) {
-        if (iframePlayer && iframePlayer.contentWindow) {
-            const mensaje = JSON.stringify({ method: comando, value: valor });
-            iframePlayer.contentWindow.postMessage(mensaje, '*');
-        }
-    }
-
-    // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
-    Object.keys(videosData).sort().forEach(anio => {
-        const boton = document.createElement('button');
-        boton.className = 'btn-anio-archivo';
-        boton.innerText = anio;
-        boton.dataset.anio = anio;
-        
-        boton.addEventListener('click', () => {
-            document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
-            boton.classList.add('activo');
-            anioSeleccionadoDestino = anio;
-            inicializarCambioEmisionVideo(anio);
-        });
-        
-        contenedorBotones.appendChild(boton);
-    });
-
-    // --- CONTROLADOR DE EMISIÓN DE VÍDEO ---
-    function inicializarCambioEmisionVideo(anio) {
-        clearInterval(temporizadorReloj);
-        segundosTranscurridosVideo = 0;
-        relojVideo.innerText = "00:00";
-        videoPausado = false;
-        btnPausaVideo.innerText = "⏸";
-
-        // Inyectamos la URL segura desde nuestra base de datos cifrada
-        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
-        
-        // Desvanecimiento estético de la carátula de espera
-        capaEspera.style.opacity = "0";
-        setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
-
-        // Activación de las capas de infografía de televisión
-        badgeAnio.innerText = `FIESTAS ${anio}`;
-        badgeAnio.style.display = "block";
-        bloqueLogoCTVVideo.style.display = "block";
-        relojVideo.style.display = "block";
-        grupoBotonesTv.style.display = "flex";
-
-        unVideoEstaReproduciendose = true;
-        iniciarContadorTiempoSimulado();
-    }
-
-    // --- SIMULADOR DE RELOJ INTERNO ---
-    function iniciarContadorTiempoSimulado() {
-        temporizadorReloj = setInterval(() => {
-            if (!videoPausado) {
-                segundosTranscurridosVideo++;
-                const mins = String(Math.floor(segundosTranscurridosVideo / 60)).padStart(2, '0');
-                const segs = String(segundosTranscurridosVideo % 60).padStart(2, '0');
-                relojVideo.innerText = `${mins}:${segs}`;
-            }
-        }, 1000);
-    }
-
-    // --- LISTENERS DE LA BOTONERA DE CONTROL ---
-
-    // Botón de Inicio / Detener Emisión (🏠)
-    btnSalirVideo.addEventListener('click', (e) => {
-        e.stopPropagation();
-        clearInterval(temporizadorReloj);
-        unVideoEstaReproduciendose = false;
-        iframePlayer.src = "about:blank"; // Vaciamos el búfer del vídeo por seguridad
-
-        // Ocultar componentes gráficos
-        badgeAnio.style.display = "none";
-        bloqueLogoCTVVideo.style.display = "none";
-        relojVideo.style.display = "none";
-        grupoBotonesTv.style.display = "none";
-        document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
-
-        // Restaurar carátula principal
-        capaEspera.style.visibility = "visible";
-        capaEspera.style.opacity = "1";
-    });
-
-    // Botón de Pausa / Reanudar Emisión (⏸)
-    btnPausaVideo.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!unVideoEstaReproduciendose) return;
-
-        if (!videoPausado) {
-            enviarComandoBunny('pause');
-            videoPausado = true;
-            btnPausaVideo.innerText = "▶";
-        } else {
-            enviarComandoBunny('play');
-            videoPausado = false;
-            btnPausaVideo.innerText = "⏸";
-        }
-    });
-
-    // Botón de Pantalla Completa Adaptativo (⛶)
-    btnFS.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!document.fullscreenElement) {
-            marcoContenedor.requestFullscreen().catch(err => {
-                console.error(`Error al activar pantalla completa: ${err.message}`);
-            });
-        } else {
-            document.exitFullscreen();
-        }
-    });
-
-    // Botón de Play central sobre el cartel
-    btnPlayBase.addEventListener('click', () => {
-        const botonUltimoAnio = document.querySelector(`.btn-anio-archivo[data-anio="${anioSeleccionadoDestino}"]`);
-        if (botonUltimoAnio) botonUltimoAnio.classList.add('activo');
-        inicializarCambioEmisionVideo(anioSeleccionadoDestino);
-    });
-
-    // Ajuste de iconos dinámicos al cambiar de orientación o salir con la tecla ESC
-    document.addEventListener('fullscreenchange', () => {
-        if (!document.fullscreenElement) {
-            btnFS.innerText = "⛶";
-        } else {
-            btnFS.innerText = "❌";
-        }
-    });
-});
-</script>
-</body>
-</html>
    <!-- ========================================== -->
 <!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA (CORREGIDA) -->
 <!-- ========================================== -->
@@ -667,7 +375,7 @@ window.addEventListener('load', () => {
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
- <!-- ========================================== -->
+  <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
 
@@ -774,7 +482,7 @@ window.addEventListener('load', () => {
         videoPausado = false;
         btnPausaVideo.innerText = "⏸";
 
-        // Inyectamos la URL segura desde nuestra base de datos cifrada
+        // Inyectamos la URL con los parámetros nativos de Bunny
         iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
         
         // Desvanecimiento estético de la carátula de espera
@@ -806,11 +514,11 @@ window.addEventListener('load', () => {
 
     // --- LISTENERS DE LA BOTONERA DE CONTROL ---
 
-    // Botón de Inicio / Detener Emisión (🏠) - ¡CORREGIDO PARA MÓVILES!
+    // Botón de Inicio / Detener Emisión (🏠)
     btnSalirVideo.addEventListener('click', (e) => {
         e.stopPropagation();
         
-        // Si el móvil está atrapado en pantalla completa, salimos primero para evitar congelar el árbol DOM
+        // Si hay una pantalla completa activa del navegador, salimos
         if (document.fullscreenElement) {
             document.exitFullscreen().catch(() => {});
         }
@@ -818,7 +526,6 @@ window.addEventListener('load', () => {
         clearInterval(temporizadorReloj);
         unVideoEstaReproduciendose = false;
         
-        // Pausamos el buffer de Bunny antes de limpiar el origen del reproductor
         enviarComandoBunny('pause');
         iframePlayer.src = "about:blank"; // Vaciamos el búfer del vídeo por seguridad
 
@@ -834,7 +541,7 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "1";
     });
 
-    // Botón de Pausa / Reanudar Emisión (⏸)
+    // Botón de Pausa / Reanudar Emisión (⏸) - ¡REPARADO!
     btnPausaVideo.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!unVideoEstaReproduciendose) return;
@@ -850,21 +557,14 @@ window.addEventListener('load', () => {
         }
     });
 
-    // Botón de Pantalla Completa Adaptativo (⛶) - ¡CORREGIDO PARA MÓVILES Y ROTACIÓN!
+    // Botón de Pantalla Completa (⛶) - ¡SOLUCIÓN DEFINITIVA PARA PC Y MÓVIL!
     btnFS.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!document.fullscreenElement) {
-            // En móviles Bunny CDN necesita la pantalla completa directo en el iframe para expandir y rotar el reproductor
-            const objetivoFS = iframePlayer || marcoContenedor;
-            objetivoFS.requestFullscreen().catch(err => {
-                // Si falla por políticas restrictivas de un navegador, reintenta con el marco contenedor general
-                marcoContenedor.requestFullscreen().catch(err2 => {
-                    console.error(`Error al activar pantalla completa: ${err2.message}`);
-                });
-            });
-        } else {
-            document.exitFullscreen();
-        }
+        
+        // Le pedimos directamente al reproductor de Bunny CDN que gestione la pantalla completa.
+        // Esto activa su propio botón nativo de pantalla completa por código, forzando la rotación en móvil
+        // y manteniendo el funcionamiento correcto del reproductor en PC.
+        enviarComandoBunny('requestFullscreen');
     });
 
     // Botón de Play central sobre el cartel
@@ -878,7 +578,6 @@ window.addEventListener('load', () => {
     document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement) {
             btnFS.innerText = "⛶";
-            // Forzamos el rediseño para asegurar que los controles reaparezcan tras la pantalla completa móvil
             grupoBotonesTv.style.display = unVideoEstaReproduciendose ? "flex" : "none";
         } else {
             btnFS.innerText = "❌";
