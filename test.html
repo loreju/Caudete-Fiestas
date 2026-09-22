@@ -20,7 +20,7 @@
             background-color: #141414;
             margin: 0;
             padding: 0;
-            /* CORRECCIÓN CRÍTICA MÓVIL: Evita el efecto rebote que duplica o deforma elementos en pantalla al deslizar */
+            /* Evita el efecto rebote elástico en móviles que deforma la interfaz */
             overscroll-behavior-y: none; 
             -webkit-overflow-scrolling: touch;
         }
@@ -29,7 +29,7 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             color: #ffffff;
             text-align: center;
-            padding: 20px 15px; /* Ajustado para que en móvil no se coma la pantalla */
+            padding: 20px 15px;
         }
 
         /* --- ESTILOS DE LA CABECERA COMPLETAMENTE ADAPTATIVA --- */
@@ -47,7 +47,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             box-sizing: border-box;
             width: 100%;
-            position: relative; /* Cambiado a relativo para evitar fallos de renderizado */
+            position: relative;
         }
                  
         .header-block {
@@ -55,7 +55,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center; 
-            min-width: 140px; /* Reducido para que quepa bien en pantallas móviles en horizontal */
+            min-width: 140px;
             text-align: center;
         }
                  
@@ -71,14 +71,12 @@
             width: 100%;
         }
 
-        /* Tamaño adaptativo para los logotipos oficiales de Caudete */
         .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { 
-            height: 80px; /* Altura optimizada para móvil */
+            height: 80px; 
             width: auto; 
             object-fit: contain; 
         }
 
-        /* En pantallas grandes de PC, mantenemos los logos grandecitos como te gustaban */
         @media (min-width: 768px) {
             body { padding: 40px 20px; }
             .header-container { padding: 25px 30px; gap: 25px; }
@@ -100,7 +98,7 @@
 
         h1 {
             color: #ffcc00;
-            font-size: 1.6rem; /* Escalado automático para móvil */
+            font-size: 1.6rem;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -110,7 +108,7 @@
         @media (min-width: 768px) {
             h1 { font-size: 2.2rem; }
         }
-       /* --- ANIMACIONES DE DESTELLO --- */
+ /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -155,7 +153,7 @@
             border: 0; z-index: 1;
         }
 
-        /* --- OVERLAYS SOBRE EL VÍDEO (ADAPTATIVOS PARA MÓVIL) --- */
+        /* --- OVERLAYS SOBRE EL VÍDEO --- */
         .reloj-video-block {
             position: absolute;
             top: 15px; left: 15px; display: none;
@@ -175,7 +173,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
-        /* Escalado de infografías en pantallas grandes (PC) */
         @media (min-width: 768px) {
             .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
             .ctv-video-block { top: 20px; right: 20px; }
@@ -206,7 +203,7 @@
             justify-content: center;
             transition: all 0.2s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            pointer-events: auto; /* Permite clics en los botones individuales */
+            pointer-events: auto; 
         }
         
         @media (min-width: 768px) {
@@ -225,7 +222,7 @@
         .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
         .btn-fullscreen-web:hover { background: #ffcc00; }
 
-        /* CORRECCIÓN CRÍTICA: El escudo protector NUNCA debe bloquear los clics del usuario en móviles o PC */
+        /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
         #escudo-toper {
             pointer-events: none !important;
         }
@@ -281,7 +278,7 @@
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
         }
-            /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+  /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -308,25 +305,36 @@
             .btn-fullscreen-web { font-size: 1.1rem; }
         }
 
-        /* --- AISLAMIENTO DE SEGURIDAD PARA LA PANTALLA COMPLETA EN MÓVILES --- */
-        /* Oculta de forma limpia todo el contenido adyacente para evitar duplicaciones visuales o saltos en el scroll */
-        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion {
-            display: none !important;
+        /* CORRECCIÓN ANDROID PANTALLA COMPLETA HORIZONTAL SIN AGRANDAMIENTOS ERRONEOS */
+        .video-container:fullscreen {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: #000 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
-        
-        :-webkit-full-screen .header-container, :-webkit-full-screen .archivo-historico-seccion, :-webkit-full-screen .comparsas-seccion {
+
+        .video-container:fullscreen .video-wrapper {
+            width: 100vw !important;
+            height: 56.25vw !important; /* Fuerza la escala panorámica fija sin desbordar el lienzo táctil */
+            max-height: 100vh !important;
+            max-width: calc(100vh * 16 / 9) !important;
+            padding-bottom: 0 !important;
+        }
+
+        /* Oculta los bloques externos adyacentes en pantalla completa para un renderizado limpio */
+        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion {
             display: none !important;
         }
     </style>
 </head>
 <body>
-<!-- ========================================== -->
-<!-- PARTE 3: ESTRUCTURA INTERACTIVA COMPLETA -->
-<!-- ========================================== -->
-
-<!-- CABECERA OFICIAL ENCAPSULADA PARA EVITAR DUPLICACIONES EN MÓVIL -->
+   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
-    <!-- Bloque CTV superior izquierdo con logotipo y texto dorado corporativo -->
     <div class="header-block ctv-block-top">
         <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
         <h3 style="margin-left: 14px !important;">CAUDETE<br>TELEVISIÓN</h3>
@@ -346,63 +354,56 @@
     </div>
 </header>
 
-<!-- CONTENEDOR DEL REPRODUCTOR OPTIMIZADO -->
+<!-- CONTENEDOR DEL REPRODUCTOR -->
 <div class="video-container" id="marco-contenedor">
     <div class="video-wrapper">
         
-        <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN (Incrustada en el marco del vídeo) -->
-        
-        <!-- RECUADRO ROJO RELOJ: Fijo arriba a la izquierda del reproductor -->
+        <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN (Z-Index elevado para flotar sobre el iframe de Bunny) -->
         <div class="reloj-video-block destello-logo" id="reloj-video" style="z-index: 98;">00:00</div>
 
-        <!-- LOGO CTV TRANSLÚCIDO: Fijo arriba a la derecha del reproductor -->
         <div class="ctv-video-block" id="bloque-logo-ctv-video" style="z-index: 98;">
             <img class="logo-ctv-fijo destello-logo" src="img/logo-ctv.png" alt="CTV">
         </div>
 
-        <!-- MARCADOR DE FIESTAS: Fijo abajo a la izquierda -->
         <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
         
-        <!-- ESCUDO TRANSPARENTE ANTI-CLIC (Totalmente desactivado con pointer-events:none para que no interfiera en PC ni móviles) -->
+        <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
 
-        <!-- BOTONERA DE CONTROL UNIFICADA (Z-INDEX 99 elevado para que flote siempre sobre la pantalla completa del móvil) -->
+        <!-- BOTONERA DE CONTROL CON PRIORIDAD DE CAPA MÁXIMA -->
         <div class="control-buttons-group" id="grupo-botones-tv" style="z-index: 99; pointer-events: auto;">
             <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
             <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
             <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
         </div>
 
-        <!-- Capa de espera con el cartel de fiestas original (Soporta fundido) -->
+        <!-- Capa de espera -->
         <div id="capa-espera" style="z-index: 10;">
             <button class="btn-play" id="start-btn" style="z-index: 12;">▶</button>
         </div>
         
-        <!-- REPRODUCTOR OFICIAL DE BUNNY CDN: Cargamos su script de la API oficial justo antes del iframe -->
-        <script src="https://mediadelivery.net" async></script>
+        <!-- Iframe limpio oficial (Sin scripts conflictivos adyacentes) -->
         <iframe 
             id="bunny-player"
             class="bunny-stream-player"
             src="about:blank" 
             loading="lazy" 
-            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;" 
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
             allowfullscreen="true"
-            webkitallowfullscreen="true"
-            mozallowfullscreen="true"
             style="z-index: 1;">
         </iframe>
     </div>
 </div>
 
-<!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO DE BOTONES COMPACTOS -->
+<!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO -->
 <div class="archivo-historico-seccion">
     <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
     <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
 </div>
 
-<!-- SECCIÓN DE COMPARSAS DE CAUDETE -->
+<!-- SECCIÓN DE COMPARSAS -->
 <div class="comparsas-seccion">
-    <div class="comparsam-grid" style="display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto;">
+    <div class="comparsas-grid">
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
@@ -411,14 +412,14 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
- <!-- ========================================== -->
-<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
+<!-- ========================================== -->
+<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES -->
 <!-- ========================================== -->
 
 <script>
 window.addEventListener('load', () => {
     // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
-    const videosData = {
+   const videosData = {
         "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
         "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
         "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
@@ -466,7 +467,6 @@ window.addEventListener('load', () => {
         "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
     };
 
-    // Vinculación unificada de nodos del DOM con la Parte 3 y la Parte 5
     const iframePlayer = document.getElementById('bunny-player');
     const capaEspera = document.getElementById('capa-espera');
     const btnPlayBase = document.getElementById('start-btn');
@@ -485,42 +485,18 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-
-    // --- ESCUCHADOR API DE BUNNY CDN (EVENTOS CAPTURADOS) ---
-    // Sincroniza el botón FS si el usuario sale de pantalla completa mediante gestos nativos del dispositivo móvil
-    window.addEventListener('message', (evento) => {
-        try {
-            const datos = JSON.parse(evento.data);
-            if (datos.event === 'fullscreenchange') {
-                const estaEnFS = datos.value;
-                if (!estaEnFS) {
-                    btnFS.innerText = "⛶";
-                    grupoBotonesTv.style.display = unVideoEstaReproduciendose ? "flex" : "none";
-                } else {
-                    btnFS.innerText = "❌";
-                }
-            }
-        } catch (e) {
-            // Ignoramos mensajes externos que no sigan formato JSON
-        }
-    });
-    // --- FUNCIÓN ADAPTADA NATIVA PARA BUNNY STREAM ---
-    let reproductorBunny = null;
-
+   // --- FUNCIÓN ADAPTADA: PROTOCOLO API V2 ORIGINAL DE BUNNY STREAM ---
     function enviarComandoBunny(comando) {
-        if (!reproductorBunny) {
-            // Si no está inicializado, instanciamos el SDK oficial de Bunny sobre nuestro iframe
-            try {
-                reproductorBunny = new BunnyStreamPlayer('bunny-player');
-            } catch (e) {
-                console.error("El SDK de Bunny aún no ha cargado:", e);
-                return;
+        if (iframePlayer && iframePlayer.contentWindow) {
+            let mensaje = "";
+            // Bunny exige el parámetro formal "id: 1" dentro del objeto JSON para validar llamadas Cross-Origin
+            if (comando === 'pause') mensaje = JSON.stringify({ type: 'command', name: 'pause', id: 1 });
+            if (comando === 'play') mensaje = JSON.stringify({ type: 'command', name: 'play', id: 1 });
+            
+            if (mensaje) {
+                iframePlayer.contentWindow.postMessage(mensaje, '*');
             }
         }
-        
-        // Ejecutamos los métodos nativos del reproductor de Bunny CDN
-        if (comando === 'pause') reproductorBunny.pause();
-        if (comando === 'play') reproductorBunny.play();
     }
 
     // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
@@ -547,16 +523,13 @@ window.addEventListener('load', () => {
         relojVideo.innerText = "00:00";
         videoPausado = false;
         btnPausaVideo.innerText = "⏸";
-        reproductorBunny = null; // Reiniciamos el objeto para el nuevo vídeo
 
-        // IMPORTANTE: Añadimos '&api=true' al final para que el SDK de Bunny pueda tomar el control táctil
-        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true&api=true`;
+        // IMPORTANTE: Agregamos &api=true&player=v2 para abrir los puertos de escucha embebidos de Bunny
+        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true&api=true&player=v2`;
         
-        // Desvanecimiento estético de la carátula de espera
         capaEspera.style.opacity = "0";
         setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
 
-        // Activación de las capas de infografía de televisión
         badgeAnio.innerText = `FIESTAS ${anio}`;
         badgeAnio.style.display = "block";
         bloqueLogoCTVVideo.style.display = "block";
@@ -595,21 +568,18 @@ window.addEventListener('load', () => {
         
         enviarComandoBunny('pause');
         iframePlayer.src = "about:blank"; 
-        reproductorBunny = null;
 
-        // Ocultar componentes gráficos
         badgeAnio.style.display = "none";
         bloqueLogoCTVVideo.style.display = "none";
         relojVideo.style.display = "none";
         grupoBotonesTv.style.display = "none";
         document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
 
-        // Restaurar carátula principal
         capaEspera.style.visibility = "visible";
         capaEspera.style.opacity = "1";
     });
 
-    // Botón de Pausa / Reanudar Emisión (⏸) - ¡REPARADO EN PC Y MÓVIL!
+    // Botón de Pausa / Reanudar Emisión (⏸) - ¡PROCESAMIENTO ARREGLADO!
     btnPausaVideo.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!unVideoEstaReproduciendose) return;
@@ -625,41 +595,40 @@ window.addEventListener('load', () => {
         }
     });
 
-    // Botón de Pantalla Completa (⛶) - ¡SOLUCIÓN CON FORZADO DE ROTACIÓN EN MÓVIL!
+    // Botón de Pantalla Completa Adaptativo (⛶) - ¡FORZADO HORIZONTAL PARA ANDROID!
     btnFS.addEventListener('click', (e) => {
         e.stopPropagation();
         
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-            // Forzamos la pantalla completa al CONTENEDOR general para retener tus 3 botones dentro de la pantalla completa móvil
             const solicitarFS = marcoContenedor.requestFullscreen || marcoContenedor.webkitRequestFullscreen;
             if (solicitarFS) {
                 solicitarFS.call(marcoContenedor).then(() => {
-                    // Forzamos al móvil a intentar ponerse en horizontal de forma nativa si el navegador lo permite
+                    // Fuerza la rotación del dispositivo Android al plano apaisado
                     if (screen.orientation && screen.orientation.lock) {
                         screen.orientation.lock('landscape').catch(() => {});
                     }
                 }).catch((err) => {
-                    console.error("Error al solicitar fullscreen:", err);
+                    console.error("Error al activar Fullscreen:", err);
                 });
             }
         } else {
             const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
-            if (salirFS) salirFS.call(document).catch(() => {});
+            if (salirFS) {
+                salirFS.call(document).catch(() => {});
+            }
         }
     });
 
-    // Botón de Play central sobre el cartel
     btnPlayBase.addEventListener('click', () => {
         const botonUltimoAnio = document.querySelector(`.btn-anio-archivo[data-anio="${anioSeleccionadoDestino}"]`);
         if (botonUltimoAnio) botonUltimoAnio.classList.add('activo');
         inicializarCambioEmisionVideo(anioSeleccionadoDestino);
     });
 
-    // Ajuste de iconos dinámicos al cambiar de orientación
-    const cambiarIconoFS = () => {
+    // Liberación de rotación del teléfono al abandonar el estado apaisado
+    const restaurarEstadosPantalla = () => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             btnFS.innerText = "⛶";
-            // Si salimos de pantalla completa, liberamos la orientación del móvil
             if (screen.orientation && screen.orientation.unlock) {
                 screen.orientation.unlock();
             }
@@ -668,8 +637,8 @@ window.addEventListener('load', () => {
         }
     };
 
-    document.addEventListener('fullscreenchange', cambiarIconoFS);
-    document.addEventListener('webkitfullscreenchange', cambiarIconoFS);
+    document.addEventListener('fullscreenchange', restaurarEstadosPantalla);
+    document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
 });
 </script>
 </body>
