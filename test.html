@@ -413,13 +413,13 @@
     </div>
 </div>
 <!-- ========================================== -->
-<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES -->
+<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
 
 <script>
 window.addEventListener('load', () => {
-    // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
-   const videosData = {
+    // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED ACTUALIZADO) ---
+    const videosData = {
         "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
         "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
         "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
@@ -467,6 +467,7 @@ window.addEventListener('load', () => {
         "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
     };
 
+    // Unificación estricta de elementos vinculados al DOM
     const iframePlayer = document.getElementById('bunny-player');
     const capaEspera = document.getElementById('capa-espera');
     const btnPlayBase = document.getElementById('start-btn');
@@ -485,17 +486,16 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-   // --- FUNCIÓN ADAPTADA: PROTOCOLO API V2 ORIGINAL DE BUNNY STREAM ---
-    function enviarComandoBunny(comando) {
+ // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+    function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
-            let mensaje = "";
-            // Bunny exige el parámetro formal "id: 1" dentro del objeto JSON para validar llamadas Cross-Origin
-            if (comando === 'pause') mensaje = JSON.stringify({ type: 'command', name: 'pause', id: 1 });
-            if (comando === 'play') mensaje = JSON.stringify({ type: 'command', name: 'play', id: 1 });
-            
-            if (mensaje) {
-                iframePlayer.contentWindow.postMessage(mensaje, '*');
-            }
+            // Estructura oficial estricta que Bunny Stream y PlayerJS procesan externamente
+            const payload = JSON.stringify({
+                context: 'player.js',
+                method: metodo,
+                value: valor
+            });
+            iframePlayer.contentWindow.postMessage(payload, '*');
         }
     }
 
@@ -524,8 +524,8 @@ window.addEventListener('load', () => {
         videoPausado = false;
         btnPausaVideo.innerText = "⏸";
 
-        // IMPORTANTE: Agregamos &api=true&player=v2 para abrir los puertos de escucha embebidos de Bunny
-        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true&api=true&player=v2`;
+        // Inyectamos la URL limpia asegurando los parámetros responsivos
+        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
         
         capaEspera.style.opacity = "0";
         setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
@@ -579,7 +579,7 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "1";
     });
 
-    // Botón de Pausa / Reanudar Emisión (⏸) - ¡PROCESAMIENTO ARREGLADO!
+    // Botón de Pausa / Reanudar Emisión (⏸) - ¡CORREGIDO CON MENSAJES PLAYER.JS!
     btnPausaVideo.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!unVideoEstaReproduciendose) return;
@@ -595,7 +595,7 @@ window.addEventListener('load', () => {
         }
     });
 
-    // Botón de Pantalla Completa Adaptativo (⛶) - ¡FORZADO HORIZONTAL PARA ANDROID!
+    // Botón de Pantalla Completa Adaptativo (⛶)
     btnFS.addEventListener('click', (e) => {
         e.stopPropagation();
         
@@ -603,7 +603,6 @@ window.addEventListener('load', () => {
             const solicitarFS = marcoContenedor.requestFullscreen || marcoContenedor.webkitRequestFullscreen;
             if (solicitarFS) {
                 solicitarFS.call(marcoContenedor).then(() => {
-                    // Fuerza la rotación del dispositivo Android al plano apaisado
                     if (screen.orientation && screen.orientation.lock) {
                         screen.orientation.lock('landscape').catch(() => {});
                     }
@@ -625,7 +624,7 @@ window.addEventListener('load', () => {
         inicializarCambioEmisionVideo(anioSeleccionadoDestino);
     });
 
-    // Liberación de rotación del teléfono al abandonar el estado apaisado
+    // Restaurar sincronización de pantalla
     const restaurarEstadosPantalla = () => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             btnFS.innerText = "⛶";
