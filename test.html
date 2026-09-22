@@ -14,9 +14,6 @@
     
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
-
-    <!-- CORREGIDO: Ruta oficial y válida del archivo SDK Player.js de Bunny CDN -->
-    <script type="text/javascript" src="https://mediadelivery.net"></script>
          
     <style>
         body {
@@ -84,24 +81,7 @@
             letter-spacing: 1px;
             line-height: 1.2;
         }
-        .honor-text {
-            color: #ffcc00;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 0;
-            animation: destelloContinuoTexto 2.5s infinite ease-in-out;
-        }
-        .years-subtitle-text {
-            color: #ffffff;
-            font-size: 1rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 2px 0 0 0;
-        }
-        /* --- ANIMACIONES DE DESTELLO --- */
+    /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
@@ -195,7 +175,7 @@
             flex-direction: row; 
             gap: 12px; 
             z-index: 6;
-            pointer-events: none; /* Evita que la caja invisible del grupo tape la barra de tiempo */
+            pointer-events: none;
         }
 
         .btn-control-tv {
@@ -209,7 +189,7 @@
             justify-content: center;
             transition: all 0.2s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            pointer-events: auto; /* Reactiva los clics dentro de las esferas de botones */
+            pointer-events: auto;
         }
         .btn-control-tv:hover { transform: scale(1.1); }
 
@@ -222,9 +202,8 @@
         .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.3rem; }
         .btn-fullscreen-web:hover { background: #ffcc00; }
 
-        /* NUEVO: Reglas de asignación de eventos explícitos para el escudo transparente */
         #escudo-toper {
-            pointer-events: auto !important; /* Fuerza al escudo a absorber los clics en su zona del 80% */
+            pointer-events: auto !important;
         }
 
         /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
@@ -396,15 +375,14 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-<!-- ========================================== -->
+  <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES -->
 <!-- ========================================== -->
 
-<!-- SCRIPT DE CONTROL DINÁMICO: LÓGICA INTERACTIVA -->
 <script>
 window.addEventListener('load', () => {
     // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED) ---
-  const videosData = {
+     const videosData = {
         "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
         "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
         "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
@@ -452,6 +430,7 @@ window.addEventListener('load', () => {
         "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
     };
 
+
     const iframePlayer = document.getElementById('bunny-player');
     const capaEspera = document.getElementById('capa-espera');
     const btnPlayBase = document.getElementById('start-btn');
@@ -461,207 +440,143 @@ window.addEventListener('load', () => {
     const relojVideo = document.getElementById('reloj-video');
     const marcoContenedor = document.getElementById('marco-contenedor');
     const btnFS = document.getElementById('btn-pantalla-completa');   
+    const btnPausaVideo = document.getElementById('btn-pausa-video');
+    const btnSalirVideo = document.getElementById('btn-salir-video');
+    const grupoBotonesTv = document.getElementById('grupo-botones-tv');
 
-    // Variables globales de control de estado del reproductor
     let anioSeleccionadoDestino = "2026";
     let unVideoEstaReproduciendose = false;
     let segundosTranscurridosVideo = 0;
-// ==========================================
-// PARTE 5 DEFINITIVA: COMUNICACIÓN CRUDA, CONTROL DE PAUSA DIRECTO Y CIERRES
-// ==========================================
-
-        const btnSalirManual = document.getElementById('btn-salir-video');
-        const btnPausaManual = document.getElementById('btn-pausa-video');
-        const grupoBotonesTV = document.getElementById('grupo-botones-tv');
-        let estadoVideoPausado = false;
-
-        function arrancarRelojDigital() {
-            setInterval(() => {
-                const ahora = new Date();
-                if (relojVideo) {
-                    relojVideo.textContent = `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`;
-                }
-            }, 1000);
+    let temporizadorReloj = null;
+    let videoPausado = false;
+  // --- FUNCIÓN ADAPTADA: ENVIAR COMANDOS AL IFRAME DE BUNNY ---
+    function enviarComandoBunny(comando, valor = null) {
+        if (iframePlayer && iframePlayer.contentWindow) {
+            const mensaje = JSON.stringify({ method: comando, value: valor });
+            iframePlayer.contentWindow.postMessage(mensaje, '*');
         }
+    }
 
-        function actualizarTextoBadge(anio) {
-            if (!badgeAnio) return;
-            if (anio === "2020" || anio === "2021") {
-                badgeAnio.textContent = `FIESTAS ${anio} SUSPENDIDAS`;
-            } else if (anio === "2026") {
-                badgeAnio.textContent = `FIESTAS ${anio} PROXIMAMENTE`;
-            } else {
-                badgeAnio.textContent = `FIESTAS ${anio}`;
-            }
-        }
-
-        function restablecerPantallaEsperaInicial() {
-            if (iframePlayer) iframePlayer.src = "about:blank"; // Purga anti-pantalla negra de Bunny
-            if (capaEspera) {
-                capaEspera.style.visibility = 'visible';
-                capaEspera.style.opacity = '1';
-                capaEspera.style.display = 'flex';
-                capaEspera.style.pointerEvents = 'auto';
-            }
-            if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'none';
-            if (badgeAnio) badgeAnio.style.display = 'none';
-            if (relojVideo) relojVideo.style.display = 'none';
-            if (grupoBotonesTV) grupoBotonesTV.style.display = 'none'; 
-            
-            estadoVideoPausado = false;
-            if (btnPausaManual) btnPausaManual.textContent = "⏸"; // Reseteamos el icono a pausa
-            
+    // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
+    Object.keys(videosData).sort().forEach(anio => {
+        const boton = document.createElement('button');
+        boton.className = 'btn-anio-archivo';
+        boton.innerText = anio;
+        boton.dataset.anio = anio;
+        
+        boton.addEventListener('click', () => {
             document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
-            const botonDefecto = document.querySelector(`[data-anio="${anioSeleccionadoDestino}"]`);
-            if (botonDefecto) botonDefecto.classList.add('activo');
-        }
-
-        function cambiarVideoDeAnio(anio) {
+            boton.classList.add('activo');
             anioSeleccionadoDestino = anio;
-            actualizarTextoBadge(anio);
-            
-            if (capaEspera) {
-                capaEspera.style.opacity = '0';
-                capaEspera.style.pointerEvents = 'none';
-                setTimeout(() => {
-                    capaEspera.style.visibility = 'hidden';
-                    capaEspera.style.display = 'none';
-                }, 400); 
-            }
-            
-            if (bloqueLogoCTVVideo) bloqueLogoCTVVideo.style.display = 'block';
-            if (badgeAnio) badgeAnio.style.display = 'block';
-            if (relojVideo) relojVideo.style.display = 'block';
-            if (grupoBotonesTV) grupoBotonesTV.style.display = 'flex'; 
-            
-            document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
-            const botonActivo = document.querySelector(`[data-anio="${anio}"]`);
-            if (botonActivo) botonActivo.classList.add('activo');
-
-            const urlBase = videosData[anio];
-            if (urlBase) {
-                unVideoEstaReproduciendose = true;
-                estadoVideoPausado = false;
-                if (btnPausaManual) btnPausaManual.textContent = "⏸";
-                
-                // Forzamos los parámetros oficiales de Bunny CDN para abrir sus canales de escucha
-                iframePlayer.src = `${urlBase}?autoplay=true&loop=false&muted=false&preload=true&playsinline=1&enablejsapi=true`;
-            }
-        }
-
-        // --- MANEJO DE PANTALLA COMPLETA Y GIRO AUTOMÁTICO EN MÓVILES ---
-        if (btnFS) {
-            btnFS.addEventListener('click', () => {
-                if (!document.fullscreenElement) {
-                    marcoContenedor.requestFullscreen().then(() => {
-                        if (screen.orientation && screen.orientation.lock) {
-                            screen.orientation.lock('landscape').catch(() => {});
-                        }
-                    }).catch(err => {
-                        alert(`Error al activar pantalla completa: ${err.message}`);
-                    });
-                } else {
-                    document.exitFullscreen();
-                }
-            });
-        }
-
-        // --- ACCIÓN DEL BOTÓN INICIO (INTERACCIÓN FÍSICA DIRECTA MOBILE) ---
-        if (btnSalirManual) {
-            btnSalirManual.addEventListener('click', (e) => {
-                e.preventDefault();
-                unVideoEstaReproduciendose = false;
-                
-                if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullscreenElement || document.msFullscreenElement) {
-                    const salirFSGatillo = document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen || document.msExitFullscreen;
-                    if (salirFSGatillo) salirFSGatillo.call(document).catch(() => {});
-                }
-
-                if (screen.orientation && screen.orientation.unlock) {
-                    screen.orientation.unlock();
-                }
-
-                restablecerPantallaEsperaInicial();
-            });
-        }
-
-        // --- CORREGIDO: ACCIÓN DEL BOTÓN DE PAUSA CON COMANDOS CRUDOS COMPATIBLES CON CHROME MÓVIL ---
-        if (btnPausaManual) {
-            btnPausaManual.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation(); // Evita que Chrome asuma que estamos tocando el vídeo y minimice la pantalla
-                
-                if (!unVideoEstaReproduciendose || !iframePlayer.contentWindow) return;
-
-                if (!estadoVideoPausado) {
-                    console.log("Botonera: Inyectando comando crudo PAUSE a Bunny...");
-                    
-                    // Enviamos los tres formatos de mensajes universales de Bunny Stream y PlayerJS simultáneamente para asegurar compatibilidad
-                    iframePlayer.contentWindow.postMessage('{"context":"player.js","method":"pause","value":""}', '*');
-                    iframePlayer.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo' }), '*');
-                    iframePlayer.contentWindow.postMessage('pause', '*');
-                    
-                    btnPausaManual.textContent = "▶"; // Cambia el icono a Play
-                    estadoVideoPausado = true;
-                } else {
-                    console.log("Botonera: Inyectando comando crudo PLAY a Bunny...");
-                    
-                    // Enviamos los tres formatos de mensajes universales de Bunny Stream y PlayerJS simultáneamente para asegurar compatibilidad
-                    iframePlayer.contentWindow.postMessage('{"context":"player.js","method":"play","value":""}', '*');
-                    iframePlayer.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo' }), '*');
-                    iframePlayer.contentWindow.postMessage('play', '*');
-                    
-                    btnPausaManual.textContent = "⏸"; // Cambia el icono a Pausa
-                    estadoVideoPausado = false;
-                }
-            });
-        }
-
-        // Receptor de respaldo automático para salir al terminar
-        window.addEventListener('message', (evento) => {
-            if (!evento.origin.includes("mediadelivery.net") && !evento.origin.includes("bunny.net")) return;
-            try {
-                if (!evento.data || iframePlayer.src.includes("about:blank")) return;
-                let datos = evento.data;
-                if (typeof datos === 'string') { datos = JSON.parse(datos); }
-                
-                if (datos && (datos.event === 'ended' || datos.value === 'ended' || datos.type === 'player:ended' || (datos.context && datos.event === 'ended'))) {
-                    unVideoEstaReproduciendose = false;
-                    if (document.fullscreenElement) {
-                        document.exitFullscreen().catch(()=>{});
-                    }
-                    restablecerPantallaEsperaInicial();
-                }
-            } catch (e) {}
+            inicializarCambioEmisionVideo(anio);
         });
-
-        function crearBotonInteractiva(anio) {
-            if (!contenedorBotones) return;
-            const boton = document.createElement('button');
-            boton.classList.add('btn-anio-archivo');
-            boton.textContent = anio;
-            boton.setAttribute('data-anio', anio);
-            if (anio === "2026") boton.classList.add('activo');
-            boton.addEventListener('click', () => cambiarVideoDeAnio(anio));
-            contenedorBotones.appendChild(boton);
-        }
-
-        // Generar botones de años
-        crearBotonInteractiva("1974");
-        for (let a = 1983; a <= 2026; a++) { 
-            crearBotonInteractiva(a.toString()); 
-        }
-
-        if (btnPlayBase) {
-            btnPlayBase.addEventListener('click', (e) => {
-                e.preventDefault();
-                cambiarVideoDeAnio(anioSeleccionadoDestino);
-            });
-        }
-
-        arrancarRelojDigital();
-        restablecerPantallaEsperaInicial();
+        
+        contenedorBotones.appendChild(boton);
     });
-    </script>
+
+    // --- CONTROLADOR DE EMISIÓN DE VÍDEO ---
+    function inicializarCambioEmisionVideo(anio) {
+        clearInterval(temporizadorReloj);
+        segundosTranscurridosVideo = 0;
+        relojVideo.innerText = "00:00";
+        videoPausado = false;
+        btnPausaVideo.innerText = "⏸";
+
+        // Inyectamos la URL segura desde nuestra base de datos cifrada
+        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+        
+        // Desvanecimiento estético de la carátula de espera
+        capaEspera.style.opacity = "0";
+        setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
+
+        // Activación de las capas de infografía de televisión
+        badgeAnio.innerText = `FIESTAS ${anio}`;
+        badgeAnio.style.display = "block";
+        bloqueLogoCTVVideo.style.display = "block";
+        relojVideo.style.display = "block";
+        grupoBotonesTv.style.display = "flex";
+
+        unVideoEstaReproduciendose = true;
+        iniciarContadorTiempoSimulado();
+    }
+
+    // --- SIMULADOR DE RELOJ INTERNO ---
+    function iniciarContadorTiempoSimulado() {
+        temporizadorReloj = setInterval(() => {
+            if (!videoPausado) {
+                segundosTranscurridosVideo++;
+                const mins = String(Math.floor(segundosTranscurridosVideo / 60)).padStart(2, '0');
+                const segs = String(segundosTranscurridosVideo % 60).padStart(2, '0');
+                relojVideo.innerText = `${mins}:${segs}`;
+            }
+        }, 1000);
+    }
+
+    // --- LISTENERS DE LA BOTONERA DE CONTROL ---
+
+    // Botón de Inicio / Detener Emisión (🏠)
+    btnSalirVideo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clearInterval(temporizadorReloj);
+        unVideoEstaReproduciendose = false;
+        iframePlayer.src = "about:blank"; // Vaciamos el búfer del vídeo por seguridad
+
+        // Ocultar componentes gráficos
+        badgeAnio.style.display = "none";
+        bloqueLogoCTVVideo.style.display = "none";
+        relojVideo.style.display = "none";
+        grupoBotonesTv.style.display = "none";
+        document.querySelectorAll('.btn-anio-archivo').forEach(b => b.classList.remove('activo'));
+
+        // Restaurar carátula principal
+        capaEspera.style.visibility = "visible";
+        capaEspera.style.opacity = "1";
+    });
+
+    // Botón de Pausa / Reanudar Emisión (⏸)
+    btnPausaVideo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!unVideoEstaReproduciendose) return;
+
+        if (!videoPausado) {
+            enviarComandoBunny('pause');
+            videoPausado = true;
+            btnPausaVideo.innerText = "▶";
+        } else {
+            enviarComandoBunny('play');
+            videoPausado = false;
+            btnPausaVideo.innerText = "⏸";
+        }
+    });
+
+    // Botón de Pantalla Completa Adaptativo (⛶)
+    btnFS.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!document.fullscreenElement) {
+            marcoContenedor.requestFullscreen().catch(err => {
+                console.error(`Error al activar pantalla completa: ${err.message}`);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    });
+
+    // Botón de Play central sobre el cartel
+    btnPlayBase.addEventListener('click', () => {
+        const botonUltimoAnio = document.querySelector(`.btn-anio-archivo[data-anio="${anioSeleccionadoDestino}"]`);
+        if (botonUltimoAnio) botonUltimoAnio.classList.add('activo');
+        inicializarCambioEmisionVideo(anioSeleccionadoDestino);
+    });
+
+    // Ajuste de iconos dinámicos al cambiar de orientación o salir con la tecla ESC
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement) {
+            btnFS.innerText = "⛶";
+        } else {
+            btnFS.innerText = "❌";
+        }
+    });
+});
+</script>
 </body>
 </html>
