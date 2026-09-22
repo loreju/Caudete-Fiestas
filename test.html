@@ -353,39 +353,43 @@
         <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN (Incrustada en el marco del vídeo) -->
         
         <!-- RECUADRO ROJO RELOJ: Fijo arriba a la izquierda del reproductor -->
-        <div class="reloj-video-block destello-logo" id="reloj-video">00:00</div>
+        <div class="reloj-video-block destello-logo" id="reloj-video" style="z-index: 98;">00:00</div>
 
         <!-- LOGO CTV TRANSLÚCIDO: Fijo arriba a la derecha del reproductor -->
-        <div class="ctv-video-block" id="bloque-logo-ctv-video">
+        <div class="ctv-video-block" id="bloque-logo-ctv-video" style="z-index: 98;">
             <img class="logo-ctv-fijo destello-logo" src="img/logo-ctv.png" alt="CTV">
         </div>
 
         <!-- MARCADOR DE FIESTAS: Fijo abajo a la izquierda -->
-        <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto">FIESTAS 2026 PROXIMAMENTE</div>
+        <div id="badge-anio" class="badge-anio-reproductor destello-logo destello-texto" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
         
-        <!-- ESCUDO TRANSPARENTE ANTI-CLIC (Liberado con pointer-events:none para permitir clics en la botonera) -->
+        <!-- ESCUDO TRANSPARENTE ANTI-CLIC (Totalmente desactivado con pointer-events:none para que no interfiera en PC ni móviles) -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
 
-        <!-- BOTONERA DE CONTROL UNIFICADA EN FILA HORIZONTAL (ABAJO A LA DERECHA) -->
-        <div class="control-buttons-group" id="grupo-botones-tv">
+        <!-- BOTONERA DE CONTROL UNIFICADA (Z-INDEX 99 elevado para que flote siempre sobre la pantalla completa del móvil) -->
+        <div class="control-buttons-group" id="grupo-botones-tv" style="z-index: 99; pointer-events: auto;">
             <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
             <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
             <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
         </div>
 
         <!-- Capa de espera con el cartel de fiestas original (Soporta fundido) -->
-        <div id="capa-espera">
-            <button class="btn-play" id="start-btn">▶</button>
+        <div id="capa-espera" style="z-index: 10;">
+            <button class="btn-play" id="start-btn" style="z-index: 12;">▶</button>
         </div>
         
-        <!-- Reproductor de vídeo integrado oficial de Bunny CDN (Optimizado con permisos de hardware completos) -->
+        <!-- REPRODUCTOR OFICIAL DE BUNNY CDN: Cargamos su script de la API oficial justo antes del iframe -->
+        <script src="https://mediadelivery.net" async></script>
         <iframe 
             id="bunny-player"
             class="bunny-stream-player"
             src="about:blank" 
             loading="lazy" 
             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen;" 
-            allowfullscreen="true">
+            allowfullscreen="true"
+            webkitallowfullscreen="true"
+            mozallowfullscreen="true"
+            style="z-index: 1;">
         </iframe>
     </div>
 </div>
@@ -500,12 +504,23 @@ window.addEventListener('load', () => {
             // Ignoramos mensajes externos que no sigan formato JSON
         }
     });
-     // --- FUNCIÓN ADAPTADA: ENVIAR COMANDOS AL IFRAME DE BUNNY ---
-    function enviarComandoBunny(comando, valor = null) {
-        if (iframePlayer && iframePlayer.contentWindow) {
-            const mensaje = JSON.stringify({ method: comando, value: valor });
-            iframePlayer.contentWindow.postMessage(mensaje, '*');
+  // --- FUNCIÓN ADAPTADA NATIVA PARA BUNNY STREAM ---
+    let reproductorBunny = null;
+
+    function enviarComandoBunny(comando) {
+        if (!reproductorBunny) {
+            // Si no está inicializado, instanciamos el SDK oficial de Bunny sobre nuestro iframe
+            try {
+                reproductorBunny = new BunnyStreamPlayer('bunny-player');
+            } catch (e) {
+                console.error("El SDK de Bunny aún no ha cargado:", e);
+                return;
+            }
         }
+        
+        // Ejecutamos los métodos nativos del reproductor de Bunny CDN
+        if (comando === 'pause') reproductorBunny.pause();
+        if (comando === 'play') reproductorBunny.play();
     }
 
     // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
@@ -532,9 +547,10 @@ window.addEventListener('load', () => {
         relojVideo.innerText = "00:00";
         videoPausado = false;
         btnPausaVideo.innerText = "⏸";
+        reproductorBunny = null; // Reiniciamos el objeto para el nuevo vídeo
 
-        // Inyectamos la URL con los parámetros nativos de Bunny
-        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+        // IMPORTANTE: Añadimos '&api=true' al final para que el SDK de Bunny pueda tomar el control táctil
+        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true&api=true`;
         
         // Desvanecimiento estético de la carátula de espera
         capaEspera.style.opacity = "0";
@@ -569,19 +585,17 @@ window.addEventListener('load', () => {
     btnSalirVideo.addEventListener('click', (e) => {
         e.stopPropagation();
         
-        // Si hay una pantalla completa activa en el navegador, la forzamos a salir
         if (document.fullscreenElement || document.webkitFullscreenElement) {
-            (document.exitFullscreen || document.webkitExitFullscreen).call(document).catch(() => {});
+            const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
+            if (salirFS) salirFS.call(document).catch(() => {});
         }
-        
-        // Enviamos orden de salir de pantalla completa también a Bunny por si acaso
-        enviarComandoBunny('exitFullscreen');
         
         clearInterval(temporizadorReloj);
         unVideoEstaReproduciendose = false;
         
         enviarComandoBunny('pause');
-        iframePlayer.src = "about:blank"; // Vaciamos el búfer del vídeo por seguridad
+        iframePlayer.src = "about:blank"; 
+        reproductorBunny = null;
 
         // Ocultar componentes gráficos
         badgeAnio.style.display = "none";
@@ -595,7 +609,7 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "1";
     });
 
-    // Botón de Pausa / Reanudar Emisión (⏸)
+    // Botón de Pausa / Reanudar Emisión (⏸) - ¡REPARADO EN PC Y MÓVIL!
     btnPausaVideo.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!unVideoEstaReproduciendose) return;
@@ -611,26 +625,26 @@ window.addEventListener('load', () => {
         }
     });
 
-    // Botón de Pantalla Completa (⛶) - ¡MÁXIMA COMPATIBILIDAD CRUCUAL MÓVIL!
+    // Botón de Pantalla Completa (⛶) - ¡SOLUCIÓN CON FORZADO DE ROTACIÓN EN MÓVIL!
     btnFS.addEventListener('click', (e) => {
         e.stopPropagation();
         
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-            // Le pedimos al reproductor Bunny su acción nativa
-            enviarComandoBunny('requestFullscreen');
-            
-            // Como salvaguarda para navegadores móviles estrictos (Safari/iOS o Chrome Android), 
-            // expandimos el contenedor para que el aislamiento CSS limpie el entorno visual.
+            // Forzamos la pantalla completa al CONTENEDOR general para retener tus 3 botones dentro de la pantalla completa móvil
             const solicitarFS = marcoContenedor.requestFullscreen || marcoContenedor.webkitRequestFullscreen;
             if (solicitarFS) {
-                solicitarFS.call(marcoContenedor).catch(() => {});
+                solicitarFS.call(marcoContenedor).then(() => {
+                    // Forzamos al móvil a intentar ponerse en horizontal de forma nativa si el navegador lo permite
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock('landscape').catch(() => {});
+                    }
+                }).catch((err) => {
+                    console.error("Error al solicitar fullscreen:", err);
+                });
             }
         } else {
             const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
-            if (salirFS) {
-                salirFS.call(document).catch(() => {});
-            }
-            enviarComandoBunny('exitFullscreen');
+            if (salirFS) salirFS.call(document).catch(() => {});
         }
     });
 
@@ -641,18 +655,21 @@ window.addEventListener('load', () => {
         inicializarCambioEmisionVideo(anioSeleccionadoDestino);
     });
 
-    // Ajuste de iconos dinámicos al cambiar de orientación o salir con la tecla ESC/gesto nativo
-    const actualizarIconosFS = () => {
+    // Ajuste de iconos dinámicos al cambiar de orientación
+    const cambiarIconoFS = () => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             btnFS.innerText = "⛶";
-            grupoBotonesTv.style.display = unVideoEstaReproduciendose ? "flex" : "none";
+            // Si salimos de pantalla completa, liberamos la orientación del móvil
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            }
         } else {
             btnFS.innerText = "❌";
         }
     };
 
-    document.addEventListener('fullscreenchange', actualizarIconosFS);
-    document.addEventListener('webkitfullscreenchange', actualizarIconosFS);
+    document.addEventListener('fullscreenchange', cambiarIconoFS);
+    document.addEventListener('webkitfullscreenchange', cambiarIconoFS);
 });
 </script>
 </body>
