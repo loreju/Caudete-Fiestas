@@ -486,10 +486,9 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
- // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+     // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
-            // Estructura oficial estricta que Bunny Stream y PlayerJS procesan externamente
             const payload = JSON.stringify({
                 context: 'player.js',
                 method: metodo,
@@ -519,12 +518,10 @@ window.addEventListener('load', () => {
     // --- CONTROLADOR DE EMISIÓN DE VÍDEO ---
     function inicializarCambioEmisionVideo(anio) {
         clearInterval(temporizadorReloj);
-        segundosTranscurridosVideo = 0;
-        relojVideo.innerText = "00:00";
         videoPausado = false;
         btnPausaVideo.innerText = "⏸";
 
-        // Inyectamos la URL limpia asegurando los parámetros responsivos
+        // Inyectamos la URL limpia asegurando los parámetros responsivos oficiales de Bunny
         iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
         
         capaEspera.style.opacity = "0";
@@ -537,19 +534,18 @@ window.addEventListener('load', () => {
         grupoBotonesTv.style.display = "flex";
 
         unVideoEstaReproduciendose = true;
-        iniciarContadorTiempoSimulado();
+        
+        // CORRECCIÓN: Arrancamos el reloj en hora real de inmediato
+        actualizarRelojHoraReal();
+        temporizadorReloj = setInterval(actualizarRelojHoraReal, 1000);
     }
 
-    // --- SIMULADOR DE RELOJ INTERNO ---
-    function iniciarContadorTiempoSimulado() {
-        temporizadorReloj = setInterval(() => {
-            if (!videoPausado) {
-                segundosTranscurridosVideo++;
-                const mins = String(Math.floor(segundosTranscurridosVideo / 60)).padStart(2, '0');
-                const segs = String(segundosTranscurridosVideo % 60).padStart(2, '0');
-                relojVideo.innerText = `${mins}:${segs}`;
-            }
-        }, 1000);
+    // --- RELOJ EN HORA REAL DE TELEVISIÓN (Sustituye al contador simulado) ---
+    function actualizarRelojHoraReal() {
+        const ahora = new Date();
+        const horas = String(ahora.getHours()).padStart(2, '0');
+        const minutos = String(ahora.getMinutes()).padStart(2, '0');
+        relojVideo.innerText = `${horas}:${minutos}`;
     }
 
     // --- LISTENERS DE LA BOTONERA DE CONTROL ---
@@ -579,7 +575,7 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "1";
     });
 
-    // Botón de Pausa / Reanudar Emisión (⏸) - ¡CORREGIDO CON MENSAJES PLAYER.JS!
+    // Botón de Pausa / Reanudar Emisión (⏸)
     btnPausaVideo.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!unVideoEstaReproduciendose) return;
@@ -588,6 +584,7 @@ window.addEventListener('load', () => {
             enviarComandoBunny('pause');
             videoPausado = true;
             btnPausaVideo.innerText = "▶";
+            // Nota: El reloj de televisión sigue en hora aunque pauses el vídeo, como en una emisión real.
         } else {
             enviarComandoBunny('play');
             videoPausado = false;
@@ -624,7 +621,7 @@ window.addEventListener('load', () => {
         inicializarCambioEmisionVideo(anioSeleccionadoDestino);
     });
 
-    // Restaurar sincronización de pantalla
+    // Restaurar sincronización de pantalla al salir
     const restaurarEstadosPantalla = () => {
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             btnFS.innerText = "⛶";
@@ -638,6 +635,17 @@ window.addEventListener('load', () => {
 
     document.addEventListener('fullscreenchange', restaurarEstadosPantalla);
     document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
+
+    // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (CORREGIDO PWA) ---
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then((registro) => {
+                console.log('Service Worker de Caudete Fiestas registrado con éxito en el alcance:', registro.scope);
+            })
+            .catch((error) => {
+                console.error('Fallo en el registro del Service Worker:', error);
+            });
+    }
 });
 </script>
 </body>
