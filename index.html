@@ -368,7 +368,7 @@
     </style>
 </head>
 <body>
-   <!-- CABECERA OFICIAL SEMÁNTICA -->
+ <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
         <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
@@ -387,12 +387,14 @@
         <img class="logo-mayordomia destello-logo" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
         <h3>M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
     </div>
-
-    <!-- 📥 BOTÓN DE INSTALACIÓN PWA -->
-    <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 0.9rem; z-index: 10; width: 100%; max-width: 220px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-        📥 Instalar Aplicación
-    </button>
 </header>
+
+<!-- 📥 BOTÓN DE INSTALACIÓN PWA (Sacado fuera del header para corregir la alineación horizontal de los logos) -->
+<div style="text-align: center; margin: -10px auto 25px auto; max-width: 900px; padding: 0 5px;">
+    <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 14px 24px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 0.95rem; width: 100%; max-width: 320px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s;">
+        📥 Instalar Aplicación Caudete Fiestas
+    </button>
+</div>
 
 <!-- CONTENEDOR DEL REPRODUCTOR -->
 <div class="video-container" id="marco-contenedor">
@@ -452,6 +454,7 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
+
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
