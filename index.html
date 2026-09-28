@@ -141,176 +141,176 @@
             📥 Instalar Aplicación
         </button>
     </div>
-/* --- ANIMACIONES DE DESTELLO --- */
-        .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
-            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
-        }
-        .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
+    /* --- ANIMACIONES DE DESTELLO --- */
+    .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
+        animation: destelloContinuoLogo 2.5s infinite ease-in-out;
+    }
+    .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
 
-        @keyframes destelloContinuoLogo {
-            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
-            50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.6); }
-        }
-        @keyframes destelloContinuoTexto {
-            0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
-            50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
-        }
+    @keyframes destelloContinuoLogo {
+        0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
+        50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.6); }
+    }
+    @keyframes destelloContinuoTexto {
+        0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
+        50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
+    }
 
-        /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
-        .video-container {
-            position: relative;
-            max-width: 900px;
-            margin: 0 auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-            background-color: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            padding: 5px;
-            box-sizing: border-box;
-        }
+    /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
+    .video-container {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+        background-color: #000;
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 5px;
+        box-sizing: border-box;
+    }
 
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* Relación de aspecto nativa (16:9) */
-            height: 0;
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #000;
-        }
-        
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border: 0; z-index: 1;
-        }
+    .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* Relación de aspecto nativa (16:9) */
+        height: 0;
+        width: 100%;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #000;
+    }
+    
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        border: 0; z-index: 1;
+    }
 
-        /* --- OVERLAYS SOBRE EL VÍDEO --- */
-        .reloj-video-block {
-            position: absolute;
-            top: 15px; left: 15px; display: none;
-            background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
-            padding: 8px 14px; font-size: 1.1rem; font-weight: bold;
-            font-family: 'Courier New', Courier, monospace; border-radius: 6px;
-            z-index: 5; pointer-events: none; letter-spacing: 1px;
-        }
-        
-        .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
-        .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
-        
-        .badge-anio-reproductor {
-            position: absolute; bottom: 15px; left: 15px; display: none;
-            background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
-            font-weight: 900; border-radius: 6px; z-index: 5;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-        }
+    /* --- OVERLAYS SOBRE EL VÍDEO --- */
+    .reloj-video-block {
+        position: absolute;
+        top: 15px; left: 15px; display: none;
+        background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
+        padding: 8px 14px; font-size: 1.1rem; font-weight: bold;
+        font-family: 'Courier New', Courier, monospace; border-radius: 6px;
+        z-index: 5; pointer-events: none; letter-spacing: 1px;
+    }
+    
+    .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
+    .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
+    
+    .badge-anio-reproductor {
+        position: absolute; bottom: 15px; left: 15px; display: none;
+        background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
+        font-weight: 900; border-radius: 6px; z-index: 5;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
 
-        @media (min-width: 768px) {
-            .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
-            .ctv-video-block { top: 20px; right: 20px; }
-            .logo-ctv-fijo { height: 73px; }
-            .badge-anio-reproductor { bottom: 20px; left: 20px; padding: 12px 24px; font-size: 1.4rem; }
-        }
+    @media (min-width: 768px) {
+        .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
+        .ctv-video-block { top: 20px; right: 20px; }
+        .logo-ctv-fijo { height: 73px; }
+        .badge-anio-reproductor { bottom: 20px; left: 20px; padding: 12px 24px; font-size: 1.4rem; }
+    }
 
-        /* --- BOTONERA DE CONTROL EN FILA HORIZONTAL --- */
-        .control-buttons-group {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            display: none;
-            flex-direction: row; 
-            gap: 10px; 
-            z-index: 6;
-            pointer-events: none;
-        }
+    /* --- BOTONERA DE CONTROL EN FILA HORIZONTAL --- */
+    .control-buttons-group {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        display: none;
+        flex-direction: row; 
+        gap: 10px; 
+        z-index: 6;
+        pointer-events: none;
+    }
 
-        .btn-control-tv {
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            pointer-events: auto; 
-        }
-        
-        @media (min-width: 768px) {
-            .control-buttons-group { bottom: 20px; right: 20px; gap: 12px; }
-            .btn-control-tv { width: 46px; height: 46px; }
-        }
-        
-        .btn-control-tv:hover { transform: scale(1.1); }
+    .btn-control-tv {
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        pointer-events: auto; 
+    }
+    
+    @media (min-width: 768px) {
+        .control-buttons-group { bottom: 20px; right: 20px; gap: 12px; }
+        .btn-control-tv { width: 46px; height: 46px; }
+    }
+    
+    .btn-control-tv:hover { transform: scale(1.1); }
 
-        .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
-        .btn-salir-reproductor:hover { background: #ff0000; }
+    .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
+    .btn-salir-reproductor:hover { background: #ff0000; }
 
-        .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.1rem; }
-        .btn-pausa-reproductor:hover { background: #ff8c00; }
+    .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.1rem; }
+    .btn-pausa-reproductor:hover { background: #ff8c00; }
 
-        .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
-        .btn-fullscreen-web:hover { background: #ffcc00; }
+    .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
+    .btn-fullscreen-web:hover { background: #ffcc00; }
 
-        /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
-        #escudo-toper {
-            pointer-events: none !important;
-        }
+    /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
+    #escudo-toper {
+        pointer-events: none !important;
+    }
 
-        /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
-        #capa-espera {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
-            background-size: contain; background-position: center; background-repeat: no-repeat;
-            z-index: 10; display: flex; align-items: center; justify-content: center;
-            opacity: 1;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-        .btn-play {
-            background: rgba(255, 204, 0, 0.95); color: #141414; border: none;
-            width: 80px; height: 80px; font-size: 2rem; border-radius: 50%; cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
-            text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
-        }
-        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
+    /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
+    #capa-espera {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
+        background-size: contain; background-position: center; background-repeat: no-repeat;
+        z-index: 10; display: flex; align-items: center; justify-content: center;
+        opacity: 1;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    .btn-play {
+        background: rgba(255, 204, 0, 0.95); color: #141414; border: none;
+        width: 80px; height: 80px; font-size: 2rem; border-radius: 50%; cursor: pointer;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+        text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
+    }
+    .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
 
-        /* REJILLAS HISTÓRICAS Y COMPARSAS */
-        .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
-        .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
-        .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
-        .btn-anio-archivo {
-            background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
-            padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-        }
-        .btn-anio-archivo:hover, .btn-anio-archivo.activo { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
+    /* REJILLAS HISTÓRICAS Y COMPARSAS */
+    .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
+    .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
+    .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
+    .btn-anio-archivo {
+        background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
+        padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-anio-archivo:hover, .btn-anio-archivo.activo { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
 
-        .comparsas-seccion { margin-top: 50px; }
-        .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
-        .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
-        .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
-        .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; }
-        .logo-comparsa:hover { transform: scale(1.08); }
+    .comparsas-seccion { margin-top: 50px; }
+    .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
+    .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
+    .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
+    .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; }
+    .logo-comparsa:hover { transform: scale(1.08); }
 
-        .honor-text {
-            color: #ffcc00;
-            font-size: 1.45rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 0;
-        }
+    .honor-text {
+        color: #ffcc00;
+        font-size: 1.45rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin: 0;
+    }
 
-        .years-subtitle-text {
-            color: #ffffff;
-            font-size: 1.4rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 4px 0 0 0;
-        }
+    .years-subtitle-text {
+        color: #ffffff;
+        font-size: 1.4rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin: 4px 0 0 0;
+    }
         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
