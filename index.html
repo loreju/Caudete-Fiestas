@@ -108,210 +108,177 @@
         @media (min-width: 768px) {
             h1 { font-size: 2.2rem; }
         }
-    </style>
-</head>
-<body>
-    <!-- --- ESTRUCTURA DE LA CABECERA --- -->
-    <div class="header-container">
-        <!-- Bloque Logo CTV -->
-        <div class="header-block">
-            <img src="img/logo-ctv.png" alt="Logo CTV" class="logo-ctv-cabecera">
-            <h3>CTV Caudete</h3>
-        </div>
+      /* --- ANIMACIONES DE DESTELLO --- */
+        .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
+            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
+        }
+        .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
+
+        @keyframes destelloContinuoLogo {
+            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
+            50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.6); }
+        }
+        @keyframes destelloContinuoTexto {
+            0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
+            50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
+        }
+
+        /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
+        .video-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* Relación de aspecto nativa (16:9) */
+            height: 0;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #000;
+        }
         
-        <!-- Bloque Título Central -->
-        <div class="title-block">
-            <h1 class="destello-texto">Caudete Fiestas</h1>
-        </div>
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0; z-index: 1;
+        }
 
-        <!-- Bloque Logo Ayuntamiento -->
-        <div class="header-block">
-            <img src="img/escudo-ayuntamiento.png" alt="Ayuntamiento" class="logo-ayuntamiento">
-            <h3>Ayuntamiento</h3>
-        </div>
+        /* --- OVERLAYS SOBRE EL VÍDEO --- */
+        .reloj-video-block {
+            position: absolute;
+            top: 15px; left: 15px; display: none;
+            background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
+            padding: 8px 14px; font-size: 1.1rem; font-weight: bold;
+            font-family: 'Courier New', Courier, monospace; border-radius: 6px;
+            z-index: 5; pointer-events: none; letter-spacing: 1px;
+        }
+        
+        .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
+        .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
+        
+        .badge-anio-reproductor {
+            position: absolute; bottom: 15px; left: 15px; display: none;
+            background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
+            font-weight: 900; border-radius: 6px; z-index: 5;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
 
-        <!-- Bloque Logo Mayordomía -->
-        <div class="header-block">
-            <img src="img/logo-mayordomia.png" alt="Mayordomía" class="logo-mayordomia">
-            <h3>M. Virgen de Gracia</h3>
-        </div>
+        @media (min-width: 768px) {
+            .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
+            .ctv-video-block { top: 20px; right: 20px; }
+            .logo-ctv-fijo { height: 73px; }
+            .badge-anio-reproductor { bottom: 20px; left: 20px; padding: 12px 24px; font-size: 1.4rem; }
+        }
 
-        <!-- 📥 BOTÓN DE INSTALACIÓN PWA -->
-        <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 0.9rem; z-index: 10; width: 100%; max-width: 220px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
-            📥 Instalar Aplicación
-        </button>
-    </div>
-    /* --- ANIMACIONES DE DESTELLO --- */
-    .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
-        animation: destelloContinuoLogo 2.5s infinite ease-in-out;
-    }
-    .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
+        /* --- BOTONERA DE CONTROL EN FILA HORIZONTAL --- */
+        .control-buttons-group {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: none;
+            flex-direction: row; 
+            gap: 10px; 
+            z-index: 6;
+            pointer-events: none;
+        }
 
-    @keyframes destelloContinuoLogo {
-        0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
-        50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.6); }
-    }
-    @keyframes destelloContinuoTexto {
-        0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
-        50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
-    }
+        .btn-control-tv {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            pointer-events: auto; 
+        }
+        
+        @media (min-width: 768px) {
+            .control-buttons-group { bottom: 20px; right: 20px; gap: 12px; }
+            .btn-control-tv { width: 46px; height: 46px; }
+        }
+        
+        .btn-control-tv:hover { transform: scale(1.1); }
 
-    /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
-    .video-container {
-        position: relative;
-        max-width: 900px;
-        margin: 0 auto;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.8);
-        background-color: #000;
-        border-radius: 12px;
-        overflow: hidden;
-        padding: 5px;
-        box-sizing: border-box;
-    }
+        .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
+        .btn-salir-reproductor:hover { background: #ff0000; }
 
-    .video-wrapper {
-        position: relative;
-        padding-bottom: 56.25%; /* Relación de aspecto nativa (16:9) */
-        height: 0;
-        width: 100%;
-        border-radius: 8px;
-        overflow: hidden;
-        background-color: #000;
-    }
-    
-    .video-wrapper iframe {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        border: 0; z-index: 1;
-    }
+        .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.1rem; }
+        .btn-pausa-reproductor:hover { background: #ff8c00; }
 
-    /* --- OVERLAYS SOBRE EL VÍDEO --- */
-    .reloj-video-block {
-        position: absolute;
-        top: 15px; left: 15px; display: none;
-        background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
-        padding: 8px 14px; font-size: 1.1rem; font-weight: bold;
-        font-family: 'Courier New', Courier, monospace; border-radius: 6px;
-        z-index: 5; pointer-events: none; letter-spacing: 1px;
-    }
-    
-    .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
-    .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
-    
-    .badge-anio-reproductor {
-        position: absolute; bottom: 15px; left: 15px; display: none;
-        background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
-        font-weight: 900; border-radius: 6px; z-index: 5;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
+        .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
+        .btn-fullscreen-web:hover { background: #ffcc00; }
 
-    @media (min-width: 768px) {
-        .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
-        .ctv-video-block { top: 20px; right: 20px; }
-        .logo-ctv-fijo { height: 73px; }
-        .badge-anio-reproductor { bottom: 20px; left: 20px; padding: 12px 24px; font-size: 1.4rem; }
-    }
+        /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
+        #escudo-toper {
+            pointer-events: none !important;
+        }
 
-    /* --- BOTONERA DE CONTROL EN FILA HORIZONTAL --- */
-    .control-buttons-group {
-        position: absolute;
-        bottom: 15px;
-        right: 15px;
-        display: none;
-        flex-direction: row; 
-        gap: 10px; 
-        z-index: 6;
-        pointer-events: none;
-    }
+        /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
+        #capa-espera {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
+            background-size: contain; background-position: center; background-repeat: no-repeat;
+            z-index: 10; display: flex; align-items: center; justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .btn-play {
+            background: rgba(255, 204, 0, 0.95); color: #141414; border: none;
+            width: 80px; height: 80px; font-size: 2rem; border-radius: 50%; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+            text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
+        }
+        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
 
-    .btn-control-tv {
-        width: 40px;
-        height: 40px;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        pointer-events: auto; 
-    }
-    
-    @media (min-width: 768px) {
-        .control-buttons-group { bottom: 20px; right: 20px; gap: 12px; }
-        .btn-control-tv { width: 46px; height: 46px; }
-    }
-    
-    .btn-control-tv:hover { transform: scale(1.1); }
+        /* REJILLAS HISTÓRICAS Y COMPARSAS */
+        .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
+        .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
+        .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
+        .btn-anio-archivo {
+            background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
+            padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-anio-archivo:hover, .btn-anio-archivo.activo { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
 
-    .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
-    .btn-salir-reproductor:hover { background: #ff0000; }
+        .comparsas-seccion { margin-top: 50px; }
+        .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
+        .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
+        .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
+        .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; }
+        .logo-comparsa:hover { transform: scale(1.08); }
 
-    .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.1rem; }
-    .btn-pausa-reproductor:hover { background: #ff8c00; }
+        .honor-text {
+            color: #ffcc00;
+            font-size: 1.45rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
 
-    .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
-    .btn-fullscreen-web:hover { background: #ffcc00; }
-
-    /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
-    #escudo-toper {
-        pointer-events: none !important;
-    }
-
-    /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
-    #capa-espera {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
-        background-size: contain; background-position: center; background-repeat: no-repeat;
-        z-index: 10; display: flex; align-items: center; justify-content: center;
-        opacity: 1;
-        transition: opacity 0.4s ease, visibility 0.4s ease;
-    }
-    .btn-play {
-        background: rgba(255, 204, 0, 0.95); color: #141414; border: none;
-        width: 80px; height: 80px; font-size: 2rem; border-radius: 50%; cursor: pointer;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
-        text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
-    }
-    .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
-
-    /* REJILLAS HISTÓRICAS Y COMPARSAS */
-    .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
-    .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
-    .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
-    .btn-anio-archivo {
-        background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
-        padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-    }
-    .btn-anio-archivo:hover, .btn-anio-archivo.activo { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
-
-    .comparsas-seccion { margin-top: 50px; }
-    .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
-    .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
-    .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
-    .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; }
-    .logo-comparsa:hover { transform: scale(1.08); }
-
-    .honor-text {
-        color: #ffcc00;
-        font-size: 1.45rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        margin: 0;
-    }
-
-    .years-subtitle-text {
-        color: #ffffff;
-        font-size: 1.4rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        margin: 4px 0 0 0;
-    }
-             /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+        .years-subtitle-text {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 4px 0 0 0;
+        }
+ /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -368,7 +335,7 @@
     </style>
 </head>
 <body>
- <!-- CABECERA OFICIAL SEMÁNTICA -->
+<!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
         <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
@@ -389,7 +356,7 @@
     </div>
 </header>
 
-<!-- 📥 BOTÓN DE INSTALACIÓN PWA (Sacado fuera del header para corregir la alineación horizontal de los logos) -->
+<!-- 📥 BOTÓN DE INSTALACIÓN PWA (Corregido: independiente para no estorbar a los logos) -->
 <div style="text-align: center; margin: -10px auto 25px auto; max-width: 900px; padding: 0 5px;">
     <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 14px 24px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 0.95rem; width: 100%; max-width: 320px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s;">
         📥 Instalar Aplicación Caudete Fiestas
@@ -400,7 +367,7 @@
 <div class="video-container" id="marco-contenedor">
     <div class="video-wrapper">
         
-        <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN (Z-Index elevado para flotar sobre el iframe de Bunny) -->
+        <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN -->
         <div class="reloj-video-block destello-logo" id="reloj-video" style="z-index: 98;">00:00</div>
 
         <div class="ctv-video-block" id="bloque-logo-ctv-video" style="z-index: 98;">
@@ -424,7 +391,7 @@
             <button class="btn-play" id="start-btn" style="z-index: 12;">▶</button>
         </div>
         
-        <!-- Iframe limpio oficial (Sin scripts conflictivos adyacentes) -->
+        <!-- Iframe limpio oficial -->
         <iframe 
             id="bunny-player"
             class="bunny-stream-player"
@@ -454,7 +421,6 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
@@ -462,7 +428,7 @@
 <script>
 window.addEventListener('load', () => {
     // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED ACTUALIZADO) ---
-    const videosData = {
+   const videosData = {
         "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
         "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
         "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
@@ -509,7 +475,6 @@ window.addEventListener('load', () => {
         "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
         "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
     };
-
     // Unificación estricta de elementos vinculados al DOM
     const iframePlayer = document.getElementById('bunny-player');
     const capaEspera = document.getElementById('capa-espera');
@@ -529,7 +494,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-      // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+    // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -687,7 +652,6 @@ window.addEventListener('load', () => {
     const esOrdenador = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Evita que salte el cartel nativo invasivo de Chrome de golpe
         e.preventDefault();
         eventoInstalacion = e;
         
@@ -728,3 +692,4 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
+   
