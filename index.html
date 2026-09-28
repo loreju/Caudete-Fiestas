@@ -526,7 +526,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-          // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+       // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -676,16 +676,16 @@ window.addEventListener('load', () => {
     document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
 
 
-    // --- INTEGRACIÓN: CONTROL DE INSTALACIÓN PWA EN ANDROID ---
+    // --- GESTIÓN DE LA INSTALACIÓN PWA (NUEVO) ---
     let eventoInstalacion = null;
     const btnInstalarApp = document.getElementById('btnInstalarApp');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Evita que Android maneje de forma agresiva la barra por defecto
+        // Bloquea el aviso automático nativo invasivo
         e.preventDefault();
-        // Guarda el evento para que se dispare al pulsar tu botón personalizado
+        // Almacena el evento para lanzarlo mediante el botón amarillo
         eventoInstalacion = e;
-        // Hace visible el botón para que el usuario elija instalar
+        // Hace visible el botón de instalación en la cabecera
         if (btnInstalarApp) {
             btnInstalarApp.style.display = 'block';
         }
@@ -694,18 +694,18 @@ window.addEventListener('load', () => {
     if (btnInstalarApp) {
         btnInstalarApp.addEventListener('click', async () => {
             if (!eventoInstalacion) return;
-            // Despliega la ventana nativa de instalación de Chrome en Android
+            // Despliega el prompt oficial de confirmación en Chrome Android
             eventoInstalacion.prompt();
             
             const { outcome } = await eventoInstalacion.userChoice;
-            console.log(`Elección de instalación del usuario: ${outcome}`);
+            console.log(`El usuario decidió: ${outcome}`);
             
             eventoInstalacion = null;
             btnInstalarApp.style.display = 'none';
         });
     }
 
-    // Ocultar botón si ya se completó el proceso con éxito
+    // Ocultar botón de forma automática si la app ya se instaló previamente
     window.addEventListener('appinstalled', () => {
         console.log('¡Aplicación Caudete Fiestas instalada con éxito!');
         if (btnInstalarApp) btnInstalarApp.style.display = 'none';
