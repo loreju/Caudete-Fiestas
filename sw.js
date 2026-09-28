@@ -1,5 +1,6 @@
-const CACHE_NAME = 'caudete-fiestas-v2';
-// SOLO guardamos en el móvil el diseño y los logos para que cargue instantáneo
+const CACHE_NAME = 'caudete-fiestas-v3'; // Incrementamos la versión para forzar la actualización limpia
+
+// Guardamos en el móvil el diseño y los logos para que cargue instantáneo
 const ASSETS = [
   './',
   './index.html',
@@ -43,8 +44,15 @@ self.addEventListener('activate', (e) => {
 
 // Estrategia de carga rápida: si está en el móvil lo enseña, si es el vídeo va directo a internet
 self.addEventListener('fetch', (e) => {
-  // EXCLUSIÓN CRÍTICA: Si es el vídeo de DuckDNS, NO se guarda en caché, va directo por red
-  if (e.request.url.includes('duckdns.org') || e.request.url.includes('.m3u8')) {
+  // EXCLUSIÓN CRÍTICA DE STREAMING PARA BUNNY CDN Y PLAYER.JS (Corregido con respondWith)
+  // Impide de forma absoluta que los paquetes de datos y peticiones del reproductor se almacenen en el móvil
+  if (
+    e.request.url.includes('mediadelivery.net') || 
+    e.request.url.includes('bunny.net') || 
+    e.request.url.includes('duckdns.org') || 
+    e.request.url.includes('.m3u8')
+  ) {
+    e.respondWith(fetch(e.request)); // Corregido: Ahora se procesa correctamente envolviendo la petición de red
     return;
   }
   
