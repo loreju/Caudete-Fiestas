@@ -108,7 +108,40 @@
         @media (min-width: 768px) {
             h1 { font-size: 2.2rem; }
         }
-         /* --- ANIMACIONES DE DESTELLO --- */
+    </style>
+</head>
+<body>
+    <!-- --- ESTRUCTURA DE LA CABECERA --- -->
+    <div class="header-container">
+        <!-- Bloque Logo CTV -->
+        <div class="header-block">
+            <img src="img/logo-ctv.png" alt="Logo CTV" class="logo-ctv-cabecera">
+            <h3>CTV Caudete</h3>
+        </div>
+        
+        <!-- Bloque Título Central -->
+        <div class="title-block">
+            <h1 class="destello-texto">Caudete Fiestas</h1>
+        </div>
+
+        <!-- Bloque Logo Ayuntamiento -->
+        <div class="header-block">
+            <img src="img/escudo-ayuntamiento.png" alt="Ayuntamiento" class="logo-ayuntamiento">
+            <h3>Ayuntamiento</h3>
+        </div>
+
+        <!-- Bloque Logo Mayordomía -->
+        <div class="header-block">
+            <img src="img/logo-mayordomia.png" alt="Mayordomía" class="logo-mayordomia">
+            <h3>M. Virgen de Gracia</h3>
+        </div>
+
+        <!-- 📥 BOTÓN DE INSTALACIÓN PWA -->
+        <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 12px 20px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 0.9rem; z-index: 10; width: 100%; max-width: 220px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+            📥 Instalar Aplicación
+        </button>
+    </div>
+/* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
