@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caudete-fiestas-v4'; // Subimos a v4 para forzar el vaciado de la caché vieja en el móvil
+const CACHE_NAME = 'caudete-fiestas-v5'; // Subimos a v5 para obligar a los móviles a actualizar el manifest e icono
 
 // Guardamos solo lo imprescindible para asegurar una instalación limpia sin fallos de ruta
 const ASSETS = [
@@ -18,7 +18,7 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// Activación y limpieza estricta de cachés viejas (v1, v2, v3...)
+// Activación y limpieza estricta de cachés viejas (v1, v2, v3, v4...)
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
