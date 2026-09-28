@@ -486,7 +486,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-      // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+          // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -584,7 +584,6 @@ window.addEventListener('load', () => {
             enviarComandoBunny('pause');
             videoPausado = true;
             btnPausaVideo.innerText = "▶";
-            // Nota: El reloj de televisión sigue en hora aunque pauses el vídeo, como en una emisión real.
         } else {
             enviarComandoBunny('play');
             videoPausado = false;
@@ -635,6 +634,43 @@ window.addEventListener('load', () => {
 
     document.addEventListener('fullscreenchange', restaurarEstadosPantalla);
     document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
+
+
+    // --- INTEGRACIÓN: CONTROL DE INSTALACIÓN PWA EN ANDROID ---
+    let eventoInstalacion = null;
+    const btnInstalarApp = document.getElementById('btnInstalarApp');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        // Evita que Android maneje de forma agresiva la barra por defecto
+        e.preventDefault();
+        // Guarda el evento para que se dispare al pulsar tu botón personalizado
+        eventoInstalacion = e;
+        // Hace visible el botón para que el usuario elija instalar
+        if (btnInstalarApp) {
+            btnInstalarApp.style.display = 'block';
+        }
+    });
+
+    if (btnInstalarApp) {
+        btnInstalarApp.addEventListener('click', async () => {
+            if (!eventoInstalacion) return;
+            // Despliega la ventana nativa de instalación de Chrome en Android
+            eventoInstalacion.prompt();
+            
+            const { outcome } = await eventoInstalacion.userChoice;
+            console.log(`Elección de instalación del usuario: ${outcome}`);
+            
+            eventoInstalacion = null;
+            btnInstalarApp.style.display = 'none';
+        });
+    }
+
+    // Ocultar botón si ya se completó el proceso con éxito
+    window.addEventListener('appinstalled', () => {
+        console.log('¡Aplicación Caudete Fiestas instalada con éxito!');
+        if (btnInstalarApp) btnInstalarApp.style.display = 'none';
+    });
+
 
     // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (CORREGIDO PWA) ---
     if ('serviceWorker' in navigator) {
