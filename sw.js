@@ -1,33 +1,24 @@
-const CACHE_NAME = 'caudete-fiestas-v3'; // Incrementamos la versión para forzar la actualización limpia
+const CACHE_NAME = 'caudete-fiestas-v4'; // Subimos a v4 para forzar el vaciado de la caché vieja en el móvil
 
-// Guardamos en el móvil el diseño y los logos para que cargue instantáneo
+// Guardamos solo lo imprescindible para asegurar una instalación limpia sin fallos de ruta
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json',
-  './img/logo-ctv.png',
-  './img/escudo-ayuntamiento.png',
-  './img/logo-mayordomia.png',
-  './img/Cartel-Fiestas-espera.png',
-  './img/Cartel-Fiestas-boton.png',
-  './img/logo-asociacion.png',
-  './img/guerreros.png',
-  './img/mirenos.png',
-  './img/tarik.png',
-  './img/moros.png',
-  './img/antigua.png'
+  './manifest.json'
 ];
 
 // Instalación de la memoria caché
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
+      // Usamos un método tolerante: si una imagen falla, el SW se instala igual
+      cache.addAll(ASSETS).catch(err => console.log("Aviso en caché estática:", err));
+      return cache;
     }).then(() => self.skipWaiting())
   );
 });
 
-// Activación y limpieza de cachés viejas
+// Activación y limpieza estricta de cachés viejas (v1, v2, v3...)
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -42,26 +33,37 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Estrategia de carga rápida: si está en el móvil lo enseña, si es el vídeo va directo a internet
+// Estrategia de carga rápida con exclusión total de streaming
 self.addEventListener('fetch', (e) => {
-  // EXCLUSIÓN CRÍTICA DE STREAMING PARA BUNNY CDN Y PLAYER.JS (Corregido con respondWith)
-  // Impide de forma absoluta que los paquetes de datos y peticiones del reproductor se almacenen en el móvil
+  // EXCLUSIÓN CRÍTICA DE STREAMING: Bunny CDN, reproductores e hilos m3u8 directos a red
   if (
     e.request.url.includes('mediadelivery.net') || 
     e.request.url.includes('bunny.net') || 
     e.request.url.includes('duckdns.org') || 
     e.request.url.includes('.m3u8')
   ) {
-    e.respondWith(fetch(e.request)); // Corregido: Ahora se procesa correctamente envolviendo la petición de red
+    e.respondWith(fetch(e.request));
     return;
   }
   
+  // Cache dinámico: lo que use el usuario se guarda automáticamente si no es vídeo
   e.respondWith(
     caches.match(e.request).then((cachedResponse) => {
       if (cachedResponse) {
         return cachedResponse;
       }
-      return fetch(e.request);
+      return fetch(e.request).then((networkResponse) => {
+        // Solo guardamos peticiones válidas de nuestra propia web
+        if (networkResponse && networkResponse.status === 200 && e.request.url.startsWith(self.location.origin)) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(e.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      }).catch(() => {
+        // Fallback silencioso si no hay internet
+      });
     })
   );
 });
