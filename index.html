@@ -286,7 +286,18 @@
             background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
             padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
         }
-        .btn-anio-archivo:hover, .btn-anio-archivo.activo { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
+        
+        /* CORRECCIÓN: Separamos el hover del activo para que la animación de destello brille sobre el fondo oscuro original */
+        .btn-anio-archivo:hover { 
+            background-color: #ffcc00; 
+            color: #141414; 
+            border-color: #ffcc00; 
+        }
+        .btn-anio-archivo.activo {
+            border-color: #ffcc00;
+            color: #ffcc00;
+            /* El fondo se queda oscuro para que el drop-shadow dorado del destello se vea espectacular */
+        }
 
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
@@ -312,7 +323,7 @@
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
         }
-   
+      
       
 /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
