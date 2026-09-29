@@ -109,9 +109,9 @@
             h1 { font-size: 2.2rem; }
         }
 
-        /* --- NUEVO ESTILO SIMÉTRICO PARA EL CUARTO BOTÓN DE LA FILA (€) --- */
+        /* --- ESTILO SIMÉTRICO PARA EL CUARTO BOTÓN DE LA FILA (€ BIZUM) --- */
         .btn-control-tv.btn-donar-tv {
-            background: linear-gradient(135deg, #0056b3, #00bfa5) !important; /* Degradado Azul-Verde */
+            background: linear-gradient(135deg, #00bcd4, #007bff) !important; /* Cyan a Azul Bizum */
             color: white !important;
             font-size: 1.3rem !important;
             font-weight: bold !important;
@@ -119,61 +119,22 @@
         }
 
         .btn-control-tv.btn-donar-tv:hover {
-            background: linear-gradient(135deg, #004085, #009688) !important;
             transform: scale(1.1);
         }
 
-        /* --- VENTANA FLOTANTE DEL MENSAJE (CRECE HACIA LA IZQUIERDA) --- */
+        /* --- VENTANA EMERGENTE DE BIZUM INSCRITA DENTRO DEL CONTENEDOR --- */
         .modal-kofi-festero {
             display: none;
             position: absolute !important;
-            bottom: 60px !important;  
-            right: 0px !important;     /* Alineada al borde derecho para no salirse de la pantalla */
-            width: 320px !important;
+            bottom: 65px !important;  
+            right: 0px !important;     
+            width: 310px !important;
             background: #ffffff !important;
             border-radius: 12px !important;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5) !important;
-            z-index: 99999 !important;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.6) !important;
+            z-index: 100000 !important;
             text-align: left !important;
         }
-
-        .contenido-modal-kofi {
-            padding: 18px !important;
-            color: #333 !important;
-            font-family: 'Segoe UI', Arial, sans-serif !important;
-            font-size: 14px !important;
-            line-height: 1.5 !important;
-        }
-
-        .contenido-modal-kofi h3 {
-            margin-top: 0 !important;
-            margin-bottom: 8px !important;
-            color: #0056b3 !important;
-            font-size: 16px !important;
-            font-weight: bold !important;
-        }
-
-        .contenido-modal-kofi p {
-            margin: 0 0 10px 0 !important;
-        }
-
-        .btn-enlace-kofi {
-            display: block !important;
-            text-align: center !important;
-            background: #00bfa5 !important;
-            color: white !important;
-            text-decoration: none !important;
-            padding: 10px !important;
-            border-radius: 6px !important;
-            font-weight: bold !important;
-            margin-top: 12px !important;
-            transition: background 0.2s ease !important;
-        }
-
-        .btn-enlace-kofi:hover {
-            background: #009688 !important;
-        }
-
            /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
@@ -344,7 +305,7 @@
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
         }
- /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+/* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -372,13 +333,13 @@
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
 
-            /* Ajuste del modal de donación para pantallas móviles */
+            /* Ajuste estricto del modal de Bizum para pantallas móviles */
             .modal-kofi-festero {
-                bottom: 80px;
-                right: 10px;
-                left: 10px;
-                width: auto;
-                max-width: calc(100% - 20px);
+                bottom: 55px !important;
+                right: 0px !important;
+                left: auto !important;
+                width: 270px !important;
+                max-width: calc(100% - 20px) !important;
             }
         }
 
@@ -454,11 +415,27 @@
         <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
 
-        <!-- BOTONERA DE CONTROL CON PRIORIDAD DE CAPA MÁXIMA -->
+        <!-- BOTONERA DE CONTROL CON PRIORIDAD DE CAPA MÁXIMA (ORDEN CORREGIDO: 1-FS, 2-Pausa, 3-Inicio) -->
         <div class="control-buttons-group" id="grupo-botones-tv" style="z-index: 99; pointer-events: auto;">
-            <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
-            <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
             <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
+            <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
+            <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
+            
+            <!-- Ventana flotante de Bizum (Abre justo encima de la botonera hacia la izquierda) -->
+            <div id="ventanaMensajeKofi" class="modal-kofi-festero">
+                <div style="padding: 16px !important; color: #333 !important; font-family: 'Segoe UI', Arial, sans-serif !important; font-size: 14px !important; line-height: 1.45 !important;">
+                    <h3 style="margin-top: 0 !important; margin-bottom: 8px !important; color: #007bff !important; font-size: 15px !important; font-weight: bold !important;">📲 ¡Ayuda a mantener el archivo!</h3>
+                    <p style="margin: 0 0 8px 0 !important;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios en Bunny.net genera costes mensuales.</p>
+                    <p style="margin: 0 0 10px 0 !important;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum:</p>
+                    
+                    <!-- CAJA DESTACADA BIZUM CON TU TELÉFONO REAL -->
+                    <div style="background: #f0f8ff; padding: 12px; border-left: 5px solid #00bcd4; border-radius: 6px; font-weight: bold; text-align: center; color: #111;">
+                        <span style="font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">Número de Bizum</span><br>
+                        <span style="font-size: 20px; color: #007bff; letter-spacing: 1px;">609 450 962</span><br>
+                        <span style="font-size: 11px; font-weight: normal; color: #666; display: block; margin-top: 4px;">Concepto: Mantenimiento Web</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Capa de espera -->
@@ -496,20 +473,6 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-
-<!-- --- ELEMENTOS DE DONACIÓN CON ESTILO ABSOLUTO INLINE --- -->
-<button id="btnDonarInicio" title="Ayuda al mantenimiento del archivo" style="display: flex !important; position: fixed !important; bottom: 20px !important; right: 20px !important; width: 55px !important; height: 55px !important; border-radius: 50% !important; border: none !important; background: linear-gradient(135deg, #0056b3, #00bfa5) !important; color: white !important; font-size: 26px !important; font-weight: bold !important; cursor: pointer !important; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4) !important; z-index: 999999 !important; align-items: center !important; justify-content: center !important; text-decoration: none !important; -webkit-appearance: none; outline: none !important;">€</button>
-
-<div id="ventanaMensajeKofi" class="modal-kofi-festero" style="display: none; position: fixed !important; bottom: 85px !important; right: 20px !important; width: 320px !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3) !important; z-index: 999999 !important; text-align: left !important; overflow: hidden !important;">
-    <div style="padding: 18px !important; color: #333 !important; font-family: 'Segoe UI', Arial, sans-serif !important; font-size: 14px !important; line-height: 1.5 !important;">
-        <h3 style="margin-top: 0 !important; margin-bottom: 10px !important; color: #0056b3 !important; font-size: 16px !important; font-weight: bold !important;">🎥 ¡Ayúdanos a mantener vivo el archivo!</h3>
-        <p style="margin: 0 0 10px 0 !important;">Esta web alberga <strong>45 vídeos históricos (1974-1983 A 2026)</strong> que ocupan <strong>1 Terabyte</strong>. Usamos el servidor <strong>Bunny.net</strong> para que los veas en alta calidad y sin anuncios.</p>
-        <p style="margin: 0 0 10px 0 !important;">El servidor tiene un coste fijo de almacenamiento y un coste variable según los gigabytes que se gastan al ver los vídeos. Si hay muchas visitas, el saldo se agota rápido.</p>
-        <p style="margin: 0 0 10px 0 !important;">Si quieres ayudar a cubrir los costes de Bunny.net, puedes invitarnos a un "café" digital. ¡Todo lo recaudado va directo al saldo del servidor!</p>
-        <a href="https://ko-fi.com" target="_blank" style="display: block !important; text-align: center !important; background: #00bfa5 !important; color: white !important; text-decoration: none !important; padding: 12px !important; border-radius: 6px !important; font-weight: bold !important; margin-top: 12px !important; box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;">Ir a Ko-fi para colaborar con Tarjeta</a>
-    </div>
-</div>
-
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
@@ -583,7 +546,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-     // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+   // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -632,17 +595,17 @@ window.addEventListener('load', () => {
 
         unVideoEstaReproduciendose = true;
         
-        // CORRECCIÓN: Arrancamos el reloj en hora real de inmediato
+        // ARRANCAMOS EL RELOJ EN HORA REAL DE INMEDIATO
         actualizarRelojHoraReal();
         temporizadorReloj = setInterval(actualizarRelojHoraReal, 1000);
     }
 
-    // --- RELOJ EN HORA REAL DE TELEVISIÓN (Sustituye al contador simulado) ---
+    // --- RELOJ EN HORA REAL DE TELEVISIÓN ---
     function actualizarRelojHoraReal() {
         const ahora = new Date();
         const horas = String(ahora.getHours()).padStart(2, '0');
-        const minutos = String(ahora.getMinutes()).padStart(2, '0');
-        relojVideo.innerText = `${horas}:${minutos}`;
+        const minutes = String(ahora.getMinutes()).padStart(2, '0');
+        relojVideo.innerText = `${horas}:${minutes}`;
     }
 
     // --- LISTENERS DE LA BOTONERA DE CONTROL ---
@@ -744,7 +707,6 @@ window.addEventListener('load', () => {
         e.preventDefault();
         eventoInstalacion = e;
         
-        // Filtro estricto: El botón amarillo grande solo nace si NO estás en un PC/Mac
         if (btnInstalarApp && !esOrdenador) {
             btnInstalarApp.style.display = 'block';
         }
@@ -767,17 +729,18 @@ window.addEventListener('load', () => {
     });
 
 
-    // --- CREACIÓN DINÁMICA DEL CUARTO BOTÓN (€) AL FINAL DE LA FILA HORIZONTAL ---
+    // --- CREACIÓN DINÁMICA DEL BOTÓN (€) EN LA CUARTA POSICIÓN EXACTA ---
     const btnDonarInicio = document.createElement('button');
     btnDonarInicio.className = 'btn-control-tv btn-donar-tv';
     btnDonarInicio.id = 'btnDonarInicio';
     btnDonarInicio.innerText = '€';
-    btnDonarInicio.title = 'Ayuda al mantenimiento del archivo';
+    btnDonarInicio.title = 'Ayuda al mantenimiento del archivo por Bizum';
     
-    // Al usar appendChild, se mete el cuarto en la fila, justo a la derecha del botón rojo
-    grupoBotonesTv.appendChild(btnDonarInicio);
+    // CORRECCIÓN DE ORDEN: Usamos insertBefore para meterlo al principio del contenedor.
+    // Al meterlo el primero en el código, visualmente se queda el cuarto a la izquierda del todo.
+    grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
 
-    // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE DONACIÓN
+    // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE BIZUM
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
     
     if (btnDonarInicio && ventanaMensajeKofi) {
@@ -790,12 +753,28 @@ window.addEventListener('load', () => {
             }
         });
 
-        // Ocultar si pinchan fuera de la ventana
         document.addEventListener('click', () => {
             ventanaMensajeKofi.style.display = 'none';
         });
         ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
     }
+
+    // CONTROL ESTRICTO DE PANTALLA COMPLETA (OCULTA EL BOTÓN DEL € Y EL MENSAJE)
+    const comprobarPantallaCompletaFestera = () => {
+        if (btnDonarInicio && ventanaMensajeKofi) {
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                // Al pasar a pantalla completa, el botón del € y el recuadro de Bizum se esfuman por completo
+                btnDonarInicio.style.setProperty('display', 'none', 'important');
+                ventanaMensajeKofi.style.display = 'none';
+            } else {
+                // Al salir de pantalla completa, el botón del € vuelve a su sitio sin mover los otros botones
+                btnDonarInicio.style.setProperty('display', 'flex', 'important');
+            }
+        }
+    };
+
+    document.addEventListener('fullscreenchange', comprobarPantallaCompletaFestera);
+    document.addEventListener('webkitfullscreenchange', comprobarPantallaCompletaFestera);
 
 
     // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (CORREGIDO PWA) ---
@@ -812,3 +791,4 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
+  
