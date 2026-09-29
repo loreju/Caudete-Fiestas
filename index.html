@@ -135,37 +135,67 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
-        /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (VISIBLES Y SUAVES) --- */
+         /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
-            /* 4 segundos ofrece el equilibrio perfecto entre presencia visual y elegancia */
+            /* Ritmo de 4 segundos: elegante y equilibrado */
             animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
         }
         
-        .destello-texto { 
+        /* Ajuste exclusivo para los 6 logos de abajo: destello fino y contenido */
+        .logo-comparsa {
+            animation: destelloSuaveLogoAbajo 4s infinite ease-in-out;
+            will-change: filter;
+        }
+
+        /* Destello para textos y el cuadro/box del año del reproductor */
+        .destello-texto, .badge-anio-reproductor { 
             animation: destelloContinuoTexto 4s infinite ease-in-out; 
-            will-change: text-shadow;
+            will-change: text-shadow, box-shadow;
         }
 
+        /* Destello exclusivo para el botón del año activo */
+        .btn-anio-archivo.activo {
+            animation: destelloBotonActivo 4s infinite ease-in-out !important;
+            will-change: box-shadow, border-color;
+        }
+
+        /* KEYFRAMES LOGOS SUPERIORES Y CTV */
         @keyframes destelloContinuoLogo {
-            0%, 100% { 
-                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
-            }
-            50% { 
-                /* Se recupera la fuerza dorada con un degradado de doble corona para que se note arriba y abajo */
-                filter: drop-shadow(0 0 12px #ffd700) 
-                        drop-shadow(0 0 22px rgba(255, 204, 0, 0.6));
-            }
+            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
+            50% { filter: drop-shadow(0 0 14px #ffd700) drop-shadow(0 0 24px rgba(255, 204, 0, 0.6)); }
         }
 
+        /* KEYFRAMES EXCLUSIVOS: Menos fuerza para los 6 logos de abajo */
+        @keyframes destelloSuaveLogoAbajo {
+            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+            50% { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 15px rgba(255, 204, 0, 0.25)); }
+        }
+
+        /* KEYFRAMES TEXTOS Y BOX IZQUIERDA */
         @keyframes destelloContinuoTexto {
             0%, 100% { 
-                text-shadow: 0 1px 2px rgba(0,0,0,0.4); 
+                text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+                box-shadow: 0 0 0px rgba(255, 204, 0, 0);
             }
             50% { 
-                /* Difuminado dorado nítido para resaltar los textos ambientales sin romper la lectura */
-                text-shadow: 0 0 10px #ffd700, 
-                             0 0 18px rgba(255, 204, 0, 0.5);
+                text-shadow: 0 0 10px #ffd700, 0 0 18px rgba(255, 204, 0, 0.5);
+                /* Hace que el contorno del box del año también se ilumine en sintonía */
+                box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+                border-color: #ffcc00;
+            }
+        }
+
+        /* KEYFRAMES BOTÓN AÑO ACTIVO */
+        @keyframes destelloBotonActivo {
+            0%, 100% {
+                border-color: #ffcc00;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            }
+            50% {
+                /* Pulsa creando un aura dorada perimetral alrededor del botón amarillo */
+                border-color: #ffffff;
+                box-shadow: 0 0 16px #ffcc00, 0 0 25px rgba(255, 215, 0, 0.6);
             }
         }
 
@@ -212,11 +242,12 @@
         .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
         
+        /* Modificado con bordes dorados suaves para encajar con el destello continuo */
         .badge-anio-reproductor {
             position: absolute; bottom: 15px; left: 15px; display: none;
             background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
             font-weight: 900; border-radius: 6px; z-index: 5;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            border: 1px solid #ffcc00;
             transition: filter 0.3s ease-in-out;
         }
 
@@ -307,20 +338,18 @@
             border-color: #ffcc00; 
         }
 
-        /* CORRECCIÓN ABSOLUTA: El año activo pasa a ser plano (amarillo destacado) rompiendo herencias molestas */
+        /* Estilo base del botón activo (Amarillo plano destacado) que ahora recibe la animación */
         .btn-anio-archivo.activo { 
             background-color: #ffcc00 !important; 
             color: #141414 !important; 
             border-color: #ffcc00 !important;
-            box-shadow: 0 4px 14px rgba(255, 204, 0, 0.4) !important;
-            animation: none !important; /* Eliminamos parpadeos en este elemento */
         }
 
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
         .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
         .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
-        .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; }
+        
         .logo-comparsa:hover { transform: scale(1.08); }
 
         .honor-text {
@@ -339,8 +368,7 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
-        }
-
+        }    
       
 /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
