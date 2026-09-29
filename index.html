@@ -109,71 +109,78 @@
             h1 { font-size: 2.2rem; }
         }
 
-        /* --- NUEVOS ESTILOS DEL BOTÓN DE DONACIÓN INICIO Y MODAL KO-FI --- */
+        /* --- ESTILOS FORZADOS PARA EL BOTÓN DE DONACIÓN INICIO Y MODAL KO-FI --- */
         .btn-donar-festero-inicio {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #0056b3, #00bfa5);
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease;
+            display: flex !important;
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            width: 50px !important;
+            height: 50px !important;
+            border-radius: 50% !important;
+            border: none !important;
+            background: linear-gradient(135deg, #0056b3, #00bfa5) !important;
+            color: white !important;
+            font-size: 24px !important;
+            font-weight: bold !important;
+            cursor: pointer !important;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3) !important;
+            z-index: 99999 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            transition: transform 0.2s ease !important;
         }
 
         .btn-donar-festero-inicio:hover {
-            transform: scale(1.1);
+            transform: scale(1.1) !important;
         }
 
         .modal-kofi-festero {
             display: none;
-            position: fixed;
-            bottom: 85px;  
-            right: 20px;
-            width: 320px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            text-align: left;
+            position: fixed !important;
+            bottom: 85px !important;  
+            right: 20px !important;
+            width: 320px !important;
+            background: #ffffff !important;
+            border-radius: 12px !important;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3) !important;
+            z-index: 99999 !important;
+            text-align: left !important;
         }
 
         .contenido-modal-kofi {
-            padding: 18px;
-            color: #333;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.5;
+            padding: 18px !important;
+            color: #333 !important;
+            font-family: 'Segoe UI', Arial, sans-serif !important;
+            font-size: 14px !important;
+            line-height: 1.5 !important;
         }
 
         .contenido-modal-kofi h3 {
-            margin-top: 0;
-            color: #0056b3;
-            font-size: 16px;
+            margin-top: 0 !important;
+            color: #0056b3 !important;
+            font-size: 16px !important;
         }
 
         .contenido-modal-kofi p {
-            margin: 0 0 10px 0;
+            margin: 0 0 10px 0 !important;
         }
 
         .btn-enlace-kofi {
-            display: block;
-            text-align: center;
-            background: #00bfa5;
-            color: white;
-            text-decoration: none;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: bold;
-            margin-top: 12px;
-            transition: background 0.2s ease;
+            display: block !important;
+            text-align: center !important;
+            background: #00bfa5 !important;
+            color: white !important;
+            text-decoration: none !important;
+            padding: 10px !important;
+            border-radius: 6px !important;
+            font-weight: bold !important;
+            margin-top: 12px !important;
+            transition: background 0.2s ease !important;
         }
 
         .btn-enlace-kofi:hover {
-            background: #009688;
+            background: #009688 !important;
         }
            /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
@@ -345,7 +352,7 @@
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
         }
-/* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+ /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -431,12 +438,14 @@
         <h3>M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
     </div>
 </header>
+
 <!-- 📥 BOTÓN DE INSTALACIÓN PWA (Corregido: independiente para no estorbar a los logos) -->
 <div style="text-align: center; margin: -10px auto 25px auto; max-width: 900px; padding: 0 5px;">
     <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 14px 24px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 0.95rem; width: 100%; max-width: 320px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s;">
         📥 Instalar Aplicación Caudete Fiestas
     </button>
 </div>
+
 <!-- CONTENEDOR DEL REPRODUCTOR -->
 <div class="video-container" id="marco-contenedor">
     <div class="video-wrapper">
@@ -477,11 +486,13 @@
         </iframe>
     </div>
 </div>
+
 <!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO -->
 <div class="archivo-historico-seccion">
     <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
     <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
 </div>
+
 <!-- SECCIÓN DE COMPARSAS -->
 <div class="comparsas-seccion">
     <div class="comparsas-grid">
@@ -493,22 +504,20 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-<!-- --- BOTÓN DE DONACIÓN INICIO Y MODAL EMERGENTE (DIRECCIÓN EN MINÚSCULAS) --- -->
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end;">
-    <button id="btnDonarInicio" class="btn-donar-festero-inicio" title="Ayuda al mantenimiento del archivo">€</button>
-    
-    <div id="ventanaMensajeKofi" class="modal-kofi-festero">
-        <div class="contenido-modal-kofi">
-            <h3>🎥 ¡Ayúdanos a mantener vivo el archivo!</h3>
-            <p>Esta web alberga <strong>45 vídeos históricos (1974-1983 A 2026)</strong> que ocupan <strong>1 Terabyte</strong>. Usamos el servidor <strong>Bunny.net</strong> para que los veas en alta calidad y sin anuncios.</p>
-            <p>El servidor tiene un coste fijo de almacenamiento y un coste variable según los gigabytes que se gastan al ver los vídeos. Si hay muchas visitas, el saldo se agota rápido.</p>
-            <p>Si quieres ayudar a cubrir los costes de Bunny.net, puedes invitarnos a un "café" digital. ¡Todo lo recaudado va directo al saldo del servidor!</p>
-            <!-- Enlace totalmente en minúsculas para máxima compatibilidad -->
-            <a href="https://ko-fi.com" target="_blank" class="btn-enlace-kofi">Ir a Ko-fi para colaborar con Tarjeta</a>
-        </div>
+
+<!-- --- ELEMENTOS DE DONACIÓN DESACOPLADOS PARA EVITAR INVISIBILIDAD --- -->
+<button id="btnDonarInicio" class="btn-donar-festero-inicio" title="Ayuda al mantenimiento del archivo">€</button>
+
+<div id="ventanaMensajeKofi" class="modal-kofi-festero">
+    <div class="contenido-modal-kofi">
+        <h3>🎥 ¡Ayúdanos a mantener vivo el archivo!</h3>
+        <p>Esta web alberga <strong>45 vídeos históricos (1974-1983 A 2026)</strong> que ocupan <strong>1 Terabyte</strong>. Usamos el servidor <strong>Bunny.net</strong> para que los veas en alta calidad y sin anuncios.</p>
+        <p>El servidor tiene un coste fijo de almacenamiento y un coste variable según los gigabytes que se gastan al ver los vídeos. Si hay muchas visitas, el saldo se agota rápido.</p>
+        <p>Si quieres ayudar a cubrir los costes de Bunny.net, puedes invitarnos a un "café" digital. ¡Todo lo recaudado va directo al saldo del servidor!</p>
+        <!-- Enlace en minúsculas y completamente funcional corregido -->
+        <a href="https://ko-fi.com" target="_blank" class="btn-enlace-kofi">Ir a Ko-fi para colaborar con Tarjeta</a>
     </div>
 </div>
-
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
@@ -582,7 +591,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-       // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+      // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -765,8 +774,7 @@ window.addEventListener('load', () => {
         if (btnInstalarApp) btnInstalarApp.style.display = 'none';
     });
 
-
-    // --- CONTROLADOR DE LA VENTANA EMERGENTE DE DONACIÓN (AÑADIDO) ---
+    // --- CONTROLADOR DE LA VENTANA EMERGENTE DE DONACIÓN (CORREGIDO) ---
     const btnDonarInicio = document.getElementById('btnDonarInicio');
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
 
