@@ -109,41 +109,30 @@
             h1 { font-size: 2.2rem; }
         }
 
-        /* --- ESTILOS FORZADOS PARA EL BOTÓN DE DONACIÓN INICIO Y MODAL KO-FI --- */
-        .btn-donar-festero-inicio {
-            display: flex !important;
-            position: fixed !important;
-            bottom: 20px !important;
-            right: 20px !important;
-            width: 50px !important;
-            height: 50px !important;
-            border-radius: 50% !important;
-            border: none !important;
-            background: linear-gradient(135deg, #0056b3, #00bfa5) !important;
+        /* --- NUEVO ESTILO SIMÉTRICO PARA EL CUARTO BOTÓN DE LA FILA (€) --- */
+        .btn-control-tv.btn-donar-tv {
+            background: linear-gradient(135deg, #0056b3, #00bfa5) !important; /* Degradado Azul-Verde */
             color: white !important;
-            font-size: 24px !important;
+            font-size: 1.3rem !important;
             font-weight: bold !important;
-            cursor: pointer !important;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3) !important;
-            z-index: 99999 !important;
-            align-items: center !important;
-            justify-content: center !important;
-            transition: transform 0.2s ease !important;
+            pointer-events: auto !important;
         }
 
-        .btn-donar-festero-inicio:hover {
-            transform: scale(1.1) !important;
+        .btn-control-tv.btn-donar-tv:hover {
+            background: linear-gradient(135deg, #004085, #009688) !important;
+            transform: scale(1.1);
         }
 
+        /* --- VENTANA FLOTANTE DEL MENSAJE (CRECE HACIA LA IZQUIERDA) --- */
         .modal-kofi-festero {
             display: none;
-            position: fixed !important;
-            bottom: 85px !important;  
-            right: 20px !important;
+            position: absolute !important;
+            bottom: 60px !important;  
+            right: 0px !important;     /* Alineada al borde derecho para no salirse de la pantalla */
             width: 320px !important;
             background: #ffffff !important;
             border-radius: 12px !important;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3) !important;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5) !important;
             z-index: 99999 !important;
             text-align: left !important;
         }
@@ -158,8 +147,10 @@
 
         .contenido-modal-kofi h3 {
             margin-top: 0 !important;
+            margin-bottom: 8px !important;
             color: #0056b3 !important;
             font-size: 16px !important;
+            font-weight: bold !important;
         }
 
         .contenido-modal-kofi p {
@@ -182,6 +173,7 @@
         .btn-enlace-kofi:hover {
             background: #009688 !important;
         }
+
            /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
