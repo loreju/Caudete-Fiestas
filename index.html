@@ -136,25 +136,27 @@
             text-align: left !important;
         }
 
-        /* --- NUEVO: Brillo exterior dorado para el Badge del Reproductor --- */
+        /* --- CORREGIDO: Brillo exterior dorado manteniendo su posición natural --- */
         .badge-anio-reproductor {
-            background-color: #ffffff; /* Fondo blanco original */
-            color: #141414;
-            border: 2px solid #ffcc00; /* Borde dorado */
-            border-radius: 4px;
-            padding: 6px 12px;
-            font-weight: bold;
+            background-color: #ffffff !important;
+            color: #141414 !important;
+            border: 2px solid #ffcc00 !important;
+            border-radius: 4px !important;
+            padding: 6px 12px !important;
+            font-weight: bold !important;
             
-            /* Filtro acelerado por hardware para el aura dorada limpia sin parpadeos */
-            filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8));
-            -webkit-filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8));
+            /* Mantiene la posición que ya tenía antes para no descolocar nada */
+            display: inline-block;
             
-            /* Soporte para navegadores más antiguos */
-            box-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+            /* Filtro limpio que genera el aura dorada sin romper el renderizado */
+            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
+            -webkit-filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
             
-            /* Posicionamiento seguro y optimización de renderizado */
-            position: absolute;
-            will-change: filter; 
+            /* Soporte extra de brillo */
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+            
+            /* Optimización gráfica */
+            will-change: filter;
         }
 
         /* Estilo complementario para el texto */
@@ -163,6 +165,7 @@
         }
     </style>
 </head>
+
               /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
