@@ -135,24 +135,54 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
-         /* --- ANIMACIONES DE DESTELLO --- */
-        .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
-            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
+          /* --- ANIMACIONES DE DESTELLO CORREGIDAS (SUAVES Y DIFUMINADAS) --- */
+        .efecto-destello, .destello-logo {
+            /* Sincronizado a 3.5s para una transición de respiración elegante y continua */
+            animation: destelloContinuoLogo 3.5s infinite ease-in-out;
+            will-change: filter;
         }
-        .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
+        
+        .destello-texto { 
+            animation: destelloContinuoTexto 3.5s infinite ease-in-out; 
+            will-change: text-shadow;
+        }
+
+        /* CORRECCIÓN: El botón activo usa box-shadow perimetral en lugar de filtros de imagen */
+        .btn-anio-archivo.activo {
+            animation: destelloMarcoBotonAnio 3.5s infinite ease-in-out;
+            will-change: box-shadow, border-color;
+        }
 
         @keyframes destelloContinuoLogo {
             0%, 100% { 
-                filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6)) brightness(1);
+                filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
             }
             50% { 
-                /* CORRECCIÓN ABSOLUTA: Forzamos una triple corona de luz dorada exterior intensa para romper el fondo blanco */
-                filter: drop-shadow(0 0 15px #ffd700) drop-shadow(0 0 25px #ffcc00) brightness(1.3);
+                /* Triple corona de luz dorada exterior intensa y difuminada sin saltos bruscos */
+                filter: drop-shadow(0 0 12px #ffd700) drop-shadow(0 0 22px #ffcc00) drop-shadow(0 0 32px rgba(255,204,0,0.4));
             }
         }
+
         @keyframes destelloContinuoTexto {
-            0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
-            50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
+            0%, 100% { 
+                text-shadow: 0 1px 2px rgba(0,0,0,0.3); 
+            }
+            50% { 
+                /* Resplandor dorado ambiental que respeta el color original de la tipografía */
+                text-shadow: 0 0 12px rgba(255,215,0,0.8), 0 0 20px rgba(255,204,0,0.4);
+            }
+        }
+
+        @keyframes destelloMarcoBotonAnio {
+            0%, 100% {
+                border-color: rgba(255, 204, 0, 0.4);
+                box-shadow: 0 0 0px rgba(255, 204, 0, 0);
+            }
+            50% {
+                /* Encendido elegante del marco y aura dorada exterior expandida */
+                border-color: #ffcc00;
+                box-shadow: 0 0 14px rgba(255, 204, 0, 0.6), inset 0 0 5px rgba(255, 204, 0, 0.2);
+            }
         }
 
         /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
@@ -198,7 +228,6 @@
         .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
         
-        /* CORREGIDO: Reducimos la dureza de la vora para que la luz exterior se funda creando el aura */
         .badge-anio-reproductor {
             position: absolute; bottom: 15px; left: 15px; display: none;
             background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
@@ -256,7 +285,7 @@
         .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
         .btn-fullscreen-web:hover { background: #ffcc00; }
 
-        /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
+        /* LIBERACIÓN COMPLETA TÁCTIL */
         #escudo-toper {
             pointer-events: none !important;
         }
@@ -282,11 +311,24 @@
         .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
         .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
         .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
+        
         .btn-anio-archivo {
             background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
             padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
         }
-        .btn-anio-archivo:hover, .btn-anio-archivo.activo { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
+        
+        /* CORRECCIÓN: Separamos el comportamiento del hover para evitar el conflicto con la clase activo */
+        .btn-anio-archivo:hover { 
+            background-color: #ffcc00; 
+            color: #141414; 
+            border-color: #ffcc00; 
+        }
+
+        /* CORRECCIÓN: El botón activo mantiene su fondo oscuro integrado para que destaque el destello perimetral */
+        .btn-anio-archivo.activo { 
+            background-color: #1e1e1e; 
+            color: #ffcc00; 
+        }
 
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
@@ -312,6 +354,7 @@
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
         }
+   
       
 /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
