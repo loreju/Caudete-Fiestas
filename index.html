@@ -505,19 +505,19 @@
     </div>
 </div>
 
-<!-- --- ELEMENTOS DE DONACIÓN DESACOPLADOS PARA EVITAR INVISIBILIDAD --- -->
-<button id="btnDonarInicio" class="btn-donar-festero-inicio" title="Ayuda al mantenimiento del archivo">€</button>
+<!-- --- ELEMENTOS DE DONACIÓN CON ESTILO ABSOLUTO INLINE --- -->
+<button id="btnDonarInicio" title="Ayuda al mantenimiento del archivo" style="display: flex !important; position: fixed !important; bottom: 20px !important; right: 20px !important; width: 55px !important; height: 55px !important; border-radius: 50% !important; border: none !important; background: linear-gradient(135deg, #0056b3, #00bfa5) !important; color: white !important; font-size: 26px !important; font-weight: bold !important; cursor: pointer !important; box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4) !important; z-index: 999999 !important; align-items: center !important; justify-content: center !important; text-decoration: none !important; -webkit-appearance: none; outline: none !important;">€</button>
 
-<div id="ventanaMensajeKofi" class="modal-kofi-festero">
-    <div class="contenido-modal-kofi">
-        <h3>🎥 ¡Ayúdanos a mantener vivo el archivo!</h3>
-        <p>Esta web alberga <strong>45 vídeos históricos (1974-1983 A 2026)</strong> que ocupan <strong>1 Terabyte</strong>. Usamos el servidor <strong>Bunny.net</strong> para que los veas en alta calidad y sin anuncios.</p>
-        <p>El servidor tiene un coste fijo de almacenamiento y un coste variable según los gigabytes que se gastan al ver los vídeos. Si hay muchas visitas, el saldo se agota rápido.</p>
-        <p>Si quieres ayudar a cubrir los costes de Bunny.net, puedes invitarnos a un "café" digital. ¡Todo lo recaudado va directo al saldo del servidor!</p>
-        <!-- Enlace en minúsculas y completamente funcional corregido -->
-        <a href="https://ko-fi.com" target="_blank" class="btn-enlace-kofi">Ir a Ko-fi para colaborar con Tarjeta</a>
+<div id="ventanaMensajeKofi" class="modal-kofi-festero" style="display: none; position: fixed !important; bottom: 85px !important; right: 20px !important; width: 320px !important; background: #ffffff !important; border-radius: 12px !important; box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3) !important; z-index: 999999 !important; text-align: left !important; overflow: hidden !important;">
+    <div style="padding: 18px !important; color: #333 !important; font-family: 'Segoe UI', Arial, sans-serif !important; font-size: 14px !important; line-height: 1.5 !important;">
+        <h3 style="margin-top: 0 !important; margin-bottom: 10px !important; color: #0056b3 !important; font-size: 16px !important; font-weight: bold !important;">🎥 ¡Ayúdanos a mantener vivo el archivo!</h3>
+        <p style="margin: 0 0 10px 0 !important;">Esta web alberga <strong>45 vídeos históricos (1974-1983 A 2026)</strong> que ocupan <strong>1 Terabyte</strong>. Usamos el servidor <strong>Bunny.net</strong> para que los veas en alta calidad y sin anuncios.</p>
+        <p style="margin: 0 0 10px 0 !important;">El servidor tiene un coste fijo de almacenamiento y un coste variable según los gigabytes que se gastan al ver los vídeos. Si hay muchas visitas, el saldo se agota rápido.</p>
+        <p style="margin: 0 0 10px 0 !important;">Si quieres ayudar a cubrir los costes de Bunny.net, puedes invitarnos a un "café" digital. ¡Todo lo recaudado va directo al saldo del servidor!</p>
+        <a href="https://ko-fi.com" target="_blank" style="display: block !important; text-align: center !important; background: #00bfa5 !important; color: white !important; text-decoration: none !important; padding: 12px !important; border-radius: 6px !important; font-weight: bold !important; margin-top: 12px !important; box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;">Ir a Ko-fi para colaborar con Tarjeta</a>
     </div>
 </div>
+
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
