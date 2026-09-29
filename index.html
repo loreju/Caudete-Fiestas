@@ -151,6 +151,7 @@
             animation: destelloContinuoTexto 4s infinite ease-in-out; will-change: text-shadow;
         }
 
+        /* REFUERZO MÁXIMO DEL AURA DORADA EN EL BOX */
         .badge-anio-reproductor, .destello-box-fiestas { 
             animation: destelloCajaAnioEspecial 4s infinite ease-in-out !important; 
             will-change: box-shadow, text-shadow, border-color;
@@ -177,8 +178,17 @@
         }
 
         @keyframes destelloCajaAnioEspecial {
-            0%, 100% { border-color: rgba(255, 204, 0, 0.4) !important; box-shadow: 0 2px 8px rgba(0,0,0,0.6) !important; text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
-            50% { border-color: #ffcc00 !important; box-shadow: 0 0 15px #ffd700, 0 0 25px rgba(255, 204, 0, 0.6) !important; text-shadow: 0 0 8px rgba(255, 215, 0, 0.7); }
+            0%, 100% { 
+                border-color: #ffcc00 !important; 
+                box-shadow: 0 0 8px rgba(255, 204, 0, 0.4) !important;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            }
+            50% { 
+                border-color: #ffffff !important; 
+                /* Triple corona perimetral dorada exterior para forzar el aura */
+                box-shadow: 0 0 18px #ffd700, 0 0 30px #ffcc00, 0 0 45px rgba(255, 204, 0, 0.5) !important; 
+                text-shadow: 0 0 10px #ffd700;
+            }
         }
 
         @keyframes destelloBotonActivo {
@@ -211,6 +221,7 @@
         .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
         
+        /* BOX ESTABILIZADO CON CONTORNO DE LUZ */
         .badge-anio-reproductor {
             position: absolute; bottom: 15px; left: 15px; display: none;
             background: #141414 !important; color: #ffcc00 !important; padding: 8px 16px; font-size: 1.1rem;
@@ -286,7 +297,7 @@
 
         .honor-text { color: #ffcc00; font-size: 1.45rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 0; }
         .years-subtitle-text { color: #ffffff; font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 4px 0 0 0; }
-      
+   
 /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
