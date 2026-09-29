@@ -135,6 +135,34 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
+
+        /* --- NUEVO: Brillo exterior dorado para el Badge del Reproductor --- */
+        .badge-anio-reproductor {
+            background-color: #ffffff; /* Fondo blanco original */
+            color: #141414;
+            border: 2px solid #ffcc00; /* Borde dorado */
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-weight: bold;
+            
+            /* Filtro acelerado por hardware para el aura dorada limpia sin parpadeos */
+            filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8));
+            -webkit-filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.8));
+            
+            /* Soporte para navegadores más antiguos */
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.5);
+            
+            /* Posicionamiento seguro y optimización de renderizado */
+            position: absolute;
+            will-change: filter; 
+        }
+
+        /* Estilo complementario para el texto */
+        .destello-texto {
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
               /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
