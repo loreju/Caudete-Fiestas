@@ -548,7 +548,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-      // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+         // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -563,12 +563,12 @@ window.addEventListener('load', () => {
     // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
     Object.keys(videosData).sort().forEach(anio => {
         const boton = document.createElement('button');
-        boton.className = 'btn-anio-archivo';
+        boton.className = 'btn-anio-archivo'; // Nacen limpios sin destellos iniciales en la rejilla
         boton.innerText = anio;
         boton.dataset.anio = anio;
         
         boton.addEventListener('click', () => {
-            // CORREGIDO: Al activar un año, le añadimos también la clase 'efecto-destello' para recuperar su animación
+            // Al activar un año, limpiamos los demás y solo destella de forma continua el año seleccionado
             document.querySelectorAll('.btn-anio-archivo').forEach(b => {
                 b.classList.remove('activo');
                 b.classList.remove('efecto-destello');
@@ -596,6 +596,9 @@ window.addEventListener('load', () => {
 
         badgeAnio.innerText = `FIESTAS ${anio}`;
         badgeAnio.style.display = "block";
+        // FORZADO DE DESTELLO: Aseguramos que el box blanco con letras negras parpadee de forma continua al reproducir
+        badgeAnio.classList.add('efecto-destello');
+        
         bloqueLogoCTVVideo.style.display = "block";
         relojVideo.style.display = "block";
         grupoBotonesTv.style.display = "flex";
@@ -632,6 +635,7 @@ window.addEventListener('load', () => {
         iframePlayer.src = "about:blank"; 
 
         badgeAnio.style.display = "none";
+        badgeAnio.classList.remove('efecto-destello'); // Quitamos el destello al salir
         bloqueLogoCTVVideo.style.display = "none";
         relojVideo.style.display = "none";
         grupoBotonesTv.style.display = "none";
@@ -736,18 +740,18 @@ window.addEventListener('load', () => {
     });
 
 
-    // --- CREACIÓN DINÁMICA DEL CUARTO BOTÓN (€) AL FINAL DE LA FILA HORIZONTAL ---
+    // --- CREACIÓN DINÁMICA DEL CUARTO BOTÓN (€) CON DESTELLO CONTINUO Y ORDEN DE FILA REPARADO ---
     const btnDonarInicio = document.createElement('button');
-    btnDonarInicio.className = 'btn-control-tv btn-donar-tv';
+    // CORREGIDO: Le inyectamos 'efecto-destello' para forzar que parpadee continuamente y destaque el Bizum
+    btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello';
     btnDonarInicio.id = 'btnDonarInicio';
     btnDonarInicio.innerText = '€';
     btnDonarInicio.title = 'Ayuda al mantenimiento del archivo por Bizum';
     
-    // CORRECCIÓN FINAL DE ORDEN: Al usar appendChild el botón se sitúa al final del código del div.
-    // Como tu contenedor ordena los botones visualmente de derecha a izquierda, colocarlo al final del código
-    // hace que sea exactamente el último de la izquierda (el 4º): Amarillo (⛶) -> Naranja (⏸) -> Rojo (🏠) -> Azul (€).
-    grupoBotonesTv.appendChild(btnDonarInicio);
-
+    // CORRECCIÓN EXACTA DE FILA: Insertándolo al principio del contenedor con insertBefore,
+    // tu propiedad invertida del CSS forzará a que el botón del € se coloque el CUARTO de la fila
+    // a la izquierda del todo, dejando el orden clavado: 1º Amarillo -> 2º Naranja -> 3º Rojo -> 4º € Azul/Verde
+    grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
     // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE BIZUM
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
     
@@ -798,4 +802,4 @@ window.addEventListener('load', () => {
 });
 </script>
 </body>
-</html>   
+</html>
