@@ -135,24 +135,36 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
-           /* --- ANIMACIONES DE DESTELLO --- */
+           /* --- ANIMACIONES DE DESTELLO REPARADAS (DIFUMINADO SUAVE) --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
-            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
+            animation: destelloContinuoLogo 3s infinite ease-in-out;
+            will-change: filter, box-shadow; /* Optimiza la suavidad en el navegador */
         }
-        .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
+        .destello-texto { 
+            animation: destelloContinuoTexto 3s infinite ease-in-out; 
+        }
 
         @keyframes destelloContinuoLogo {
             0%, 100% { 
-                filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6)) brightness(1);
+                filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
             }
             50% { 
-                /* CORRECCIÓN ABSOLUTA: Forzamos una triple corona de luz dorada exterior intensa para romper el fondo blanco */
-                filter: drop-shadow(0 0 15px #ffd700) drop-shadow(0 0 25px #ffcc00) brightness(1.3);
+                /* Difuminado progresivo de triple corona dorada sin saltos de brillo */
+                filter: drop-shadow(0 0 12px rgba(255,215,0,0.9)) 
+                        drop-shadow(0 0 22px rgba(255,204,0,0.6)) 
+                        drop-shadow(0 0 35px rgba(255,165,0,0.3));
             }
         }
+
         @keyframes destelloContinuoTexto {
-            0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
-            50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
+            0%, 100% { 
+                text-shadow: 0 1px 2px rgba(0,0,0,0.4); 
+            }
+            50% { 
+                /* Transición suave de texto iluminado */
+                text-shadow: 0 0 10px rgba(255,215,0,0.9), 
+                             0 0 20px rgba(255,204,0,0.6);
+            }
         }
 
         /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
@@ -198,7 +210,6 @@
         .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
         
-        /* CORREGIDO: Reducimos la dureza de la vora para que la luz exterior se funda creando el aura */
         .badge-anio-reproductor {
             position: absolute; bottom: 15px; left: 15px; display: none;
             background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
@@ -256,7 +267,7 @@
         .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
         .btn-fullscreen-web:hover { background: #ffcc00; }
 
-        /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
+        /* LIBERACIÓN COMPLETA TÁCTIL */
         #escudo-toper {
             pointer-events: none !important;
         }
@@ -287,16 +298,18 @@
             padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
         }
         
-        /* CORRECCIÓN: Separamos el hover del activo para que la animación de destello brille sobre el fondo oscuro original */
         .btn-anio-archivo:hover { 
             background-color: #ffcc00; 
             color: #141414; 
             border-color: #ffcc00; 
         }
+
+        /* Botón activo integrado con el desvanecimiento suave */
         .btn-anio-archivo.activo {
             border-color: #ffcc00;
             color: #ffcc00;
-            /* El fondo se queda oscuro para que el drop-shadow dorado del destello se vea espectacular */
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.2);
         }
 
         .comparsas-seccion { margin-top: 50px; }
@@ -323,7 +336,7 @@
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
         }
-      
+     
       
 /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
