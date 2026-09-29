@@ -135,15 +135,22 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
-             /* --- ANIMACIONES DE DESTELLO --- */
+               /* --- ANIMACIONES DE DESTELLO --- */
         .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
             animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
         .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
 
         @keyframes destelloContinuoLogo {
-            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
-            50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.6); }
+            0%, 100% { 
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1);
+                border-color: rgba(255, 204, 0, 0.4); /* Borde atenuado al inicio */
+            }
+            50% { 
+                filter: drop-shadow(0 0 25px #ffd700) brightness(1.4);
+                border-color: #ffd700; /* Borde encendido en el pico del destello */
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.6); /* Brillo extra de neón hacia fuera */
+            }
         }
         @keyframes destelloContinuoTexto {
             0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
@@ -193,11 +200,14 @@
         .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
         
+        /* CORREGIDO: Añadimos un borde físico perimetral dorado para que recoja la animación del destello continuo */
         .badge-anio-reproductor {
             position: absolute; bottom: 15px; left: 15px; display: none;
             background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
             font-weight: 900; border-radius: 6px; z-index: 5;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            border: 2px solid rgba(255, 204, 0, 0.4); /* El nuevo borde que parpadeará en sintonía */
+            transition: all 0.2s ease;
         }
 
         @media (min-width: 768px) {
@@ -305,6 +315,7 @@
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
         }
+   
 /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
