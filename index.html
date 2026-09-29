@@ -582,7 +582,7 @@ window.addEventListener('load', () => {
         contenedorBotones.appendChild(boton);
     });
 
-    // --- CONTROLADOR DE EMISIÓN DE VÍDEO ---
+      // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CORREGIDO PARA MANTENER EL DESTELLO FIJO) ---
     function inicializarCambioEmisionVideo(anio) {
         clearInterval(temporizadorReloj);
         videoPausado = false;
@@ -594,9 +594,11 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "0";
         setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
 
+        // 1. Cambiamos el texto del recuadro blanco
         badgeAnio.innerText = `FIESTAS ${anio}`;
         badgeAnio.style.display = "block";
-        // FORZADO DE DESTELLO: Aseguramos que el box blanco con letras negras parpadee de forma continua al reproducir
+        
+        // 2. SOLUCIÓN: Forzamos al navegador a volver a ponerle el destello justo después de cambiar el texto
         badgeAnio.classList.add('efecto-destello');
         
         bloqueLogoCTVVideo.style.display = "block";
@@ -608,6 +610,7 @@ window.addEventListener('load', () => {
         actualizarRelojHoraReal();
         temporizadorReloj = setInterval(actualizarRelojHoraReal, 1000);
     }
+
 
     // --- RELOJ EN HORA REAL DE TELEVISIÓN ---
     function actualizarRelojHoraReal() {
