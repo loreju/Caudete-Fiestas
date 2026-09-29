@@ -135,37 +135,6 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
-
-        /* --- CORREGIDO: Brillo exterior dorado manteniendo su posición natural --- */
-        .badge-anio-reproductor {
-            background-color: #ffffff !important;
-            color: #141414 !important;
-            border: 2px solid #ffcc00 !important;
-            border-radius: 4px !important;
-            padding: 6px 12px !important;
-            font-weight: bold !important;
-            
-            /* Mantiene la posición que ya tenía antes para no descolocar nada */
-            display: inline-block;
-            
-            /* Filtro limpio que genera el aura dorada sin romper el renderizado */
-            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
-            -webkit-filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
-            
-            /* Soporte extra de brillo */
-            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
-            
-            /* Optimización gráfica */
-            will-change: filter;
-        }
-
-        /* Estilo complementario para el texto */
-        .destello-texto {
-            letter-spacing: 0.5px;
-        }
-    </style>
-</head>
-
               /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
