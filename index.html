@@ -135,7 +135,7 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
-            /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
+              /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
@@ -151,9 +151,10 @@
             animation: destelloContinuoTexto 4s infinite ease-in-out; will-change: text-shadow;
         }
 
-        /* REFUERZO MÁXIMO DEL AURA DORADA EN EL BOX */
+        /* FUERZA BRUTA PARA EL AURA ALREDEDOR DE LA CAJA */
         .badge-anio-reproductor, .destello-box-fiestas { 
             animation: destelloCajaAnioEspecial 4s infinite ease-in-out !important; 
+            transform: translateZ(0); /* Activa renderizado por hardware del aura */
             will-change: box-shadow, text-shadow, border-color;
         }
 
@@ -177,17 +178,16 @@
             50% { text-shadow: 0 0 10px #ffd700, 0 0 18px rgba(255, 204, 0, 0.5); }
         }
 
+        /* CORRECCIÓN ABSOLUTA DEL CONTORNO DE LUZ EXTERIOR DEL BOX */
         @keyframes destelloCajaAnioEspecial {
             0%, 100% { 
                 border-color: #ffcc00 !important; 
-                box-shadow: 0 0 8px rgba(255, 204, 0, 0.4) !important;
-                text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 4px rgba(255,204,0,0.2) !important;
             }
             50% { 
                 border-color: #ffffff !important; 
-                /* Triple corona perimetral dorada exterior para forzar el aura */
-                box-shadow: 0 0 18px #ffd700, 0 0 30px #ffcc00, 0 0 45px rgba(255, 204, 0, 0.5) !important; 
-                text-shadow: 0 0 10px #ffd700;
+                /* Se expande un resplandor dorado exterior super nítido de gran radio */
+                box-shadow: 0 0 20px #ffd700, 0 0 35px #ffcc00, 0 4px 15px rgba(0,0,0,0.6) !important; 
             }
         }
 
@@ -221,7 +221,7 @@
         .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
         .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
         
-        /* BOX ESTABILIZADO CON CONTORNO DE LUZ */
+        /* CAJA DEL REPRODUCTOR CON MEJORA DE CAPA */
         .badge-anio-reproductor {
             position: absolute; bottom: 15px; left: 15px; display: none;
             background: #141414 !important; color: #ffcc00 !important; padding: 8px 16px; font-size: 1.1rem;
