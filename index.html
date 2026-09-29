@@ -135,15 +135,15 @@
             z-index: 100000 !important;
             text-align: left !important;
         }
-          /* --- ANIMACIONES DE DESTELLO ULTRA SUAVES Y RALENTIZADAS --- */
-        .efecto-destello, .destello-logo {
-            /* 6 segundos garantiza un ciclo de respiración extremadamente lento y elegante */
-            animation: destelloContinuoLogo 6s infinite ease-in-out;
+        /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (VISIBLES Y SUAVES) --- */
+        .efecto-destello, .destello-logo, .logo-ctv-fijo {
+            /* 4 segundos ofrece el equilibrio perfecto entre presencia visual y elegancia */
+            animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
         }
         
         .destello-texto { 
-            animation: destelloContinuoTexto 6s infinite ease-in-out; 
+            animation: destelloContinuoTexto 4s infinite ease-in-out; 
             will-change: text-shadow;
         }
 
@@ -152,9 +152,9 @@
                 filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
             }
             50% { 
-                /* Se reduce la intensidad lumínica y se aumenta el radio para un efecto aura muy fino */
-                filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4)) 
-                        drop-shadow(0 0 18px rgba(255, 204, 0, 0.2));
+                /* Se recupera la fuerza dorada con un degradado de doble corona para que se note arriba y abajo */
+                filter: drop-shadow(0 0 12px #ffd700) 
+                        drop-shadow(0 0 22px rgba(255, 204, 0, 0.6));
             }
         }
 
@@ -163,9 +163,9 @@
                 text-shadow: 0 1px 2px rgba(0,0,0,0.4); 
             }
             50% { 
-                /* Luz ambiental perimetral sutil que no altera la lectura del texto */
-                text-shadow: 0 0 6px rgba(255, 215, 0, 0.4), 
-                             0 0 12px rgba(255, 204, 0, 0.2);
+                /* Difuminado dorado nítido para resaltar los textos ambientales sin romper la lectura */
+                text-shadow: 0 0 10px #ffd700, 
+                             0 0 18px rgba(255, 204, 0, 0.5);
             }
         }
 
@@ -307,12 +307,13 @@
             border-color: #ffcc00; 
         }
 
-        /* CAMBIO EN EL BOTÓN ACTIVO: Se fuerza un estado sólido destacado y limpio, sin parpadeos */
+        /* CORRECCIÓN ABSOLUTA: El año activo pasa a ser plano (amarillo destacado) rompiendo herencias molestas */
         .btn-anio-archivo.activo { 
             background-color: #ffcc00 !important; 
             color: #141414 !important; 
             border-color: #ffcc00 !important;
-            box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+            box-shadow: 0 4px 14px rgba(255, 204, 0, 0.4) !important;
+            animation: none !important; /* Eliminamos parpadeos en este elemento */
         }
 
         .comparsas-seccion { margin-top: 50px; }
@@ -338,7 +339,8 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin: 4px 0 0 0;
-        }    
+        }
+
       
 /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
