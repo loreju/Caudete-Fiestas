@@ -583,7 +583,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-      // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+     // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -766,12 +766,21 @@ window.addEventListener('load', () => {
         if (btnInstalarApp) btnInstalarApp.style.display = 'none';
     });
 
-    // --- CONTROLADOR DE LA VENTANA EMERGENTE DE DONACIÓN (CORREGIDO) ---
-    const btnDonarInicio = document.getElementById('btnDonarInicio');
-    const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
 
+    // --- CREACIÓN DINÁMICA DEL CUARTO BOTÓN (€) AL FINAL DE LA FILA HORIZONTAL ---
+    const btnDonarInicio = document.createElement('button');
+    btnDonarInicio.className = 'btn-control-tv btn-donar-tv';
+    btnDonarInicio.id = 'btnDonarInicio';
+    btnDonarInicio.innerText = '€';
+    btnDonarInicio.title = 'Ayuda al mantenimiento del archivo';
+    
+    // Al usar appendChild, se mete el cuarto en la fila, justo a la derecha del botón rojo
+    grupoBotonesTv.appendChild(btnDonarInicio);
+
+    // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE DONACIÓN
+    const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
+    
     if (btnDonarInicio && ventanaMensajeKofi) {
-        // Alternar visualización del mensaje al pinchar el botón €
         btnDonarInicio.addEventListener('click', (e) => {
             e.stopPropagation();
             if (ventanaMensajeKofi.style.display === 'block') {
@@ -781,27 +790,12 @@ window.addEventListener('load', () => {
             }
         });
 
-        // Cerrar el mensaje si se hace clic fuera de la cajita flotante
+        // Ocultar si pinchan fuera de la ventana
         document.addEventListener('click', () => {
             ventanaMensajeKofi.style.display = 'none';
         });
         ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
     }
-
-    // Ocultar la pasarela de donación de forma estricta en Pantalla Completa
-    const gestionarPantallaCompletaDonacion = () => {
-        if (btnDonarInicio && ventanaMensajeKofi) {
-            if (document.fullscreenElement || document.webkitFullscreenElement) {
-                btnDonarInicio.style.display = 'none';
-                ventanaMensajeKofi.style.display = 'none';
-            } else {
-                btnDonarInicio.style.display = 'block';
-            }
-        }
-    };
-
-    document.addEventListener('fullscreenchange', gestionarPantallaCompletaDonacion);
-    document.addEventListener('webkitfullscreenchange', gestionarPantallaCompletaDonacion);
 
 
     // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (CORREGIDO PWA) ---
