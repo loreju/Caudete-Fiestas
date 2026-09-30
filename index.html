@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <link class="destello-logo" rel="apple-touch-icon" href="img/logo-ctv.png">
+    <link rel="apple-touch-icon" href="img/logo-ctv.png">
     
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
@@ -20,7 +20,6 @@
             background-color: #141414;
             margin: 0;
             padding: 0;
-            /* Evita el efecto rebote elástico en móviles que deforma la interfaz */
             overscroll-behavior-y: none; 
             -webkit-overflow-scrolling: touch;
         }
@@ -32,12 +31,13 @@
             padding: 20px 15px;
         }
 
-        /* --- ESTILOS DE LA CABECERA COMPLETAMENTE ADAPTATIVA --- */
+        /* --- ESTILOS DE LA CABECERA COMPLETAMENTE ADAPTATIVA (BLINDADA) --- */
         .header-container {
-            display: flex;
-            align-items: center; 
-            justify-content: center; 
-            flex-wrap: wrap;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important; 
+            justify-content: space-between !important; 
+            flex-wrap: wrap !important;
             gap: 20px;
             max-width: 1450px;
             margin: 0 auto 25px auto;
@@ -51,10 +51,10 @@
         }
                  
         .header-block {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center; 
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important; 
             min-width: 140px;
             text-align: center;
         }
@@ -79,7 +79,7 @@
 
         @media (min-width: 768px) {
             body { padding: 40px 20px; }
-            .header-container { padding: 25px 30px; gap: 25px; }
+            .header-container { padding: 25px 30px; gap: 25px; flex-wrap: nowrap !important; }
             .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 110px; }
             .header-block { min-width: 180px; }
             .header-block h3 { font-size: 0.85rem; }
@@ -109,9 +109,15 @@
             h1 { font-size: 2.2rem; }
         }
 
-        /* --- ESTILO SIMÉTRICO PARA EL CUARTO BOTÓN DE LA FILA (€ BIZUM) --- */
+        /* --- CONTROL DE CLASES DE TEXTO / EVITA TEXTOS EXTRAÑOS --- */
+        .destello-texto, .destello-logo {
+            letter-spacing: 0.5px;
+            animation: none !important; /* Limpia residuos de animaciones viejas */
+        }
+
+        /* --- BOTÓN BIZUM --- */
         .btn-control-tv.btn-donar-tv {
-            background: linear-gradient(135deg, #00bcd4, #007bff) !important; /* Cyan a Azul Bizum */
+            background: linear-gradient(135deg, #00bcd4, #007bff) !important;
             color: white !important;
             font-size: 1.3rem !important;
             font-weight: bold !important;
@@ -122,11 +128,11 @@
             transform: scale(1.1);
         }
 
-        /* --- VENTANA EMERGENTE DE BIZUM Y PAYPAL CORREGIDA --- */
+        /* --- VENTANA EMERGENTE TOTALMENTE AISLADA --- */
         .modal-kofi-festero {
             display: none;
             position: absolute !important;
-            top: 20px !important;     /* Reubicada arriba para dejar los controles de abajo 100% libres */
+            top: 20px !important;     
             right: 15px !important;     
             width: 300px !important;
             height: auto !important;   
@@ -136,16 +142,15 @@
             z-index: 99999 !important; 
             text-align: left !important;
             box-sizing: border-box !important;
-            pointer-events: none;      /* Los clics pasan de largo hacia el reproductor si está oculta */
+            pointer-events: none;      
         }
 
-        /* Cuando el script la abre, vuelve a recibir clics con normalidad */
         .modal-kofi-festero[style*="display: block"], 
         .modal-kofi-festero[style*="display:block"] {
             pointer-events: auto !important;
         }
 
-        /* --- Brillo exterior dorado para el Badge del Reproductor --- */
+        /* --- BADGE DE AURA DORADA FIJA --- */
         .badge-anio-reproductor {
             background-color: #ffffff !important;
             color: #141414 !important;
@@ -153,16 +158,11 @@
             border-radius: 4px !important;
             padding: 6px 12px !important;
             font-weight: bold !important;
-            display: inline-block;
-            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
-            -webkit-filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
-            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+            display: inline-block !important;
+            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85)) !important;
+            -webkit-filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85)) !important;
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4) !important;
             will-change: filter;
-        }
-
-        /* Estilo complementario para el texto */
-        .destello-texto {
-            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -396,23 +396,23 @@
     </style>
 </head>
 <body>
-parte 3 <!-- CABECERA OFICIAL SEMÁNTICA -->
+<!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
-        <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
+        <img class="logo-ctv-cabecera" src="img/logo-ctv.png" alt="Caudete Televisión">
         <h3 style="margin-left: 14px !important;">CAUDETE<br>TELEVISIÓN</h3>
     </div>
     <div class="title-block">
-        <h1 class="destello-texto">Caudete Fiestas de Moros y Cristianos</h1>
-        <p class="honor-text destello-texto">En Honor a Ntra. Sra. de Gracia</p>
+        <h1>Caudete Fiestas de Moros y Cristianos</h1>
+        <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
         <p class="years-subtitle-text">1974 - 1983 A 2026</p>
     </div>
     <div class="header-block ayuntamiento-block">
-        <img class="logo-ayuntamiento destello-logo" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+        <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         <h3>M.I. AYUNTAMIENTO<br>DE CAUDETE</h3>
     </div>
     <div class="header-block mayordomia-block">
-        <img class="logo-mayordomia destello-logo" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
+        <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
         <h3>M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
     </div>
 </header>
@@ -429,14 +429,14 @@ parte 3 <!-- CABECERA OFICIAL SEMÁNTICA -->
     <div class="video-wrapper">
         
         <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN -->
-        <div class="reloj-video-block destello-logo" id="reloj-video" style="z-index: 98;">00:00</div>
+        <div class="reloj-video-block" id="reloj-video" style="z-index: 98;">00:00</div>
 
         <div class="ctv-video-block" id="bloque-logo-ctv-video" style="z-index: 98;">
-            <img class="logo-ctv-fijo destello-logo" src="img/logo-ctv.png" alt="CTV">
+            <img class="logo-ctv-fijo" src="img/logo-ctv.png" alt="CTV">
         </div>
 
         <!-- BADGE CON BRILLO EXTERIOR DORADO ACTIVO -->
-        <div id="badge-anio" class="badge-anio-reproductor destello-texto" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
+        <div id="badge-anio" class="badge-anio-reproductor" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
         
         <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
@@ -491,22 +491,21 @@ parte 3 <!-- CABECERA OFICIAL SEMÁNTICA -->
 
 <!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO -->
 <div class="archivo-historico-seccion">
-    <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
+    <h2>Seleccionar Año de las Fiestas</h2>
     <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
 </div>
 
 <!-- SECCIÓN DE COMPARSAS -->
 <div class="comparsas-seccion">
     <div class="comparsas-grid">
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
