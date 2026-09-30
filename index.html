@@ -122,20 +122,128 @@
             transform: scale(1.1);
         }
 
-        /* --- VENTANA EMERGENTE DE BIZUM INSCRITA DENTRO DEL CONTENEDOR --- */
+        /* --- BANNER DE DONACIONES HORIZONTAL ADAPTATIVO (NUEVO) --- */
         .modal-kofi-festero {
             display: none;
-            position: absolute !important;
-            bottom: 65px !important;  
-            right: 0px !important;     
-            width: 310px !important;
-            background: #ffffff !important;
-            border-radius: 12px !important;
-            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.6) !important;
-            z-index: 100000 !important;
+            width: 100% !important;
+            max-width: 1410px !important;
+            margin: 15px auto 0 auto !important;
+            background: #252525 !important;
+            border: 1px solid #ffcc00 !important;
+            border-radius: 8px !important;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.7) !important;
+            z-index: 99999 !important;
             text-align: left !important;
+            box-sizing: border-box !important;
+            padding: 15px 20px !important;
         }
-        /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
+
+        /* Distribución interna del banner */
+        .banner-donar-flex {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .banner-donar-texto {
+            flex: 1;
+            min-width: 280px;
+            color: #ffffff;
+            text-align: left;
+        }
+
+        .banner-donar-texto h3 {
+            margin: 0 0 5px 0;
+            color: #ffcc00;
+            font-size: 1.1rem;
+        }
+
+        .banner-donar-texto p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #dddddd;
+        }
+
+        .banner-donar-botones {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Botones Rápidos de Ko-fi (PayPal / Tarjeta) */
+        .btn-kofi-monto {
+            background-color: #ff5f5f !important;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            padding: 8px 14px !important;
+            border-radius: 6px !important;
+            font-weight: bold !important;
+            font-size: 0.85rem !important;
+            transition: background 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-kofi-monto:hover {
+            background-color: #ff3b3b !important;
+            transform: scale(1.05);
+        }
+
+        /* Identificador de Bizum integrado */
+        .info-bizum-badge {
+            background: #00bcd4 !important;
+            color: #ffffff !important;
+            padding: 8px 14px !important;
+            border-radius: 6px !important;
+            font-size: 0.85rem !important;
+            font-weight: bold !important;
+            display: inline-block;
+        }
+
+        /* Botón cerrar sutil */
+        .btn-cerrar-banner {
+            background: none;
+            border: 1px solid #666;
+            color: #aaa;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-cerrar-banner:hover {
+            color: #fff;
+            border-color: #fff;
+            background: #333;
+        }
+
+        /* Colapsar a vertical limpiamente en pantallas móviles */
+        @media (max-width: 991px) {
+            .banner-donar-flex {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .banner-donar-texto {
+                text-align: center;
+            }
+            .banner-donar-botones {
+                justify-content: center;
+            }
+            .modal-kofi-festero {
+                text-align: center !important;
+            }
+        }
+       /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
@@ -291,14 +399,8 @@
         }
 
         .comparsas-seccion { margin-top: 50px; }
-        .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
-        .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
-        .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
-
-        .honor-text { color: #ffcc00; font-size: 1.45rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 0; }
-        .years-subtitle-text { color: #ffffff; font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 4px 0 0 0; }
-    
-/* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+        .comparsas-grid { display: flex; justify-content: center; align-items: center; }
+         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -325,15 +427,6 @@
             .btn-salir-reproductor { font-size: 1.25rem; }
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
-
-            /* Ajuste estricto del modal de Bizum para pantallas móviles */
-            .modal-kofi-festero {
-                bottom: 55px !important;
-                right: 0px !important;
-                left: auto !important;
-                width: 270px !important;
-                max-width: calc(100% - 20px) !important;
-            }
         }
 
         /* CORRECCIÓN ANDROID PANTALLA COMPLETA HORIZONTAL SIN AGRANDAMIENTOS ERRONEOS */
@@ -364,7 +457,7 @@
     </style>
 </head>
 <body>
-<!-- CABECERA OFICIAL SEMÁNTICA -->
+  <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
         <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
@@ -385,8 +478,30 @@
     </div>
 </header>
 
+<!-- 🎬 NUEVO BANNER DE DONACIONES HORIZONTAL (INTEGRADO FUERA DEL REPRODUCTOR) -->
+<div id="ventanaMensajeKofi" class="modal-kofi-festero">
+    <div class="banner-donar-flex">
+        <div class="banner-donar-texto">
+            <h3>🎬 Ayuda a mantener el archivo de vídeo</h3>
+            <p>Alojar más de 1 Terabyte de vídeos históricos (45 vídeos) en alta velocidad genera costes mensuales en bunny.net. Tu colaboración voluntaria mantiene este servidor libre de anuncios.</p>
+        </div>
+        <div class="banner-donar-botones">
+            <!-- Botones Ko-fi con montos fijos para PayPal o Tarjeta -->
+            <a href="https://ko-fi.com" target="_blank" class="btn-kofi-monto">☕ Tarjeta/PayPal: 1€</a>
+            <a href="https://ko-fi.com" target="_blank" class="btn-kofi-monto">☕ Tarjeta/PayPal: 3€</a>
+            <a href="https://ko-fi.com" target="_blank" class="btn-kofi-monto">☕ Tarjeta/PayPal: 5€</a>
+            
+            <!-- Badge Informativo de Bizum -->
+            <div class="info-bizum-badge">📲 Bizum: 609 450 962</div>
+            
+            <!-- Botón para cerrar el banner -->
+            <button class="btn-cerrar-banner" onclick="document.getElementById('ventanaMensajeKofi').style.display='none';">✕ Cerrar</button>
+        </div>
+    </div>
+</div>
+
 <!-- 📥 BOTÓN DE INSTALACIÓN PWA -->
-<div style="text-align: center; margin: -10px auto 25px auto; max-width: 900px; padding: 0 5px;">
+<div style="text-align: center; margin: 15px auto 25px auto; max-width: 900px; padding: 0 5px;">
     <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 14px 24px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 0.95rem; width: 100%; max-width: 320px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s;">
         📥 Instalar Aplicación Caudete Fiestas
     </button>
@@ -409,27 +524,11 @@
         <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
 
-        <!-- BOTONERA DE CONTROL (Invertimos el orden HTML para que el CSS los alinee al revés: Amarillo -> Naranja -> Rojo -> Azul) -->
+        <!-- BOTONERA DE CONTROL -->
         <div class="control-buttons-group" id="grupo-botones-tv" style="z-index: 99; pointer-events: auto;">
             <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
             <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
             <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
-            
-            <!-- Ventana flotante de Bizum (Abre justo encima de los botones) -->
-            <div id="ventanaMensajeKofi" class="modal-kofi-festero">
-                <div style="padding: 16px !important; color: #333 !important; font-family: 'Segoe UI', Arial, sans-serif !important; font-size: 14px !important; line-height: 1.45 !important;">
-                    <h3 style="margin-top: 0 !important; margin-bottom: 8px !important; color: #007bff !important; font-size: 15px !important; font-weight: bold !important;">📲 ¡Ayuda a mantener el archivo!</h3>
-                    <p style="margin: 0 0 8px 0 !important;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios en Bunny.net genera costes mensuales.</p>
-                    <p style="margin: 0 0 10px 0 !important;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum (de 1€, 2€, 5€ o lo que quieras):</p>
-                    
-                    <!-- CAJA DESTACADA BIZUM -->
-                    <div style="background: #f0f8ff; padding: 12px; border-left: 5px solid #00bcd4; border-radius: 6px; font-weight: bold; text-align: center; color: #111;">
-                        <span style="font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">Número de Bizum</span><br>
-                        <span style="font-size: 20px; color: #007bff; letter-spacing: 1px;">609 450 962</span><br>
-                        <span style="font-size: 11px; font-weight: normal; color: #666; display: block; margin-top: 4px;">Concepto: Mantenimiento Web</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Capa de espera -->
@@ -443,7 +542,7 @@
             class="bunny-stream-player"
             src="about:blank" 
             loading="lazy" 
-            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" 
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-media;" 
             allowfullscreen="true"
             style="z-index: 1;">
         </iframe>
@@ -467,15 +566,14 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-
-<!-- ========================================== -->
+  <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
 
 <script>
 window.addEventListener('load', () => {
     // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED ACTUALIZADO) ---
-   const videosData = {
+    const videosData = {
         "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
         "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
         "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
@@ -522,6 +620,7 @@ window.addEventListener('load', () => {
         "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
         "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
     };
+
     // Unificación estricta de elementos vinculados al DOM
     const iframePlayer = document.getElementById('bunny-player');
     const capaEspera = document.getElementById('capa-espera');
@@ -541,7 +640,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-         // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+       // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -575,7 +674,7 @@ window.addEventListener('load', () => {
         contenedorBotones.appendChild(boton);
     });
 
-       // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CORREGIDO PARA MANTENER EL DESTELLO FIJO) ---
+    // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CORREGIDO PARA MANTENER EL DESTELLO FIJO) ---
     function inicializarCambioEmisionVideo(anio) {
         clearInterval(temporizadorReloj);
         videoPausado = false;
@@ -603,7 +702,6 @@ window.addEventListener('load', () => {
         actualizarRelojHoraReal();
         temporizadorReloj = setInterval(actualizarRelojHoraReal, 1000);
     }
-
 
     // --- RELOJ EN HORA REAL DE TELEVISIÓN ---
     function actualizarRelojHoraReal() {
@@ -707,7 +805,6 @@ window.addEventListener('load', () => {
     document.addEventListener('fullscreenchange', restaurarEstadosPantalla);
     document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
 
-
     // --- GESTIÓN DE LA INSTALACIÓN PWA (CORREGIDO - OCULTO EN PC) ---
     let eventoInstalacion = null;
     const btnInstalarApp = document.getElementById('btnInstalarApp');
@@ -735,43 +832,51 @@ window.addEventListener('load', () => {
         if (btnInstalarApp) btnInstalarApp.style.display = 'none';
     });
 
-
-    // --- CREACIÓN DINÁMICA DEL CUARTO BOTÓN (€) CON DESTELLO CONTINUO Y ORDEN DE FILA REPARADO ---
+    // --- CREACIÓN DINÁMICA DEL BOTÓN DE DONACIÓN (€) CON SU LÓGICA DE APERTURA ---
     const btnDonarInicio = document.createElement('button');
-    // CORREGIDO: Le inyectamos 'efecto-destello' para forzar que parpadee continuamente y destaque el Bizum
     btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello';
     btnDonarInicio.id = 'btnDonarInicio';
     btnDonarInicio.innerText = '€';
-    btnDonarInicio.title = 'Ayuda al mantenimiento del archivo por Bizum';
+    btnDonarInicio.title = 'Ayuda al mantenimiento del archivo (Bizum / Tarjeta / PayPal)';
     
-    // CORRECCIÓN EXACTA DE FILA: Insertándolo al principio del contenedor con insertBefore,
-    // tu propiedad invertida del CSS forzará a que el botón del € se coloque el CUARTO de la fila
-    // a la izquierda del todo, dejando el orden clavado: 1º Amarillo -> 2º Naranja -> 3º Rojo -> 4º € Azul/Verde
-    grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
-   // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE BIZUM
+    // Al pulsar el botón, abrimos o cerramos de forma limpia el banner horizontal superior
+    btnDonarInicio.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const bannerKofi = document.getElementById('ventanaMensajeKofi');
+        if (bannerKofi) {
+            if (bannerKofi.style.display === 'block') {
+                bannerKofi.style.display = 'none';
+            } else {
+                bannerKofi.style.display = 'block';
+                // Hace scroll suave automático hacia el banner para asegurarse de que el usuario lo vea
+                bannerKofi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+
+    // Inserción en la botonera de televisión respetando la inversión CSS
+    if (grupoBotonesTv) {
+        grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
+    }
+     // --- LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE HORIZONTAL DE DONACIONES ---
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
     
     if (btnDonarInicio && ventanaMensajeKofi) {
-        btnDonarInicio.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (ventanaMensajeKofi.style.display === 'block') {
-                ventanaMensajeKofi.style.display = 'none';
-            } else {
-                ventanaMensajeKofi.style.display = 'block';
-            }
-        });
-
+        // El evento click principal del botón ya fue asignado en la parte anterior.
+        // Aquí añadimos la lógica para cerrar el banner si el usuario hace clic fuera de él.
         document.addEventListener('click', () => {
             ventanaMensajeKofi.style.display = 'none';
         });
+        
+        // Evitamos que el banner se cierre si se hace clic dentro del propio banner o sus botones
         ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
     }
 
-    // CONTROL ESTRICTO DE PANTALLA COMPLETA (OCULTA EL BOTÓN DEL € Y EL MENSAJE COMPLETAMENTE)
+    // --- CONTROL ESTRICTO DE PANTALLA COMPLETA ---
     const comprobarPantallaCompletaFestera = () => {
         if (btnDonarInicio && ventanaMensajeKofi) {
             if (document.fullscreenElement || document.webkitFullscreenElement) {
-                // Al pasar a pantalla completa, forzamos la ocultación del botón y el modal de Bizum
+                // Al pasar a pantalla completa, forzamos la ocultación del botón y del banner superior
                 btnDonarInicio.style.setProperty('display', 'none', 'important');
                 ventanaMensajeKofi.style.display = 'none';
             } else {
@@ -783,7 +888,6 @@ window.addEventListener('load', () => {
 
     document.addEventListener('fullscreenchange', comprobarPantallaCompletaFestera);
     document.addEventListener('webkitfullscreenchange', comprobarPantallaCompletaFestera);
-
 
     // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (CORREGIDO PWA) ---
     if ('serviceWorker' in navigator) {
