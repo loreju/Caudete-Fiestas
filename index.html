@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
-    <link rel="apple-touch-icon" href="img/logo-ctv.png">
+    <link class="destello-logo" rel="apple-touch-icon" href="img/logo-ctv.png">
     
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
@@ -20,6 +20,7 @@
             background-color: #141414;
             margin: 0;
             padding: 0;
+            /* Evita el efecto rebote elástico en móviles que deforma la interfaz */
             overscroll-behavior-y: none; 
             -webkit-overflow-scrolling: touch;
         }
@@ -31,14 +32,13 @@
             padding: 20px 15px;
         }
 
-        /* --- CABECERA COMPLETAMENTE ADAPTATIVA HORIZONTAL --- */
+        /* --- ESTILOS DE LA CABECERA COMPLETAMENTE ADAPTATIVA --- */
         .header-container {
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center !important; 
-            justify-content: space-between !important; 
-            flex-wrap: wrap !important;
-            gap: 15px;
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+            flex-wrap: wrap;
+            gap: 20px;
             max-width: 1450px;
             margin: 0 auto 25px auto;
             background-color: #1e1e1e;
@@ -51,18 +51,17 @@
         }
                  
         .header-block {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            justify-content: center !important; 
-            min-width: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            min-width: 140px;
             text-align: center;
-            flex: 0 1 auto !important;
         }
                  
         .header-block h3 {
             color: #ffcc00;
-            font-size: 0.75rem; 
+            font-size: 0.8rem; 
             font-weight: 900; 
             text-transform: uppercase; 
             letter-spacing: 1px;
@@ -73,21 +72,21 @@
         }
 
         .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { 
-            height: 75px; 
+            height: 80px; 
             width: auto; 
             object-fit: contain; 
         }
 
-        @media (min-width: 992px) {
+        @media (min-width: 768px) {
             body { padding: 40px 20px; }
-            .header-container { padding: 25px 30px; gap: 20px; flex-wrap: nowrap !important; }
-            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 100px; }
-            .header-block { min-width: 160px; }
-            .header-block h3 { font-size: 0.8rem; }
+            .header-container { padding: 25px 30px; gap: 25px; }
+            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 110px; }
+            .header-block { min-width: 180px; }
+            .header-block h3 { font-size: 0.85rem; }
         }
 
         .title-block {
-            flex: 2 !important;
+            flex: 1;
             min-width: 280px;
             display: flex;
             flex-direction: column;
@@ -99,7 +98,7 @@
 
         h1 {
             color: #ffcc00;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -107,11 +106,12 @@
         }
 
         @media (min-width: 768px) {
-            h1 { font-size: 2.1rem; }
+            h1 { font-size: 2.2rem; }
         }
-        /* --- BOTÓN BIZUM --- */
+
+        /* --- ESTILO SIMÉTRICO PARA EL CUARTO BOTÓN DE LA FILA (€ BIZUM) --- */
         .btn-control-tv.btn-donar-tv {
-            background: linear-gradient(135deg, #00bcd4, #007bff) !important;
+            background: linear-gradient(135deg, #00bcd4, #007bff) !important; /* Cyan a Azul Bizum */
             color: white !important;
             font-size: 1.3rem !important;
             font-weight: bold !important;
@@ -122,85 +122,251 @@
             transform: scale(1.1);
         }
 
-        /* --- VENTANA EMERGENTE CORREGIDA (Z-INDEX ALTO) --- */
+        /* --- VENTANA EMERGENTE DE BIZUM INSCRITA DENTRO DEL CONTENEDOR --- */
         .modal-kofi-festero {
             display: none;
             position: absolute !important;
-            top: 20px !important;     
-            right: 15px !important;     
-            width: 300px !important;
-            height: auto !important;   
+            bottom: 65px !important;  
+            right: 0px !important;     
+            width: 310px !important;
             background: #ffffff !important;
             border-radius: 12px !important;
             box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.6) !important;
-            z-index: 99999 !important; 
+            z-index: 100000 !important;
             text-align: left !important;
-            box-sizing: border-box !important;
-            pointer-events: none;      
         }
-
-        .modal-kofi-festero[style*="display: block"], 
-        .modal-kofi-festero[style*="display:block"] {
-            pointer-events: auto !important;
+             /* --- ANIMACIONES DE DESTELLO --- */
+        .efecto-destello, .destello-logo, .btn-anio-archivo.activo {
+            animation: destelloContinuoLogo 2.5s infinite ease-in-out;
         }
-
-        /* --- SOLUCIÓN: BADGE REORGANIZADO SIN ABSOLUTE REPETIDOS --- */
-        .badge-anio-reproductor {
-            background-color: #ffffff !important;
-            color: #141414 !important;
-            border: 2px solid #ffcc00 !important;
-            border-radius: 4px !important;
-            padding: 6px 12px !important;
-            font-weight: bold !important;
-            display: inline-block !important;
-            will-change: filter, box-shadow, text-shadow;
-            transform: translateZ(0);
-        }
-        /* --- ANIMACIONES DE DESTELLO COHERENTES --- */
-        .destello-logo, .logo-ctv-fijo {
-            animation: destelloContinuoLogo 4s infinite ease-in-out;
-            will-change: filter;
-        }
-        
-        .logo-comparsa {
-            height: 140px; width: 140px; object-fit: contain; transition: transform 0.2s;
-            animation: destelloSuaveLogoAbajo 4s infinite ease-in-out; will-change: filter;
-        }
-        .logo-comparsa:hover { transform: scale(1.08); }
-
-        .destello-texto { 
-            animation: destelloContinuoTexto 4s infinite ease-in-out; will-change: text-shadow;
-        }
-
-        /* BRILLO EN EL RECUADRO DEL REPRODUCER */
-        .badge-anio-reproductor { 
-            animation: destelloCajaAnioEspecial 4s infinite ease-in-out !important; 
-        }
+        .destello-texto { animation: destelloContinuoTexto 2.5s infinite ease-in-out; }
 
         @keyframes destelloContinuoLogo {
-            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
-            50% { filter: drop-shadow(0 0 14px #ffd700) drop-shadow(0 0 24px rgba(255, 204, 0, 0.6)); }
+            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)) brightness(1); }
+            50% { filter: drop-shadow(0 0 25px #ffd700) brightness(1.6); }
         }
-
-        @keyframes destelloSuaveLogoAbajo {
-            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
-            50% { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 15px rgba(255, 204, 0, 0.25)); }
-        }
-
         @keyframes destelloContinuoTexto {
-            0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
-            50% { text-shadow: 0 0 10px #ffd700, 0 0 18px rgba(255, 204, 0, 0.5); }
+            0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.3); filter: brightness(1); }
+            50% { text-shadow: 0 0 18px rgba(255,215,0,0.9); filter: brightness(1.4); }
         }
 
-        @keyframes destelloCajaAnioEspecial {
-            0%, 100% { 
-                border-color: #ffcc00 !important; 
-                box-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 8px rgba(255,204,0,0.4) !important;
+        /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
+        .video-container {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* Relación de aspecto nativa (16:9) */
+            height: 0;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #000;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: 0; z-index: 1;
+        }
+
+        /* --- OVERLAYS SOBRE EL VÍDEO --- */
+        .reloj-video-block {
+            position: absolute;
+            top: 15px; left: 15px; display: none;
+            background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
+            padding: 8px 14px; font-size: 1.1rem; font-weight: bold;
+            font-family: 'Courier New', Courier, monospace; border-radius: 6px;
+            z-index: 5; pointer-events: none; letter-spacing: 1px;
+        }
+        
+        .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
+        .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
+        
+        .badge-anio-reproductor {
+            position: absolute; bottom: 15px; left: 15px; display: none;
+            background: #ffffff; color: #141414; padding: 8px 16px; font-size: 1.1rem;
+            font-weight: 900; border-radius: 6px; z-index: 5;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        @media (min-width: 768px) {
+            .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
+            .ctv-video-block { top: 20px; right: 20px; }
+            .logo-ctv-fijo { height: 73px; }
+            .badge-anio-reproductor { bottom: 20px; left: 20px; padding: 12px 24px; font-size: 1.4rem; }
+        }
+
+        /* --- BOTONERA DE CONTROL EN FILA HORIZONTAL --- */
+        .control-buttons-group {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            display: none;
+            flex-direction: row; 
+            gap: 10px; 
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .btn-control-tv {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            pointer-events: auto; 
+        }
+        
+        @media (min-width: 768px) {
+            .control-buttons-group { bottom: 20px; right: 20px; gap: 12px; }
+            .btn-control-tv { width: 46px; height: 46px; }
+        }
+        
+        .btn-control-tv:hover { transform: scale(1.1); }
+
+        .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
+        .btn-salir-reproductor:hover { background: #ff0000; }
+
+        .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.1rem; }
+        .btn-pausa-reproductor:hover { background: #ff8c00; }
+
+        .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
+        .btn-fullscreen-web:hover { background: #ffcc00; }
+
+        /* LIBERACIÓN COMPLETA TÁCTIL: pointer-events: none; impide bloqueos en clics */
+        #escudo-toper {
+            pointer-events: none !important;
+        }
+
+        /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
+        #capa-espera {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
+            background-size: contain; background-position: center; background-repeat: no-repeat;
+            z-index: 10; display: flex; align-items: center; justify-content: center;
+            opacity: 1;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .btn-play {
+            background: rgba(255, 204, 0, 0.95); color: #141414; border: none;
+            width: 80px; height: 80px; font-size: 2rem; border-radius: 50%; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+            text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
+        }
+        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
+
+        /* REJILLAS HISTÓRICAS Y COMPARSAS */
+        .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
+        .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
+        .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
+        .btn-anio-archivo {
+            background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
+            padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-anio-archivo:hover, .btn-anio-archivo.activo { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
+
+        .comparsas-seccion { margin-top: 50px; }
+        .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
+        .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
+        .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
+        .logo-comparsa { height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s; }
+        .logo-comparsa:hover { transform: scale(1.08); }
+
+        .honor-text {
+            color: #ffcc00;
+            font-size: 1.45rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 0;
+        }
+
+        .years-subtitle-text {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin: 4px 0 0 0;
+        }
+/* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+        @media (max-width: 768px) {
+            .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
+            .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
+            h1 { font-size: 1.5rem; } .honor-text { font-size: 1.2rem; }
+            .years-subtitle-text { font-size: 1.2rem; font-weight: 600; }
+            
+            .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 75px; }
+            .header-block h3 { font-size: 0.65rem; margin-top: 4px !important; }
+            
+            #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 14px 10px !important; margin-top: 5px; }
+
+            .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
+            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
+            
+            .ctv-video-block { top: 10px; right: 10px; }
+            .logo-ctv-fijo { height: 35px; }
+            
+            .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
+            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
+            
+            .control-buttons-group { bottom: 10px; right: 10px; gap: 8px; }
+            .btn-control-tv { width: 38px; height: 38px; }
+            .btn-salir-reproductor { font-size: 1.25rem; }
+            .btn-pausa-reproductor { font-size: 1rem; }
+            .btn-fullscreen-web { font-size: 1.1rem; }
+
+            /* Ajuste estricto del modal de Bizum para pantallas móviles */
+            .modal-kofi-festero {
+                bottom: 55px !important;
+                right: 0px !important;
+                left: auto !important;
+                width: 270px !important;
+                max-width: calc(100% - 20px) !important;
             }
-            50% { 
-                border-color: #ffffff !important; 
-                box-shadow: 0 0 20px #ffd700, 0 0 30px rgba(255, 204, 0, 0.8) !important;
-            }
+        }
+
+        /* CORRECCIÓN ANDROID PANTALLA COMPLETA HORIZONTAL SIN AGRANDAMIENTOS ERRONEOS */
+        .video-container:fullscreen {
+            width: 100vw !important;
+            height: 100vh !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            background: #000 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .video-container:fullscreen .video-wrapper {
+            width: 100vw !important;
+            height: 56.25vw !important; /* Fuerza la escala panorámica fija sin desbordar el lienzo táctil */
+            max-height: 100vh !important;
+            max-width: calc(100vh * 16 / 9) !important;
+            padding-bottom: 0 !important;
+        }
+
+        /* Oculta los bloques externos adyacentes en pantalla completa para un renderizado limpio */
+        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion {
+            display: none !important;
         }
     </style>
 </head>
@@ -241,46 +407,44 @@
         <div class="reloj-video-block destello-logo" id="reloj-video" style="z-index: 98;">00:00</div>
 
         <div class="ctv-video-block" id="bloque-logo-ctv-video" style="z-index: 98;">
-            <img class="logo-ctv-fijo" src="img/logo-ctv.png" alt="CTV">
+            <img class="logo-ctv-fijo destello-logo" src="img/logo-ctv.png" alt="CTV">
         </div>
 
-        <!-- BADGE FIJO CON CONTORNO DE LUZ EXTERIOR SINCRO -->
-        <div id="badge-anio" class="badge-anio-reproductor destello-texto" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
+        <!-- REAJUSTADO: El box blanco de abajo a la izquierda RECUPERA el destello continuo fijo para destacar -->
+        <div id="badge-anio" class="badge-anio-reproductor efecto-destello destello-texto" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
         
-        <!-- ESCUDO TOTALMENTE LIBERADO -->
+        <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
 
-        <!-- BOTONERA DE CONTROL LIBRE -->
+        <!-- BOTONERA DE CONTROL (Invertimos el orden HTML para que el CSS los alinee al revés: Amarillo -> Naranja -> Rojo -> Azul) -->
         <div class="control-buttons-group" id="grupo-botones-tv" style="z-index: 99; pointer-events: auto;">
             <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
             <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
             <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
-        </div>
-
-        <div id="ventanaMensajeKofi" class="modal-kofi-festero">
-            <div style="padding: 16px !important; color: #333 !important; font-family: 'Segoe UI', Arial, sans-serif !important; font-size: 14px !important; line-height: 1.45 !important; box-sizing: border-box !important;">
-                <h3 style="margin-top: 0 !important; margin-bottom: 8px !important; color: #007bff !important; font-size: 15px !important; font-weight: bold !important;">📲 ¡Ayuda a mantener el archivo!</h3>
-                <p style="margin: 0 0 8px 0 !important;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios en Bunny.net genera costes mensuales.</p>
-                <p style="margin: 0 0 12px 0 !important;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum, PayPal o Tarjeta de Crédito (de 1€, 3€, 5€ o lo que quieras):</p>
-                
-                <div style="background: #f0f8ff; padding: 12px; border-left: 5px solid #00bcd4; border-radius: 6px; font-weight: bold; text-align: center; color: #111; margin-bottom: 12px; box-sizing: border-box !important;">
-                    <span style="font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">Número de Bizum</span><br>
-                    <span style="font-size: 19px; color: #007bff; letter-spacing: 1px;">609 450 962</span><br>
-                    <span style="font-size: 11px; font-weight: normal; color: #666; display: block; margin-top: 4px;">Concepto: Mantenimiento Web</span>
-                </div>
-
-                <div style="background: #fdf8e2; padding: 12px; border-left: 5px solid #ffc107; border-radius: 6px; font-weight: bold; text-align: center; color: #111; box-sizing: border-box !important;">
-                    <span style="font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">PayPal o Tarjeta de Crédito</span><br>
-                    <a href="https://ko-fi.com" target="_blank" style="font-size: 15px; color: #d9381e; text-decoration: underline; display: inline-block; margin: 3px 0; word-break: break-all; font-weight: bold;">://ko-fi.com</a><br>
-                    <span style="font-size: 11px; font-weight: normal; color: #666; display: block; margin-top: 4px;">Concepto: Mantenimiento Web</span>
+            
+            <!-- Ventana flotante de Bizum (Abre justo encima de los botones) -->
+            <div id="ventanaMensajeKofi" class="modal-kofi-festero">
+                <div style="padding: 16px !important; color: #333 !important; font-family: 'Segoe UI', Arial, sans-serif !important; font-size: 14px !important; line-height: 1.45 !important;">
+                    <h3 style="margin-top: 0 !important; margin-bottom: 8px !important; color: #007bff !important; font-size: 15px !important; font-weight: bold !important;">📲 ¡Ayuda a mantener el archivo!</h3>
+                    <p style="margin: 0 0 8px 0 !important;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios en Bunny.net genera costes mensuales.</p>
+                    <p style="margin: 0 0 10px 0 !important;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum (de 1€, 2€, 5€ o lo que quieras):</p>
+                    
+                    <!-- CAJA DESTACADA BIZUM -->
+                    <div style="background: #f0f8ff; padding: 12px; border-left: 5px solid #00bcd4; border-radius: 6px; font-weight: bold; text-align: center; color: #111;">
+                        <span style="font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">Número de Bizum</span><br>
+                        <span style="font-size: 20px; color: #007bff; letter-spacing: 1px;">609 450 962</span><br>
+                        <span style="font-size: 11px; font-weight: normal; color: #666; display: block; margin-top: 4px;">Concepto: Mantenimiento Web</span>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Capa de espera -->
         <div id="capa-espera" style="z-index: 10;">
             <button class="btn-play" id="start-btn" style="z-index: 12;">▶</button>
         </div>
         
+        <!-- Iframe limpio oficial -->
         <iframe 
             id="bunny-player"
             class="bunny-stream-player"
@@ -293,30 +457,32 @@
     </div>
 </div>
 
+<!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO -->
 <div class="archivo-historico-seccion">
     <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
     <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
 </div>
 
+<!-- SECCIÓN DE COMPARSAS -->
 <div class="comparsas-seccion">
-    <div class="comparsa-grid">
-        <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
-        <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
+    <div class="comparsas-grid">
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
-    
+
 <!-- ========================================== -->
-<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA Y CERRADA) -->
+<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
 
 <script>
 window.addEventListener('load', () => {
     // --- BASE DE DATOS DE VÍDEOS (BUNNY CDN EMBED ACTUALIZADO) ---
-  const videosData = {
+   const videosData = {
         "1974": "https://player.mediadelivery.net/embed/752516/9f37ef07-19a6-493b-afa2-5f167f8df04d",      
         "1983": "https://player.mediadelivery.net/embed/752516/d1b88e63-5ea7-4a46-96eb-8fd566bb4561",
         "1984": "https://player.mediadelivery.net/embed/752516/7e5772a5-246e-4668-ae96-ebeef1646989",
@@ -362,7 +528,7 @@ window.addEventListener('load', () => {
         "2024": "https://player.mediadelivery.net/embed/752516/b2c76335-d5ed-44e6-aa45-189cf84a1eca",
         "2025": "https://player.mediadelivery.net/embed/752516/b959e64f-3bbb-4d17-9ac2-4c13c720936e",
         "2026": "https://player.mediadelivery.net/embed/752516/3122ccef-8b10-484a-8a3b-2bc699825bdb"
-    }; 
+    };
     // Unificación estricta de elementos vinculados al DOM
     const iframePlayer = document.getElementById('bunny-player');
     const capaEspera = document.getElementById('capa-espera');
@@ -382,8 +548,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-
-    // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+        // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -398,11 +563,12 @@ window.addEventListener('load', () => {
     // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
     Object.keys(videosData).sort().forEach(anio => {
         const boton = document.createElement('button');
-        boton.className = 'btn-anio-archivo'; 
+        boton.className = 'btn-anio-archivo'; // Neixen nets sense destenys initials
         boton.innerText = anio;
-        boton.dataset.anio = r = anio;
+        boton.dataset.anio = anio;
         
         boton.addEventListener('click', () => {
+            // Sols l'any seleccionat actiu rep el destell continu
             document.querySelectorAll('.btn-anio-archivo').forEach(b => {
                 b.classList.remove('activo');
                 b.classList.remove('efecto-destello');
@@ -413,48 +579,218 @@ window.addEventListener('load', () => {
             inicializarCambioEmisionVideo(anio);
         });
         
-        if(contenedorBotones) {
-            contenedorBotones.appendChild(boton);
+        contenedorBotones.appendChild(boton);
+    });
+
+    // --- CONTROLADOR DE EMISIÓN DE VÍDEO ---
+    function inicializarCambioEmisionVideo(anio) {
+        clearInterval(temporizadorReloj);
+        videoPausado = false;
+        btnPausaVideo.innerText = "⏸";
+
+        // Inyectamos la URL limpia asegurando los parámetros responsivos oficiales de Bunny
+        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+        
+        capaEspera.style.opacity = "0";
+        setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
+
+        badgeAnio.innerText = `FIESTAS ${anio}`;
+        badgeAnio.style.display = "block";
+        bloqueLogoCTVVideo.style.display = "block";
+        relojVideo.style.display = "block";
+        grupoBotonesTv.style.display = "flex";
+
+        unVideoEstaReproduciendose = true;
+        
+        actualizarRelojHoraReal();
+        temporizadorReloj = setInterval(actualizarRelojHoraReal, 1000);
+    }
+
+    // --- RELOJ EN HORA REAL DE TELEVISIÓN ---
+    function actualizarRelojHoraReal() {
+        const ahora = new Date();
+        const horas = String(ahora.getHours()).padStart(2, '0');
+        const minutos = String(ahora.getMinutes()).padStart(2, '0');
+        relojVideo.innerText = `${horas}:${minutos}`;
+    }
+
+    // --- LISTENERS DE LA BOTONERA DE CONTROL ---
+
+    // Botón de Inicio / Detener Emisión (🏠)
+    btnSalirVideo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
+            if (salirFS) salirFS.call(document).catch(() => {});
+        }
+        
+        clearInterval(temporizadorReloj);
+        unVideoEstaReproduciendose = false;
+        
+        enviarComandoBunny('pause');
+        iframePlayer.src = "about:blank"; 
+
+        badgeAnio.style.display = "none";
+        bloqueLogoCTVVideo.style.display = "none";
+        relojVideo.style.display = "none";
+        grupoBotonesTv.style.display = "none";
+        document.querySelectorAll('.btn-anio-archivo').forEach(b => {
+            b.classList.remove('activo');
+            b.classList.remove('efecto-destello');
+        });
+
+        capaEspera.style.visibility = "visible";
+        capaEspera.style.opacity = "1";
+    });
+
+    // Botón de Pausa / Reanudar Emisión (⏸)
+    btnPausaVideo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!unVideoEstaReproduciendose) return;
+
+        if (!videoPausado) {
+            enviarComandoBunny('pause');
+            videoPausado = true;
+            btnPausaVideo.innerText = "▶";
+        } else {
+            enviarComandoBunny('play');
+            videoPausado = false;
+            btnPausaVideo.innerText = "⏸";
         }
     });
 
-    // --- CONTROLADOR DE EMISIÓN DE VÍDEO (RECONSTRUIDO Y CERRADO CORRECTAMENTE) ---
-    function inicializarCambioEmisionVideo(anio) {
-        if (!iframePlayer) return;
-        clearInterval(temporizadorReloj);
-        videoPausado = false;
-        if (btnPausaVideo) btnPausaVideo.innerText = "⏸";
-
-        iframePlayer.src = `${videosData[anio]}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+    // Botón de Pantalla Completa Adaptativo (⛶)
+    btnFS.addEventListener('click', (e) => {
+        e.stopPropagation();
         
-        if (capaEspera) {
-            capaEspera.style.opacity = "0";
-            setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            const solicitarFS = marcoContenedor.requestFullscreen || marcoContenedor.webkitRequestFullscreen;
+            if (solicitarFS) {
+                solicitarFS.call(marcoContenedor).then(() => {
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock('landscape').catch(() => {});
+                    }
+                }).catch((err) => {
+                    console.error("Error al activar Fullscreen:", err);
+                });
+            }
+        } else {
+            const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
+            if (salirFS) {
+                salirFS.call(document).catch(() => {});
+            }
         }
+    });
 
-        if (badgeAnio) {
-            badgeAnio.innerText = `FIESTAS ${anio}`;
-            badgeAnio.style.display = "block";
+    btnPlayBase.addEventListener('click', () => {
+        const botonUltimoAnio = document.querySelector(`.btn-anio-archivo[data-anio="${anioSeleccionadoDestino}"]`);
+        if (botonUltimoAnio) {
+            botonUltimoAnio.classList.add('activo');
+            botonUltimoAnio.classList.add('efecto-destello');
         }
+        inicializarCambioEmisionVideo(anioSeleccionadoDestino);
+    });
+
+    // Restaurar sincronización de pantalla al salir
+    const restaurarEstadosPantalla = () => {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            btnFS.innerText = "⛶";
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            }
+        } else {
+            btnFS.innerText = "❌";
+        }
+    };
+
+    document.addEventListener('fullscreenchange', restaurarEstadosPantalla);
+    document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
+
+
+    // --- GESTIÓN DE LA INSTALACIÓN PWA ---
+    let eventoInstalacion = null;
+    const btnInstalarApp = document.getElementById('btnInstalarApp');
+    const esOrdenador = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        eventoInstalacion = e;
+        if (btnInstalarApp && !esOrdenador) {
+            btnInstalarApp.style.display = 'block';
+        }
+    });
+
+    if (btnInstalarApp) {
+        btnInstalarApp.addEventListener('click', async () => {
+            if (!eventoInstalacion) return;
+            eventoInstalacion.prompt();
+            const { outcome } = await eventoInstalacion.userChoice;
+            eventoInstalacion = null;
+            btnInstalarApp.style.display = 'none';
+        });
     }
 
-    // --- MANEJADOR DEL BOTÓN DE DONACIÓN / BIZUM ---
-    const btnDonar = document.getElementById('btn-donar-tv') || document.querySelector('.btn-donar-tv');
-    const ventanaKofi = document.getElementById('ventanaMensajeKofi');
+    window.addEventListener('appinstalled', () => {
+        if (btnInstalarApp) btnInstalarApp.style.display = 'none';
+    });
+
+
+    // --- CREACIÓN DINÁMICA DEL BOTÓN € EN LA CUARTA POSICIÓN CON DESTELLO ---
+    const btnDonarInicio = document.createElement('button');
+    btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello'; // Destell continu forçat per al Bizum
+    btnDonarInicio.id = 'btnDonarInicio';
+    btnDonarInicio.innerText = '€';
+    btnDonarInicio.title = 'Ayuda al mantenimiento del archivo por Bizum';
     
-    if (btnDonar && ventanaKofi) {
-        btnDonar.addEventListener('click', (e) => {
+    // ORDRE REPARAT: En afegir-lo al final del codi amb appendChild, el CSS d'esquerra a dreta
+    // el posiciona l'últim de tots (la quarta posició de la fila): Amarillo ⛶ -> Naranja ⏸ -> Rojo 🏠 -> Azul/Verde €
+    grupoBotonesTv.appendChild(btnDonarInicio);
+
+    // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE BIZUM
+    const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
+    
+    if (btnDonarInicio && ventanaMensajeKofi) {
+        btnDonarInicio.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (ventanaKofi.style.display === 'block') {
-                ventanaKofi.style.display = 'none';
+            if (ventanaMensajeKofi.style.display === 'block') {
+                ventanaMensajeKofi.style.display = 'none';
             } else {
-                ventanaKofi.style.display = 'block';
+                ventanaMensajeKofi.style.display = 'block';
             }
         });
-        
+
         document.addEventListener('click', () => {
-            ventanaKofi.style.display = 'none';
+            ventanaMensajeKofi.style.display = 'none';
         });
+        ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    // CONTROL ESTRICTO DE PANTALLA COMPLETA (OCULTA EL BOTÓN (€) Y EL MENSAJE COMPLETAMENTE)
+    const comprobarPantallaCompletaFestera = () => {
+        if (btnDonarInicio && ventanaMensajeKofi) {
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                btnDonarInicio.style.setProperty('display', 'none', 'important');
+                ventanaMensajeKofi.style.display = 'none';
+            } else {
+                btnDonarInicio.style.setProperty('display', 'flex', 'important');
+            }
+        }
+    };
+
+    document.addEventListener('fullscreenchange', comprobarPantallaCompletaFestera);
+    document.addEventListener('webkitfullscreenchange', comprobarPantallaCompletaFestera);
+
+
+    // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (CORREGIDO PWA) ---
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then((registro) => {
+                console.log('Service Worker de Caudete Fiestas registrado con éxito en el alcance:', registro.scope);
+            })
+            .catch((error) => {
+                console.error('Fallo en el registro del Service Worker:', error);
+            });
     }
 });
 </script>
