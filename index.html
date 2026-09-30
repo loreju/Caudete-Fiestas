@@ -108,14 +108,7 @@
         @media (min-width: 768px) {
             h1 { font-size: 2.2rem; }
         }
-
-        /* --- CONTROL DE CLASES DE TEXTO / EVITA TEXTOS EXTRAÑOS --- */
-        .destello-texto, .destello-logo {
-            letter-spacing: 0.5px;
-            animation: none !important; /* Limpia residuos de animaciones viejas */
-        }
-
-        /* --- BOTÓN BIZUM --- */
+ /* --- BOTÓN BIZUM --- */
         .btn-control-tv.btn-donar-tv {
             background: linear-gradient(135deg, #00bcd4, #007bff) !important;
             color: white !important;
@@ -159,16 +152,11 @@
             padding: 6px 12px !important;
             font-weight: bold !important;
             display: inline-block !important;
-            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85)) !important;
-            -webkit-filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85)) !important;
-            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4) !important;
-            will-change: filter;
+            will-change: filter, box-shadow, text-shadow;
+            transform: translateZ(0);
         }
-    </style>
-</head>
-
-              /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
-        .efecto-destello, .destello-logo, .logo-ctv-fijo {
+  /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
+        .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
         }
@@ -186,13 +174,6 @@
         /* FUERZA BRUTA PARA EL AURA ALREDEDOR DE LA CAJA */
         .badge-anio-reproductor, .destello-box-fiestas { 
             animation: destelloCajaAnioEspecial 4s infinite ease-in-out !important; 
-            transform: translateZ(0); /* Activa renderizado por hardware del aura */
-            will-change: box-shadow, text-shadow, border-color;
-        }
-
-        .btn-anio-archivo.activo {
-            animation: destelloBotonActivo 4s infinite ease-in-out !important;
-            will-change: box-shadow, border-color;
         }
 
         @keyframes destelloContinuoLogo {
@@ -214,205 +195,33 @@
         @keyframes destelloCajaAnioEspecial {
             0%, 100% { 
                 border-color: #ffcc00 !important; 
-                box-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 4px rgba(255,204,0,0.2) !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 8px rgba(255,204,0,0.4) !important;
             }
             50% { 
                 border-color: #ffffff !important; 
-                /* Se expande un resplandor dorado exterior super nítido de gran radio */
-                box-shadow: 0 0 20px #ffd700, 0 0 35px #ffcc00, 0 4px 15px rgba(0,0,0,0.6) !important; 
+                box-shadow: 0 0 20px #ffd700, 0 0 30px rgba(255, 204, 0, 0.8) !important;
             }
-        }
-
-        @keyframes destelloBotonActivo {
-            0%, 100% { border-color: #ffcc00; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-            50% { border-color: #ffffff; box-shadow: 0 0 16px #ffcc00, 0 0 25px rgba(255, 215, 0, 0.6); }
-        }
-
-        /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
-        .video-container {
-            position: relative; max-width: 900px; margin: 0 auto;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8); background-color: #000;
-            border-radius: 12px; overflow: hidden; padding: 5px; box-sizing: border-box;
-        }
-
-        .video-wrapper {
-            position: relative; padding-bottom: 56.25%; height: 0; width: 100%;
-            border-radius: 8px; overflow: hidden; background-color: #000;
-        }
-        
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; z-index: 1; }
-
-        /* --- OVERLAYS SOBRE EL VÍDEO --- */
-        .reloj-video-block {
-            position: absolute; top: 15px; left: 15px; display: none;
-            background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
-            padding: 8px 14px; font-size: 1.1rem; font-weight: bold;
-            font-family: 'Courier New', Courier, monospace; border-radius: 6px; z-index: 5; pointer-events: none; letter-spacing: 1px;
-        }
-        
-        .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
-        .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
-        
-        /* CAJA DEL REPRODUCTOR CON MEJORA DE CAPA */
-        .badge-anio-reproductor {
-            position: absolute; bottom: 15px; left: 15px; display: none;
-            background: #141414 !important; color: #ffcc00 !important; padding: 8px 16px; font-size: 1.1rem;
-            font-weight: 900; border-radius: 6px; z-index: 5; border: 1px solid #ffcc00; transition: all 0.3s ease-in-out;
-        }
-
-        @media (min-width: 768px) {
-            .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
-            .ctv-video-block { top: 20px; right: 20px; }
-            .logo-ctv-fijo { height: 73px; }
-            .badge-anio-reproductor { bottom: 20px; left: 20px; padding: 12px 24px; font-size: 1.4rem; }
-        }
-
-        /* --- BOTONERA DE CONTROL EN FILA HORIZONTAL --- */
-        .control-buttons-group {
-            position: absolute; bottom: 15px; right: 15px; display: none; flex-direction: row; gap: 10px; z-index: 6; pointer-events: none;
-        }
-
-        .btn-control-tv {
-            width: 40px; height: 40px; border: none; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5); pointer-events: auto; 
-        }
-        
-        @media (min-width: 768px) {
-            .control-buttons-group { bottom: 20px; right: 20px; gap: 12px; }
-            .btn-control-tv { width: 46px; height: 46px; }
-        }
-        
-        .btn-control-tv:hover { transform: scale(1.1); }
-        .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
-        .btn-salir-reproductor:hover { background: #ff0000; }
-        .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.1rem; }
-        .btn-pausa-reproductor:hover { background: #ff8c00; }
-        .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
-        .btn-fullscreen-web:hover { background: #ffcc00; }
-
-        #escudo-toper { pointer-events: none !important; }
-
-        /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
-        #capa-espera {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
-            background-size: contain; background-position: center; background-repeat: no-repeat;
-            z-index: 10; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-        .btn-play {
-            background: rgba(255, 204, 0, 0.95); color: #141414; border: none; width: 80px; height: 80px; font-size: 2rem;
-            border-radius: 50%; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
-            text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
-        }
-        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
-
-        /* REJILLAS HISTÓRICAS Y COMPARSAS */
-        .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
-        .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
-        .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
-        
-        .btn-anio-archivo {
-            background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
-            padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-        }
-        .btn-anio-archivo:hover { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
-
-        .btn-anio-archivo.activo { 
-            background-color: #ffcc00 !important; color: #141414 !important; border-color: #ffcc00 !important;
-        }
-
-        .comparsas-seccion { margin-top: 50px; }
-        .comparsas-grid { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 35px; max-width: 1350px; margin: 0 auto; }
-        .comparsa-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 185px; }
-        .comparsa-card p { color: #ffcc00; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; margin: 0; text-align: center; }
-
-        .honor-text { color: #ffcc00; font-size: 1.45rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 0; }
-        .years-subtitle-text { color: #ffffff; font-size: 1.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin: 4px 0 0 0; }
-   
-/* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
-        @media (max-width: 768px) {
-            .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
-            .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
-            h1 { font-size: 1.5rem; } .honor-text { font-size: 1.2rem; }
-            .years-subtitle-text { font-size: 1.2rem; font-weight: 600; }
-            
-            .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 75px; }
-            .header-block h3 { font-size: 0.65rem; margin-top: 4px !important; }
-            
-            #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 14px 10px !important; margin-top: 5px; }
-
-            .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
-            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
-            
-            .ctv-video-block { top: 10px; right: 10px; }
-            .logo-ctv-fijo { height: 35px; }
-            
-            .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
-            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
-            
-            .control-buttons-group { bottom: 10px; right: 10px; gap: 8px; }
-            .btn-control-tv { width: 38px; height: 38px; }
-            .btn-salir-reproductor { font-size: 1.25rem; }
-            .btn-pausa-reproductor { font-size: 1rem; }
-            .btn-fullscreen-web { font-size: 1.1rem; }
-
-            /* Ajuste estricto del modal de Bizum para pantallas móviles */
-            .modal-kofi-festero {
-                bottom: 55px !important;
-                right: 0px !important;
-                left: auto !important;
-                width: 270px !important;
-                max-width: calc(100% - 20px) !important;
-            }
-        }
-
-        /* CORRECCIÓN ANDROID PANTALLA COMPLETA HORIZONTAL SIN AGRANDAMIENTOS ERRONEOS */
-        .video-container:fullscreen {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            background: #000 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
-        }
-
-        .video-container:fullscreen .video-wrapper {
-            width: 100vw !important;
-            height: 56.25vw !important; /* Fuerza la escala panorámica fija sin desbordar el lienzo táctil */
-            max-height: 100vh !important;
-            max-width: calc(100vh * 16 / 9) !important;
-            padding-bottom: 0 !important;
-        }
-
-        /* Oculta los bloques externos adyacentes en pantalla completa para un renderizado limpio */
-        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion {
-            display: none !important;
         }
     </style>
 </head>
 <body>
-<!-- CABECERA OFICIAL SEMÁNTICA -->
+  <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
-        <img class="logo-ctv-cabecera" src="img/logo-ctv.png" alt="Caudete Televisión">
+        <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
         <h3 style="margin-left: 14px !important;">CAUDETE<br>TELEVISIÓN</h3>
     </div>
     <div class="title-block">
-        <h1>Caudete Fiestas de Moros y Cristianos</h1>
-        <p class="honor-text">En Honor a Ntra. Sra. de Gracia</p>
+        <h1 class="destello-texto">Caudete Fiestas de Moros y Cristianos</h1>
+        <p class="honor-text destello-texto">En Honor a Ntra. Sra. de Gracia</p>
         <p class="years-subtitle-text">1974 - 1983 A 2026</p>
     </div>
     <div class="header-block ayuntamiento-block">
-        <img class="logo-ayuntamiento" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+        <img class="logo-ayuntamiento destello-logo" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
         <h3>M.I. AYUNTAMIENTO<br>DE CAUDETE</h3>
     </div>
     <div class="header-block mayordomia-block">
-        <img class="logo-mayordomia" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
+        <img class="logo-mayordomia destello-logo" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
         <h3>M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
     </div>
 </header>
@@ -429,14 +238,14 @@
     <div class="video-wrapper">
         
         <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN -->
-        <div class="reloj-video-block" id="reloj-video" style="z-index: 98;">00:00</div>
+        <div class="reloj-video-block destello-logo" id="reloj-video" style="z-index: 98;">00:00</div>
 
         <div class="ctv-video-block" id="bloque-logo-ctv-video" style="z-index: 98;">
             <img class="logo-ctv-fijo" src="img/logo-ctv.png" alt="CTV">
         </div>
 
-        <!-- BADGE CON BRILLO EXTERIOR DORADO ACTIVO -->
-        <div id="badge-anio" class="badge-anio-reproductor" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
+        <!-- BADGE CON BRILLO EXTERIOR DORADO ACTIVO SIN INCOMPATIBILIDADES -->
+        <div id="badge-anio" class="badge-anio-reproductor destello-texto" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
         
         <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
@@ -491,7 +300,7 @@
 
 <!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO -->
 <div class="archivo-historico-seccion">
-    <h2>Seleccionar Año de las Fiestas</h2>
+    <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
     <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
 </div>
 
