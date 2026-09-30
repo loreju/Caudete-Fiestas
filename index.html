@@ -122,21 +122,50 @@
             transform: scale(1.1);
         }
 
-              /* --- VENTANA EMERGENTE DE BIZUM INSCRITA DENTRO DEL CONTENEDOR --- */
+        /* --- VENTANA EMERGENTE DE BIZUM Y PAYPAL CORREGIDA --- */
         .modal-kofi-festero {
             display: none;
             position: absolute !important;
-            bottom: 75px !important;  /* Subido ligeramente para no tapar los botones de control */
-            right: 10px !important;     
-            width: 310px !important;
-            height: auto !important;   /* Crucial: Altura automática para que quepan las dos cajas perfectamente */
+            top: 20px !important;     /* Reubicada arriba para dejar los controles de abajo 100% libres */
+            right: 15px !important;     
+            width: 300px !important;
+            height: auto !important;   
             background: #ffffff !important;
             border-radius: 12px !important;
             box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.6) !important;
-            z-index: 100000 !important;
+            z-index: 99999 !important; 
             text-align: left !important;
             box-sizing: border-box !important;
+            pointer-events: none;      /* Los clics pasan de largo hacia el reproductor si está oculta */
         }
+
+        /* Cuando el script la abre, vuelve a recibir clics con normalidad */
+        .modal-kofi-festero[style*="display: block"], 
+        .modal-kofi-festero[style*="display:block"] {
+            pointer-events: auto !important;
+        }
+
+        /* --- Brillo exterior dorado para el Badge del Reproductor --- */
+        .badge-anio-reproductor {
+            background-color: #ffffff !important;
+            color: #141414 !important;
+            border: 2px solid #ffcc00 !important;
+            border-radius: 4px !important;
+            padding: 6px 12px !important;
+            font-weight: bold !important;
+            display: inline-block;
+            filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
+            -webkit-filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.85));
+            box-shadow: 0 0 12px rgba(255, 204, 0, 0.4);
+            will-change: filter;
+        }
+
+        /* Estilo complementario para el texto */
+        .destello-texto {
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
 
               /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
