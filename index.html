@@ -548,7 +548,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-        // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+         // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -563,12 +563,12 @@ window.addEventListener('load', () => {
     // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
     Object.keys(videosData).sort().forEach(anio => {
         const boton = document.createElement('button');
-        boton.className = 'btn-anio-archivo'; // Neixen nets sense destenys initials
+        boton.className = 'btn-anio-archivo'; // Nacen limpios sin destellos iniciales en la rejilla
         boton.innerText = anio;
         boton.dataset.anio = anio;
         
         boton.addEventListener('click', () => {
-            // Sols l'any seleccionat actiu rep el destell continu
+            // Al activar un año, limpiamos los demás y solo destella de forma continua el año seleccionado
             document.querySelectorAll('.btn-anio-archivo').forEach(b => {
                 b.classList.remove('activo');
                 b.classList.remove('efecto-destello');
@@ -582,7 +582,7 @@ window.addEventListener('load', () => {
         contenedorBotones.appendChild(boton);
     });
 
-    // --- CONTROLADOR DE EMISIÓN DE VÍDEO ---
+       // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CORREGIDO PARA MANTENER EL DESTELLO FIJO) ---
     function inicializarCambioEmisionVideo(anio) {
         clearInterval(temporizadorReloj);
         videoPausado = false;
@@ -594,8 +594,13 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "0";
         setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
 
+        // 1. Cambiamos el texto del recuadro blanco
         badgeAnio.innerText = `FIESTAS ${anio}`;
         badgeAnio.style.display = "block";
+        
+        // 2. SOLUCIÓN: Forzamos al navegador a volver a ponerle el destello justo después de cambiar el texto
+        badgeAnio.classList.add('efecto-destello');
+        
         bloqueLogoCTVVideo.style.display = "block";
         relojVideo.style.display = "block";
         grupoBotonesTv.style.display = "flex";
@@ -605,6 +610,7 @@ window.addEventListener('load', () => {
         actualizarRelojHoraReal();
         temporizadorReloj = setInterval(actualizarRelojHoraReal, 1000);
     }
+
 
     // --- RELOJ EN HORA REAL DE TELEVISIÓN ---
     function actualizarRelojHoraReal() {
@@ -632,6 +638,7 @@ window.addEventListener('load', () => {
         iframePlayer.src = "about:blank"; 
 
         badgeAnio.style.display = "none";
+        badgeAnio.classList.remove('efecto-destello'); // Quitamos el destello al salir
         bloqueLogoCTVVideo.style.display = "none";
         relojVideo.style.display = "none";
         grupoBotonesTv.style.display = "none";
@@ -708,7 +715,7 @@ window.addEventListener('load', () => {
     document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
 
 
-    // --- GESTIÓN DE LA INSTALACIÓN PWA ---
+    // --- GESTIÓN DE LA INSTALACIÓN PWA (CORREGIDO - OCULTO EN PC) ---
     let eventoInstalacion = null;
     const btnInstalarApp = document.getElementById('btnInstalarApp');
     const esOrdenador = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -736,18 +743,19 @@ window.addEventListener('load', () => {
     });
 
 
-    // --- CREACIÓN DINÁMICA DEL BOTÓN € EN LA CUARTA POSICIÓN CON DESTELLO ---
+    // --- CREACIÓN DINÁMICA DEL CUARTO BOTÓN (€) CON DESTELLO CONTINUO Y ORDEN DE FILA REPARADO ---
     const btnDonarInicio = document.createElement('button');
-    btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello'; // Destell continu forçat per al Bizum
+    // CORREGIDO: Le inyectamos 'efecto-destello' para forzar que parpadee continuamente y destaque el Bizum
+    btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello';
     btnDonarInicio.id = 'btnDonarInicio';
     btnDonarInicio.innerText = '€';
     btnDonarInicio.title = 'Ayuda al mantenimiento del archivo por Bizum';
     
-    // ORDRE REPARAT: En afegir-lo al final del codi amb appendChild, el CSS d'esquerra a dreta
-    // el posiciona l'últim de tots (la quarta posició de la fila): Amarillo ⛶ -> Naranja ⏸ -> Rojo 🏠 -> Azul/Verde €
-    grupoBotonesTv.appendChild(btnDonarInicio);
-
-    // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE BIZUM
+    // CORRECCIÓN EXACTA DE FILA: Insertándolo al principio del contenedor con insertBefore,
+    // tu propiedad invertida del CSS forzará a que el botón del € se coloque el CUARTO de la fila
+    // a la izquierda del todo, dejando el orden clavado: 1º Amarillo -> 2º Naranja -> 3º Rojo -> 4º € Azul/Verde
+    grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
+   // LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE FLOTANTE DE BIZUM
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
     
     if (btnDonarInicio && ventanaMensajeKofi) {
@@ -766,13 +774,15 @@ window.addEventListener('load', () => {
         ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
     }
 
-    // CONTROL ESTRICTO DE PANTALLA COMPLETA (OCULTA EL BOTÓN (€) Y EL MENSAJE COMPLETAMENTE)
+    // CONTROL ESTRICTO DE PANTALLA COMPLETA (OCULTA EL BOTÓN DEL € Y EL MENSAJE COMPLETAMENTE)
     const comprobarPantallaCompletaFestera = () => {
         if (btnDonarInicio && ventanaMensajeKofi) {
             if (document.fullscreenElement || document.webkitFullscreenElement) {
+                // Al pasar a pantalla completa, forzamos la ocultación del botón y el modal de Bizum
                 btnDonarInicio.style.setProperty('display', 'none', 'important');
                 ventanaMensajeKofi.style.display = 'none';
             } else {
+                // Al salir de la pantalla completa, vuelve a aparecer integrado en la fila sin mover a los demás
                 btnDonarInicio.style.setProperty('display', 'flex', 'important');
             }
         }
@@ -796,3 +806,4 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
+ 
