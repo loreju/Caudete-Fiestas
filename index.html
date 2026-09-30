@@ -31,14 +31,14 @@
             padding: 20px 15px;
         }
 
-        /* --- ESTILOS DE LA CABECERA COMPLETAMENTE ADAPTATIVA (BLINDADA) --- */
+        /* --- CABECERA COMPLETAMENTE ADAPTATIVA HORIZONTAL --- */
         .header-container {
             display: flex !important;
             flex-direction: row !important;
             align-items: center !important; 
             justify-content: space-between !important; 
             flex-wrap: wrap !important;
-            gap: 20px;
+            gap: 15px;
             max-width: 1450px;
             margin: 0 auto 25px auto;
             background-color: #1e1e1e;
@@ -55,13 +55,14 @@
             flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important; 
-            min-width: 140px;
+            min-width: 120px;
             text-align: center;
+            flex: 0 1 auto !important;
         }
                  
         .header-block h3 {
             color: #ffcc00;
-            font-size: 0.8rem; 
+            font-size: 0.75rem; 
             font-weight: 900; 
             text-transform: uppercase; 
             letter-spacing: 1px;
@@ -72,21 +73,21 @@
         }
 
         .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { 
-            height: 80px; 
+            height: 75px; 
             width: auto; 
             object-fit: contain; 
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 992px) {
             body { padding: 40px 20px; }
-            .header-container { padding: 25px 30px; gap: 25px; flex-wrap: nowrap !important; }
-            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 110px; }
-            .header-block { min-width: 180px; }
-            .header-block h3 { font-size: 0.85rem; }
+            .header-container { padding: 25px 30px; gap: 20px; flex-wrap: nowrap !important; }
+            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 100px; }
+            .header-block { min-width: 160px; }
+            .header-block h3 { font-size: 0.8rem; }
         }
 
         .title-block {
-            flex: 1;
+            flex: 2 !important;
             min-width: 280px;
             display: flex;
             flex-direction: column;
@@ -98,7 +99,7 @@
 
         h1 {
             color: #ffcc00;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -106,9 +107,9 @@
         }
 
         @media (min-width: 768px) {
-            h1 { font-size: 2.2rem; }
+            h1 { font-size: 2.1rem; }
         }
-  /* --- BOTÓN BIZUM --- */
+        /* --- BOTÓN BIZUM --- */
         .btn-control-tv.btn-donar-tv {
             background: linear-gradient(135deg, #00bcd4, #007bff) !important;
             color: white !important;
@@ -121,7 +122,7 @@
             transform: scale(1.1);
         }
 
-        /* --- VENTANA EMERGENTE TOTALMENTE AISLADA --- */
+        /* --- VENTANA EMERGENTE CORREGIDA (Z-INDEX ALTO) --- */
         .modal-kofi-festero {
             display: none;
             position: absolute !important;
@@ -143,7 +144,7 @@
             pointer-events: auto !important;
         }
 
-        /* --- BADGE DE AURA DORADA FIJA --- */
+        /* --- SOLUCIÓN: BADGE REORGANIZADO SIN ABSOLUTE REPETIDOS --- */
         .badge-anio-reproductor {
             background-color: #ffffff !important;
             color: #141414 !important;
@@ -155,14 +156,14 @@
             will-change: filter, box-shadow, text-shadow;
             transform: translateZ(0);
         }
-        /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
+        /* --- ANIMACIONES DE DESTELLO COHERENTES --- */
         .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
         }
         
         .logo-comparsa {
-            height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s;
+            height: 140px; width: 140px; object-fit: contain; transition: transform 0.2s;
             animation: destelloSuaveLogoAbajo 4s infinite ease-in-out; will-change: filter;
         }
         .logo-comparsa:hover { transform: scale(1.08); }
@@ -171,8 +172,8 @@
             animation: destelloContinuoTexto 4s infinite ease-in-out; will-change: text-shadow;
         }
 
-        /* FUERZA BRUTA PARA EL AURA ALREDEDOR DE LA CAJA */
-        .badge-anio-reproductor, .destello-box-fiestas { 
+        /* BRILLO EN EL RECUADRO DEL REPRODUCER */
+        .badge-anio-reproductor { 
             animation: destelloCajaAnioEspecial 4s infinite ease-in-out !important; 
         }
 
@@ -191,7 +192,6 @@
             50% { text-shadow: 0 0 10px #ffd700, 0 0 18px rgba(255, 204, 0, 0.5); }
         }
 
-        /* CORRECCIÓN ABSOLUTA DEL CONTORNO DE LUZ EXTERIOR DEL BOX */
         @keyframes destelloCajaAnioEspecial {
             0%, 100% { 
                 border-color: #ffcc00 !important; 
@@ -205,7 +205,7 @@
     </style>
 </head>
 <body>
-    <!-- CABECERA OFICIAL SEMÁNTICA -->
+<!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
         <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
@@ -244,34 +244,31 @@
             <img class="logo-ctv-fijo" src="img/logo-ctv.png" alt="CTV">
         </div>
 
-        <!-- BADGE CON BRILLO EXTERIOR DORADO ACTIVO SIN INCOMPATIBILIDADES -->
+        <!-- BADGE FIJO CON CONTORNO DE LUZ EXTERIOR SINCRO -->
         <div id="badge-anio" class="badge-anio-reproductor destello-texto" style="z-index: 98;">FIESTAS 2026 PROXIMAMENTE</div>
         
-        <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
+        <!-- ESCUDO TOTALMENTE LIBERADO -->
         <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
 
-        <!-- BOTONERA DE CONTROL LIBRE DE INTERFERENCIAS -->
+        <!-- BOTONERA DE CONTROL LIBRE -->
         <div class="control-buttons-group" id="grupo-botones-tv" style="z-index: 99; pointer-events: auto;">
             <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
             <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
             <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
         </div>
 
-        <!-- VENTANA FLOTANTE DE COLABORACIÓN (Ubicada de forma independiente y segura) -->
         <div id="ventanaMensajeKofi" class="modal-kofi-festero">
             <div style="padding: 16px !important; color: #333 !important; font-family: 'Segoe UI', Arial, sans-serif !important; font-size: 14px !important; line-height: 1.45 !important; box-sizing: border-box !important;">
                 <h3 style="margin-top: 0 !important; margin-bottom: 8px !important; color: #007bff !important; font-size: 15px !important; font-weight: bold !important;">📲 ¡Ayuda a mantener el archivo!</h3>
                 <p style="margin: 0 0 8px 0 !important;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios en Bunny.net genera costes mensuales.</p>
                 <p style="margin: 0 0 12px 0 !important;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum, PayPal o Tarjeta de Crédito (de 1€, 3€, 5€ o lo que quieras):</p>
                 
-                <!-- CAJA DESTACADA BIZUM -->
                 <div style="background: #f0f8ff; padding: 12px; border-left: 5px solid #00bcd4; border-radius: 6px; font-weight: bold; text-align: center; color: #111; margin-bottom: 12px; box-sizing: border-box !important;">
                     <span style="font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">Número de Bizum</span><br>
                     <span style="font-size: 19px; color: #007bff; letter-spacing: 1px;">609 450 962</span><br>
                     <span style="font-size: 11px; font-weight: normal; color: #666; display: block; margin-top: 4px;">Concepto: Mantenimiento Web</span>
                 </div>
 
-                <!-- NUEVA CAJA DESTACADA PAYPAL / TARJETA (KO-FI) -->
                 <div style="background: #fdf8e2; padding: 12px; border-left: 5px solid #ffc107; border-radius: 6px; font-weight: bold; text-align: center; color: #111; box-sizing: border-box !important;">
                     <span style="font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.5px;">PayPal o Tarjeta de Crédito</span><br>
                     <a href="https://ko-fi.com" target="_blank" style="font-size: 15px; color: #d9381e; text-decoration: underline; display: inline-block; margin: 3px 0; word-break: break-all; font-weight: bold;">://ko-fi.com</a><br>
@@ -280,12 +277,10 @@
             </div>
         </div>
 
-        <!-- Capa de espera -->
         <div id="capa-espera" style="z-index: 10;">
             <button class="btn-play" id="start-btn" style="z-index: 12;">▶</button>
         </div>
         
-        <!-- Iframe limpio oficial -->
         <iframe 
             id="bunny-player"
             class="bunny-stream-player"
@@ -298,15 +293,13 @@
     </div>
 </div>
 
-<!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO -->
 <div class="archivo-historico-seccion">
     <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
     <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
 </div>
 
-<!-- SECCIÓN DE COMPARSAS -->
 <div class="comparsas-seccion">
-    <div class="comparsas-grid">
+    <div class="comparsa-grid">
         <div class="comparsa-card"><img class="logo-comparsa" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
         <div class="comparsa-card"><img class="logo-comparsa" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
         <div class="comparsa-card"><img class="logo-comparsa" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
@@ -314,7 +307,8 @@
         <div class="comparsa-card"><img class="logo-comparsa" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
         <div class="comparsa-card"><img class="logo-comparsa" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
-</div>      
+</div>
+    
 <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
