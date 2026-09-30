@@ -122,19 +122,22 @@
             transform: scale(1.1);
         }
 
-        /* --- VENTANA EMERGENTE DE BIZUM INSCRITA DENTRO DEL CONTENEDOR --- */
+              /* --- VENTANA EMERGENTE DE BIZUM INSCRITA DENTRO DEL CONTENEDOR --- */
         .modal-kofi-festero {
             display: none;
             position: absolute !important;
-            bottom: 65px !important;  
-            right: 0px !important;     
+            bottom: 75px !important;  /* Subido ligeramente para no tapar los botones de control */
+            right: 10px !important;     
             width: 310px !important;
+            height: auto !important;   /* Crucial: Altura automática para que quepan las dos cajas perfectamente */
             background: #ffffff !important;
             border-radius: 12px !important;
             box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.6) !important;
             z-index: 100000 !important;
             text-align: left !important;
+            box-sizing: border-box !important;
         }
+
               /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
