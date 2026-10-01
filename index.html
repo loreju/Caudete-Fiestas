@@ -478,7 +478,7 @@
     </div>
 </header>
 
-<!-- 🎬 BANNER DE DONACIONES HORIZONTAL OPTIMIZADO (CON TEXTO EXACTO) -->
+<!-- 🎬 BANNER DE DONACIONES HORIZONTAL OPTIMIZADO (CON BIZUM INTERACTIVO) -->
 <div id="ventanaMensajeKofi" class="modal-kofi-festero">
     <div class="banner-donar-flex">
         <div class="banner-donar-texto">
@@ -487,11 +487,11 @@
             <p style="margin: 0 !important; line-height: 1.45;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum, PayPal o Tarjeta (de 1€, 3€, 5€ o lo que quieras):</p>
         </div>
         <div class="banner-donar-botones">
-            <!-- Botón oficial a tu pasarela configurada de Ko-fi -->
-            <a href="https://ko-fi.com/caudetefiestas" target="_blank" class="btn-kofi-monto" style="background-color: #ff5f5f !important; color: white !important;">💳 PayPal / Tarjeta</a>
+            <!-- Botón oficial Ko-fi -->
+            <a href="https://ko-fi.com" target="_blank" class="btn-kofi-monto" style="background-color: #ff5f5f !important; color: white !important;">💳 PayPal / Tarjeta</a>
             
-            <!-- Caja Destacada Bizum -->
-            <div class="info-bizum-badge">📲 Bizum: 609 450 962</div>
+            <!-- BOTÓN INTERACTIVO DE BIZUM (Llama a la función Javascript al hacer clic) -->
+            <button onclick="instruccionesBizum(event)" class="info-bizum-badge" style="border: none; cursor: pointer; font-family: inherit;">📲 Bizum: 609 450 962</button>
             
             <!-- Botón para cerrar el banner -->
             <button class="btn-cerrar-banner" onclick="document.getElementById('ventanaMensajeKofi').style.display='none';">✕ Cerrar</button>
