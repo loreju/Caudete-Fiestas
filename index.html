@@ -857,11 +857,11 @@ window.addEventListener('load', () => {
     if (grupoBotonesTv) {
         grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
     }
-     // --- LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE HORIZONTAL DE DONACIONES ---
+    // --- LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE HORIZONTAL DE DONACIONES ---
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
     
     if (btnDonarInicio && ventanaMensajeKofi) {
-        // El evento click principal del botón ya fue asignado en la parte anterior.
+        // El evento click principal del botón ya fue asignado en la parte 5-1.
         // Aquí añadimos la lógica para cerrar el banner si el usuario hace clic fuera de él.
         document.addEventListener('click', () => {
             ventanaMensajeKofi.style.display = 'none';
@@ -870,6 +870,22 @@ window.addEventListener('load', () => {
         // Evitamos que el banner se cierre si se hace clic dentro del propio banner o sus botones
         ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
     }
+
+    // --- FUNCIÓN INTERACTIVA DE BIZUM (AVISO Y COPIADO AUTOMÁTICO) ---
+    window.instruccionesBizum = function(e) {
+        e.stopPropagation(); // Evita que se cierre el banner al pulsar el botón
+        
+        const numeroTelefono = "609450962";
+        
+        // Copia el número de teléfono en el portapapeles del usuario automáticamente
+        navigator.clipboard.writeText(numeroTelefono).then(() => {
+            // Lanza el aviso informativo en pantalla
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación al número 609 450 962.\n3. Ponga como concepto: 'Videos Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
+        }).catch(err => {
+            // En caso de que el navegador bloquee el copiado, muestra al menos las instrucciones básicas
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación al número 609 450 962.\n3. Ponga como concepto: 'Videos Fiestas'.");
+        });
+    };
 
     // --- CONTROL ESTRICTO DE PANTALLA COMPLETA ---
     const comprobarPantallaCompletaFestera = () => {
@@ -902,4 +918,3 @@ window.addEventListener('load', () => {
 </script>
 </body>
 </html>
- 
