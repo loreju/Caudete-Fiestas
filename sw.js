@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caudete-fiestas-v31'; // Subimos a v31 para obligar a los móviles a actualizar el manifest e icono
+const CACHE_NAME = 'caudete-fiestas-v32'; // Subimos a v32 para obligar a los móviles a actualizar el manifest e icono
 
 // Guardamos solo lo imprescindible para asegurar una instalación limpia sin fallos de ruta
 const ASSETS = [
