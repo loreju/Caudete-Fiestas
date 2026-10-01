@@ -877,13 +877,13 @@ window.addEventListener('load', () => {
         
         const numeroTelefono = "609450962";
         
-        // Copia el número de teléfono en el portapapeles del usuario automáticamente
+      // Copia el número de teléfono en el portapapeles del usuario automáticamente
         navigator.clipboard.writeText(numeroTelefono).then(() => {
             // Lanza el aviso informativo en pantalla
-            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación al número 609 450 962.\n3. Ponga como concepto: 'Videos Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 450 962.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
         }).catch(err => {
             // En caso de que el navegador bloquee el copiado, muestra al menos las instrucciones básicas
-            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación al número 609 450 962.\n3. Ponga como concepto: 'Videos Fiestas'.");
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 450 962.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.");
         });
     };
 
