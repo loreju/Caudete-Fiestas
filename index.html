@@ -639,7 +639,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-       // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+        // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -673,7 +673,7 @@ window.addEventListener('load', () => {
         contenedorBotones.appendChild(boton);
     });
 
-    // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CORREGIDO PARA MANTENER EL DESTELLO FIJO) ---
+    // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CON TEXTOS HISTÓRICOS Y DESTELLO FIJO) ---
     function inicializarCambioEmisionVideo(anio) {
         clearInterval(temporizadorReloj);
         videoPausado = false;
@@ -685,11 +685,18 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "0";
         setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
 
-        // 1. Cambiamos el texto del recuadro blanco
-        badgeAnio.innerText = `FIESTAS ${anio}`;
+        // --- ASIGNACIÓN DE TEXTOS HISTÓRICOS PERSONALIZADOS ---
+        if (anio === "2020" || anio === "2021") {
+            badgeAnio.innerText = `FIESTAS ${anio} SUSPENDIDAS`;
+        } else if (anio === "2026") {
+            badgeAnio.innerText = `FIESTAS ${anio} PROXIMAMENTE`;
+        } else {
+            badgeAnio.innerText = `FIESTAS ${anio}`;
+        }
+        
         badgeAnio.style.display = "block";
         
-        // 2. SOLUCIÓN: Forzamos al navegador a volver a ponerle el destello justo después de cambiar el texto
+        // Forzamos al navegador a mantener el destello continuo
         badgeAnio.classList.add('efecto-destello');
         
         bloqueLogoCTVVideo.style.display = "block";
@@ -706,8 +713,8 @@ window.addEventListener('load', () => {
     function actualizarRelojHoraReal() {
         const ahora = new Date();
         const horas = String(ahora.getHours()).padStart(2, '0');
-        const minutos = String(ahora.getMinutes()).padStart(2, '0');
-        relojVideo.innerText = `${horas}:${minutos}`;
+        const minutes = String(ahora.getMinutes()).padStart(2, '0');
+        relojVideo.innerText = `${horas}:${minutes}`;
     }
 
     // --- LISTENERS DE LA BOTONERA DE CONTROL ---
@@ -847,7 +854,6 @@ window.addEventListener('load', () => {
                 bannerKofi.style.display = 'none';
             } else {
                 bannerKofi.style.display = 'block';
-                // Hace scroll suave automático hacia el banner para asegurarse de que el usuario lo vea
                 bannerKofi.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
@@ -857,6 +863,7 @@ window.addEventListener('load', () => {
     if (grupoBotonesTv) {
         grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
     }
+
     // --- LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE HORIZONTAL DE DONACIONES ---
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
     
