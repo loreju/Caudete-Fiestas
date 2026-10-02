@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -122,7 +122,7 @@
             transform: scale(1.1);
         }
 
-          /* --- BANNER DE DONACIONES HORIZONTAL OPTIMIZADO AL ANCHO DEL VÍDEO --- */
+                 /* --- BANNER DE DONACIONES HORIZONTAL OPTIMIZADO AL ANCHO DEL VÍDEO --- */
         .modal-kofi-festero {
             display: none;
             width: 100% !important;
@@ -243,7 +243,8 @@
                 text-align: center !important;
             }
         }
-       /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
+
+    /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
@@ -400,9 +401,10 @@
 
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
-         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+
+       /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
-            .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; }
+            .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box !important; width: 100% !important; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
             h1 { font-size: 1.5rem; } .honor-text { font-size: 1.2rem; }
             .years-subtitle-text { font-size: 1.2rem; font-weight: 600; }
@@ -427,6 +429,13 @@
             .btn-salir-reproductor { font-size: 1.25rem; }
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
+
+            /* Contención estricta para evitar deformaciones simétricas en Safari de iPhone */
+            .video-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
         }
 
         /* CORRECCIÓN ANDROID PANTALLA COMPLETA HORIZONTAL SIN AGRANDAMIENTOS ERRONEOS */
@@ -457,6 +466,7 @@
     </style>
 </head>
 <body>
+
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
@@ -565,6 +575,7 @@
         <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>LA ANTIGUA</p></div>
     </div>
 </div>
+  
   <!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
@@ -639,7 +650,7 @@ window.addEventListener('load', () => {
     let segundosTranscurridosVideo = 0;
     let temporizadorReloj = null;
     let videoPausado = false;
-        // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
+       // --- FUNCIÓN ADAPTADA: PROTOCOLO ESTÁNDAR PLAYER.JS PARA EMBEDS DE BUNNY ---
     function enviarComandoBunny(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             const payload = JSON.stringify({
@@ -655,7 +666,7 @@ window.addEventListener('load', () => {
     Object.keys(videosData).sort().forEach(anio => {
         const boton = document.createElement('button');
         boton.className = 'btn-anio-archivo'; // Nacen limpios sin destellos iniciales en la rejilla
-        boton.innerText = anio;
+        boton.innerText = rAnio = anio;
         boton.dataset.anio = anio;
         
         boton.addEventListener('click', () => {
@@ -685,7 +696,7 @@ window.addEventListener('load', () => {
         capaEspera.style.opacity = "0";
         setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
 
-        // --- ASIGNACIÓN DE TEXTOS HISTÓRICOS PERSONALIZADOS ---
+        // --- ASIGNACIÓN DE TEXTOS HISTÓRICOS PERSONALIZADOS (2020, 2021 Y 2026) ---
         if (anio === "2020" || anio === "2021") {
             badgeAnio.innerText = `FIESTAS ${anio} SUSPENDIDAS`;
         } else if (anio === "2026") {
@@ -764,7 +775,7 @@ window.addEventListener('load', () => {
         }
     });
 
-    // Botón de Pantalla Completa Adaptativo (⛶)
+    // Botón de Pantalla Completa Adaptativo (⛶) - CORREGIDO PARA IPHONE (iOS)
     btnFS.addEventListener('click', (e) => {
         e.stopPropagation();
         
@@ -778,6 +789,11 @@ window.addEventListener('load', () => {
                 }).catch((err) => {
                     console.error("Error al activar Fullscreen:", err);
                 });
+            } else if (iframePlayer && iframePlayer.webkitEnterFullscreen) {
+                // EXCEPCIÓN DE IPHONE: Lanza el reproductor de vídeo nativo de iOS a pantalla completa
+                iframePlayer.webkitEnterFullscreen();
+            } else {
+                alert("Para ver en pantalla completa en este dispositivo iOS, gire su teléfono en horizontal o use los controles integrados del propio vídeo.");
             }
         } else {
             const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
@@ -811,20 +827,30 @@ window.addEventListener('load', () => {
     document.addEventListener('fullscreenchange', restaurarEstadosPantalla);
     document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
 
-    // --- GESTIÓN DE LA INSTALACIÓN PWA (CORREGIDO - OCULTO EN PC) ---
+    // --- GESTIÓN DE LA INSTALACIÓN PWA (OPTIMIZADO PARA ANDROID Y GUÍA PARA IPHONE) ---
     let eventoInstalacion = null;
     const btnInstalarApp = document.getElementById('btnInstalarApp');
+    const esIphone = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     const esOrdenador = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         eventoInstalacion = e;
-        if (btnInstalarApp && !esOrdenador) {
+        if (btnInstalarApp && !esOrdenador && !esIphone) {
             btnInstalarApp.style.display = 'block';
         }
     });
 
-    if (btnInstalarApp) {
+    if (esIphone && btnInstalarApp) {
+        btnInstalarApp.style.display = 'block';
+        btnInstalarApp.innerText = "🍏 Cómo Instalar en iPhone";
+        btnInstalarApp.style.backgroundColor = "#ffffff";
+        btnInstalarApp.style.color = "#141414";
+        
+        btnInstalarApp.addEventListener('click', () => {
+            alert("📲 INSTALACIÓN EN IPHONE (iOS):\n\n1. Pulse el botón de 'Compartir' 📤 (el icono del cuadrado con la flecha hacia arriba en Safari).\n2. Busque hacia abajo en la lista y pulse en 'Añadir a la pantalla de inicio' ➕.\n\n¡Así tendrá la aplicación de Caudete Fiestas directa en su teléfono!");
+        });
+    } else if (btnInstalarApp) {
         btnInstalarApp.addEventListener('click', async () => {
             if (!eventoInstalacion) return;
             eventoInstalacion.prompt();
@@ -833,12 +859,8 @@ window.addEventListener('load', () => {
             btnInstalarApp.style.display = 'none';
         });
     }
-
-    window.addEventListener('appinstalled', () => {
-        if (btnInstalarApp) btnInstalarApp.style.display = 'none';
-    });
-
-    // --- CREACIÓN DINÁMICA DEL BOTÓN DE DONACIÓN (€) CON SU LÓGICA DE APERTURA ---
+  
+// --- CREACIÓN DINÁMICA DEL BOTÓN DE DONACIÓN (€) ---
     const btnDonarInicio = document.createElement('button');
     btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello';
     btnDonarInicio.id = 'btnDonarInicio';
@@ -864,33 +886,26 @@ window.addEventListener('load', () => {
         grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
     }
 
-    // --- LÓGICA PARA MOSTRAR / OCULTAR EL MENSAJE HORIZONTAL DE DONACIONES ---
+    // --- LÓGICA PARA CERRAR EL BANNER AL HACER CLIC FUERA ---
     const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
     
     if (btnDonarInicio && ventanaMensajeKofi) {
-        // El evento click principal del botón ya fue asignado en la parte 5-1.
-        // Aquí añadimos la lógica para cerrar el banner si el usuario hace clic fuera de él.
         document.addEventListener('click', () => {
             ventanaMensajeKofi.style.display = 'none';
         });
-        
-        // Evitamos que el banner se cierre si se hace clic dentro del propio banner o sus botones
+        // Evitamos que el banner se cierre si se hace clic dentro de él
         ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
     }
 
     // --- FUNCIÓN INTERACTIVA DE BIZUM (AVISO Y COPIADO AUTOMÁTICO) ---
     window.instruccionesBizum = function(e) {
         e.stopPropagation(); // Evita que se cierre el banner al pulsar el botón
-        
         const numeroTelefono = "609450962";
         
-      // Copia el número de teléfono en el portapapeles del usuario automáticamente
         navigator.clipboard.writeText(numeroTelefono).then(() => {
-            // Lanza el aviso informativo en pantalla
-            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 450 962.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación al número 609 45 09 62.\n3. Ponga como concepto: 'Videos Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
         }).catch(err => {
-            // En caso de que el navegador bloquee el copiado, muestra al menos las instrucciones básicas
-            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 450 962.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.");
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación al número 609 45 09 62.\n3. Ponga como concepto: 'Videos Fiestas'.");
         });
     };
 
@@ -898,11 +913,9 @@ window.addEventListener('load', () => {
     const comprobarPantallaCompletaFestera = () => {
         if (btnDonarInicio && ventanaMensajeKofi) {
             if (document.fullscreenElement || document.webkitFullscreenElement) {
-                // Al pasar a pantalla completa, forzamos la ocultación del botón y del banner superior
                 btnDonarInicio.style.setProperty('display', 'none', 'important');
                 ventanaMensajeKofi.style.display = 'none';
             } else {
-                // Al salir de la pantalla completa, vuelve a aparecer integrado en la fila sin mover a los demás
                 btnDonarInicio.style.setProperty('display', 'flex', 'important');
             }
         }
@@ -911,7 +924,7 @@ window.addEventListener('load', () => {
     document.addEventListener('fullscreenchange', comprobarPantallaCompletaFestera);
     document.addEventListener('webkitfullscreenchange', comprobarPantallaCompletaFestera);
 
-    // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (CORREGIDO PWA) ---
+    // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (PWA) ---
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js')
             .then((registro) => {
