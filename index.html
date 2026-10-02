@@ -421,7 +421,7 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-          /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             /* Forzado de centrado simétrico global en el lienzo */
             html, body {
@@ -508,12 +508,12 @@
                 box-sizing: border-box !important;
             }
 
-            /* --- CONTROL ADAPTATIVO ANTICORTES PARA COMPARSAS EN MÓVIL --- */
+            /* --- MÁXIMA COMPACTACIÓN DE LOGOS PARA EVITAR CORTES --- */
             .comparsas-seccion {
                 width: 100% !important;
                 max-width: 100% !important;
-                margin: 40px auto 0 auto !important;
-                padding: 0 5px !important;
+                margin: 35px auto 0 auto !important;
+                padding: 0 !important;
                 box-sizing: border-box !important;
             }
             .comparsas-grid {
@@ -521,39 +521,41 @@
                 flex-wrap: wrap !important;
                 justify-content: center !important;
                 align-items: start !important;
-                gap: 15px 10px !important; 
+                gap: 12px 6px !important; /* Espaciado muy ajustado para encajarlos perfectamente */
                 width: 100% !important;
+                padding: 0 2px !important;
                 box-sizing: border-box !important;
             }
 
             .comparsa-card {
-                /* Organiza en columnas equilibradas en pantallas móviles para que nada se pise */
-                flex: 0 0 calc(33.33% - 10px) !important;
-                min-width: 90px !important;
-                max-width: 110px !important;
+                flex: 0 0 calc(33.33% - 8px) !important; /* Estructura elástica de tres columnas compactas */
+                min-width: 82px !important;
+                max-width: 95px !important;
                 text-align: center !important;
                 box-sizing: border-box !important;
             }
 
             .logo-comparsa {
-                height: 55px !important;  
-                width: 55px !important;
+                height: 50px !important;  /* Ligeramente más pequeños para garantizar espacio */
+                width: 50px !important;
                 object-fit: contain !important;
                 display: block !important;
-                margin: 0 auto 6px auto !important;
+                margin: 0 auto 4px auto !important;
             }
 
-            /* REPARACIÓN MAESTRA DEL COLOR: Fuerza las letras a dorado sin importar el navegador */
-            .comparsa-card p, 
-            .comparsas-grid .comparsa-card p {
-                color: #ffcc00 !important;    /* Cambia el blanco por dorado oficial de las fiestas */
-                font-size: 0.72rem !important; 
-                font-weight: 800 !important;   /* Letras gruesas muy legibles */
-                line-height: 1.2 !important;
+            /* BLINDAJE DE TEXTO MÓVIL: Dorado estricto y todo en mayúsculas */
+            .comparsa-card p,
+            .comparsas-grid .comparsa-card p,
+            .comparsas-seccion p {
+                color: #ffcc00 !important;       /* Dorado oficial unificado */
+                font-size: 0.65rem !important;    /* Ajuste de lectura sin desbordar */
+                font-weight: 800 !important;      /* Letras gruesas */
+                text-transform: uppercase !important; /* Fuerza las mayúsculas en todas las comparsas */
+                line-height: 1.15 !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 text-align: center !important;
-                white-space: normal !important; /* Permite saltar de línea de forma elástica */
+                white-space: normal !important;   
                 display: block !important;
                 visibility: visible !important;
             }
