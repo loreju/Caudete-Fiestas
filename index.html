@@ -421,7 +421,7 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-              /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box !important; width: 100% !important; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -467,6 +467,35 @@
                 max-width: 100% !important;
                 box-sizing: border-box !important;
             }
+
+            /* --- AJUSTE DE LOGOS DE COMPARSAS PARA MÓVILES --- */
+            .comparsas-grid {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;         /* Permite bajar limpiamente si la pantalla es muy estrecha */
+                gap: 8px !important;      /* Junta los logos un poco más */
+                padding: 0 5px;
+            }
+
+            .comparsa-card {
+                flex: 1;
+                min-width: 48px;          /* Permite que se encojan de forma segura */
+                max-width: 75px;          /* Evita que se hagan gigantes */
+                text-align: center;
+            }
+
+            .logo-comparsa {
+                height: 55px !important;  /* Reducción sutil para que entren los 6 sin cortarse */
+                width: 55px !important;
+                object-fit: contain;
+            }
+
+            .comparsa-card p {
+                font-size: 0.6rem !important; /* Texto un pelín más pequeño y compacto */
+                line-height: 1.1;
+                margin: 4px 0 0 0;
+            }
         }
 
         /* CORRECCIÓN ANDROID PANTALLA COMPLETA HORIZONTAL SIN AGRANDAMIENTOS ERRONEOS */
@@ -496,7 +525,7 @@
         }
     </style>
 </head>
-<body>
+<body>          
 
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
