@@ -350,7 +350,7 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-      /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (TAMAÑOS GRANDES) --- */
+        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (MÁXIMO EQUILIBRIO VERTICAL) --- */
         @media (max-width: 991px) {
             /* Fuerza a que el cuerpo de la web ordene todo de arriba a abajo y centrado */
             html, body {
@@ -365,46 +365,65 @@
             }
 
             body {
-                padding: 15px 8px !important;
+                padding: 12px 6px !important;
             }
 
-            /* CENTRADO DE LA CABECERA Y SUS ELEMENTOS */
+            /* CORRECCIÓN CABECERA MÓVIL: Evita la fila india vertical que rompe la web */
             .header-container { 
                 display: flex !important;
-                flex-direction: column !important; 
+                flex-direction: row !important; /* Los logos superiores se organizan en horizontal */
+                flex-wrap: wrap !important;
                 align-items: center !important; 
                 justify-content: center !important; 
-                gap: 12px; 
-                padding: 15px; 
+                gap: 12px 8px !important; 
+                padding: 12px !important; 
                 box-sizing: border-box !important; 
                 width: 100% !important; 
-                margin: 0 auto 20px auto !important;
+                margin: 0 auto 15px auto !important;
             }
             
-            .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
-            h1 { font-size: 1.5rem; } 
-            .title-block .honor-text { font-size: 1.1rem; color: #ffcc00 !important; text-transform: uppercase; font-weight: 700; }
-            .title-block .years-subtitle-text { font-size: 1.1rem; font-weight: bold; color: #ffcc00 !important; }
+            /* El título siempre preside arriba en el centro ocupando todo el ancho */
+            .title-block { 
+                order: -2 !important; 
+                width: 100% !important; 
+                min-width: 100% !important; 
+                margin-bottom: 8px !important; 
+                text-align: center !important; 
+            }
+            h1 { font-size: 1.4rem !important; } 
+            .title-block .honor-text { font-size: 1.05rem !important; color: #ffcc00 !important; text-transform: uppercase; font-weight: 700; }
+            .title-block .years-subtitle-text { font-size: 1.05rem !important; font-weight: bold; color: #ffcc00 !important; }
             
-            /* Ajuste para que los bloques de logos superiores no queden en "fila india" vertical rígida */
+            /* Los 3 bloques institucionales se colocan juntos abajo en tamaño muy compacto */
             .header-block { 
-                min-width: auto; 
-                margin: 5px 8px; 
-                display: inline-flex !important; 
+                flex: 0 1 calc(33.33% - 8px) !important; /* Se reparten la línea horizontalmente */
+                min-width: 85px !important; 
+                margin: 4px 0 !important; 
+                display: flex !important; 
                 flex-direction: column !important; 
                 align-items: center !important; 
                 justify-content: center !important; 
             }
-            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 68px !important; width: auto; }
-            .header-block h3 { font-size: 0.65rem; margin-top: 4px !important; }
             
-            #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 14px 10px !important; margin-top: 5px; }
+            /* Miniaturas elegantes para los logos superiores en el móvil */
+            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { 
+                height: 45px !important; 
+                width: auto !important; 
+                object-fit: contain !important;
+            }
+            .header-block h3 { 
+                font-size: 0.52rem !important; 
+                line-height: 1.15 !important;
+                margin: 4px 0 0 0 !important; 
+            }
+            
+            #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 12px 10px !important; margin-top: 5px; }
 
-            /* CENTRADO DE LA CAJA DE LOS 45 AÑOS DE VÍDEOS */
+            /* CAJA DE LOS 45 VÍDEOS: Recupera su tamaño y centrado completo */
             .archivo-historico-seccion {
                 width: 100% !important;
                 max-width: 100% !important;
-                margin: 30px auto 10px auto !important; 
+                margin: 25px auto 10px auto !important; 
                 text-align: center !important;
                 box-sizing: border-box !important;
                 padding: 0 5px !important;
@@ -414,14 +433,14 @@
             }
             .grid-anios-archivo { 
                 display: grid !important;
-                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)) !important; 
-                gap: 6px !important; 
+                grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)) !important; 
+                gap: 5px !important; 
                 justify-content: center !important; 
                 justify-items: center !important;
                 width: 100% !important;
                 margin: 0 auto !important;
             }
-            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; width: 100% !important; }
+            .btn-anio-archivo { padding: 9px 2px; font-size: 0.8rem; width: 100% !important; }
             
             .ctv-video-block { top: 10px; right: 10px; }
             .logo-ctv-fijo { height: 35px; }
@@ -434,6 +453,7 @@
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
 
+            /* REPRODUCTOR Y CARTEL DE ESPERA REESTABILIZADOS EN EL CENTRO */
             .video-container {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -443,29 +463,29 @@
                 display: block !important;
             }
 
-            /* --- RECONFIGURACIÓN MAESTRA: LOGOS GRANDES Y ELEGANTES --- */
+            /* --- MANTENEMOS LAS COMPARSAS GRANDES Y EN DOS FILAS --- */
             .comparsas-seccion {
                 width: 100% !important;
-                margin: 35px auto 0 auto !important;
-                padding: 0 5px !important;
+                margin: 30px auto 0 auto !important;
+                padding: 0 4px !important;
                 box-sizing: border-box !important;
             }
             
             .comparsas-grid {
                 display: flex !important;
                 flex-direction: row !important;
-                flex-wrap: wrap !important; /* Salto elástico para dar espacio a logos grandes */
+                flex-wrap: wrap !important; 
                 justify-content: center !important;
                 align-items: start !important;
-                gap: 15px 10px !important;        
+                gap: 15px 8px !important;        
                 width: 100% !important;
                 box-sizing: border-box !important;
             }
 
-            /* Las 5 comparsas ahora tienen tamaño grande y se autoajustan en filas de 2 o 3 según el espacio */
+            /* Las 5 comparsas de abajo con el tamaño grande recuperado */
             .comparsas-grid .comparsa-card {
                 display: block !important;
-                flex: 0 1 calc(33.33% - 10px) !important; /* Distribución ancha y espaciosa */
+                flex: 0 1 calc(33.33% - 10px) !important; 
                 min-width: 85px !important;
                 max-width: 105px !important;
                 margin: 0 auto !important;
@@ -473,20 +493,19 @@
                 box-sizing: border-box !important;
             }
 
-            /* ¡LOGOS MÁS GRANDES! Aumentamos de 38px a 60px para que luzcan perfectos */
             .logo-comparsa {
-                height: 60px !important;  
-                width: 60px !important;
-                max-height: 60px !important;
-                max-width: 60px !important;
+                height: 58px !important;  
+                width: 58px !important;
+                max-height: 58px !important;
+                max-width: 58px !important;
                 object-fit: contain !important;
                 display: block !important;
-                margin: 0 auto 6px auto !important;
+                margin: 0 auto 5px auto !important;
             }
 
             .comparsa-card p {
                 color: #ffcc00 !important;
-                font-size: 0.65rem !important; /* Texto más grande y legible al tener más espacio */
+                font-size: 0.65rem !important; 
                 font-weight: 800 !important;
                 text-transform: uppercase !important;
                 line-height: 1.2 !important;
@@ -495,27 +514,26 @@
                 white-space: normal !important;   
             }
 
-            /* --- LA ASOCIACIÓN ARRIBA DESTACADA Y MÁS GRANDE TODAVÍA --- */
+            /* LA ASOCIACIÓN SE QUEDA ARRIBA SOLA DESTACADA */
             .comparsas-grid .comparsa-card.asociacion-card {
-                flex: 0 0 100% !important; /* Ocupa el 100% de la fila superior */
+                flex: 0 0 100% !important; 
                 width: 100% !important;
                 min-width: 100% !important;
                 max-width: 100% !important;
-                margin: 0 auto 15px auto !important; 
+                margin: 0 auto 12px auto !important; 
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
                 justify-content: center !important;
-                order: -1 !important; /* La clava arriba del todo */
+                order: -1 !important; 
             }
 
-            /* Escudo de la Asociación imponente arriba */
             .comparsas-grid .asociacion-card .logo-comparsa {
-                height: 72px !important;  
-                width: 72px !important;
-                max-height: 72px !important;
-                max-width: 72px !important;
-                margin: 0 auto 6px auto !important;
+                height: 70px !important;  
+                width: 70px !important;
+                max-height: 70px !important;
+                max-width: 70px !important;
+                margin: 0 auto 5px auto !important;
             }
 
             .comparsas-grid .asociacion-card p {
@@ -539,7 +557,7 @@
         :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion { display: none !important; }
     </style>
 </head>
-<body>           
+<body> 
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
