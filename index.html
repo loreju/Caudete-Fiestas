@@ -453,20 +453,22 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-            /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
-            /* Forzado de centrado simétrico global en el lienzo */
+            /* Forzado de alineación central absoluta en el body */
             html, body {
                 text-align: center !important;
-                display: block !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
-            }
-
-            body {
+                margin: 0 !important;
                 padding: 15px 8px !important;
             }
 
+            /* CORRECCIÓN DE CENTRADO: Contenedor superior de logos y título */
             .header-container { 
                 gap: 15px; 
                 padding: 15px; 
@@ -475,7 +477,8 @@
                 justify-content: center; 
                 box-sizing: border-box !important; 
                 width: 100% !important; 
-                margin: 0 auto 20px auto !important;
+                max-width: 100% !important;
+                margin: 0 auto 20px auto !important; /* Centrado matemático horizontal */
             }
             
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
@@ -500,15 +503,19 @@
             
             #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 14px 10px !important; margin-top: 5px; }
 
-            /* REPARACIÓN DEL CENTRADO DE LA SECCIÓN HISTÓRICA */
+            /* CORRECCIÓN DE CENTRADO ABSOLUTO: Sección Histórica de los 45 Años */
             .archivo-historico-seccion {
                 width: 100% !important;
                 max-width: 100% !important;
-                margin: 30px auto 10px auto !important;
+                margin: 30px auto 10px auto !important; /* Fuerza márgenes automáticos a los lados */
                 text-align: center !important;
                 box-sizing: border-box !important;
                 padding: 0 5px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
             }
+            
             .grid-anios-archivo { 
                 display: grid !important;
                 grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)) !important; 
@@ -516,6 +523,8 @@
                 justify-content: center !important; 
                 justify-items: center !important;
                 width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 auto !important;
             }
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; width: 100% !important; }
             
@@ -531,16 +540,16 @@
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
 
-            /* REPARACIÓN DEL REPRODUCTOR */
+            /* CORRECCIÓN DE CENTRADO ABSOLUTO: Marco del reproductor y cartel de espera */
             .video-container {
                 width: 100% !important;
                 max-width: 100% !important;
-                margin: 0 auto !important; 
+                margin: 0 auto !important; /* Lo centra horizontalmente respecto al body */
                 float: none !important;
                 box-sizing: border-box !important;
             }
 
-            /* --- CONTROL DE REDISTRIBUCIÓN ELÁSTICA PARA MÓVILES --- */
+            /* --- CORRECCIÓN DEFINITIVA DE LAS DOS FILAS DE LOGOS --- */
             .comparsas-seccion {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -552,26 +561,26 @@
             .comparsas-grid {
                 display: flex !important;
                 flex-direction: row !important; 
-                flex-wrap: wrap !important;     /* Activa el salto elástico obligatoriamente en móvil */
+                flex-wrap: wrap !important;     /* Permite el salto elástico en el móvil */
                 justify-content: center !important;
                 align-items: start !important;
-                gap: 16px 4px !important;        
+                gap: 16px 8px !important;        
                 width: 100% !important;
                 box-sizing: border-box !important;
             }
 
-            /* Las 5 comparsas se encogen al 20% exacto para encajar abajo juntas */
+            /* Forzamos un ancho mínimo para que las 5 comparsas salten abajo juntas */
             .comparsas-grid .comparsa-card {
-                flex: 0 0 calc(20% - 5px) !important; 
-                min-width: 55px !important;
-                max-width: 68px !important;
+                flex: 1 1 calc(20% - 8px) !important; 
+                min-width: 62px !important; /* Al no caber las 5 en la misma línea con la asociación, caen abajo en bloque */
+                max-width: 70px !important;
                 text-align: center !important;
                 box-sizing: border-box !important;
             }
 
             .logo-comparsa {
-                height: 40px !important;  
-                width: 40px !important;
+                height: 44px !important;  
+                width: 44px !important;
                 object-fit: contain !important;
                 display: block !important;
                 margin: 0 auto 4px auto !important;
@@ -580,19 +589,19 @@
             .comparsa-card p,
             .comparsas-grid .comparsa-card p {
                 color: #ffcc00 !important;
-                font-size: 0.50rem !important; 
+                font-size: 0.55rem !important; 
                 font-weight: 800 !important;
                 text-transform: uppercase !important;
-                line-height: 1.1 !important;
+                line-height: 1.15 !important;
                 margin: 0 !important;
                 text-align: center !important;
                 white-space: normal !important;   
                 display: block !important;
             }
 
-            /* --- FUERZA EN MÓVIL EL 100% DE ANCHO PARA LA ASOCIACIÓN (VA ARRIBA) --- */
+            /* --- FORZADO DE FILA SUPERIOR COMPLETA AL 100% PARA LA ASOCIACIÓN --- */
             .comparsas-grid .comparsa-card.asociacion-card {
-                flex: 0 0 100% !important;  
+                flex: 0 0 100% !important;  /* Rompe la rejilla ocupando todo el ancho superior */
                 width: 100% !important;
                 min-width: 100% !important;
                 max-width: 100% !important;
@@ -601,20 +610,20 @@
                 flex-direction: column !important;
                 align-items: center !important;
                 justify-content: center !important;
-                order: -1 !important; /* La sube a la primera línea */
+                order: -1 !important; /* Lo sube arriba del todo obligatoriamente */
             }
 
-            /* Escudo de la Asociación grande arriba */
+            /* Escudo de la Asociación destacado arriba */
             .comparsas-grid .asociacion-card .logo-comparsa {
-                height: 56px !important;  
-                width: 56px !important;
-                max-height: 56px !important;
-                max-width: 56px !important;
+                height: 58px !important;  
+                width: 58px !important;
+                max-height: 58px !important;
+                max-width: 58px !important;
             }
 
-            /* Texto de la Asociación grande arriba */
+            /* Texto de la Asociación destacado arriba */
             .comparsas-grid .asociacion-card p {
-                font-size: 0.68rem !important;
+                font-size: 0.70rem !important;
                 font-weight: 900 !important;
                 line-height: 1.2 !important;
                 letter-spacing: 0.3px;
@@ -650,8 +659,7 @@
         }
     </style>
 </head>
-<body>
-  
+<body>   
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
