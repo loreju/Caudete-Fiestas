@@ -421,17 +421,39 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
-            .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box !important; width: 100% !important; }
+            /* Forzado de centrado simétrico global en el lienzo */
+            html, body {
+                text-align: center !important;
+                display: block !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            body {
+                padding: 15px 8px !important;
+            }
+
+            .header-container { 
+                gap: 15px; 
+                padding: 15px; 
+                flex-direction: column; 
+                align-items: center; 
+                justify-content: center; 
+                box-sizing: border-box !important; 
+                width: 100% !important; 
+                margin: 0 auto 20px auto !important;
+            }
+            
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
             
-            /* CORRECCIÓN MÓVIL: Forzado de color dorado, tamaños y mayúsculas en los subtítulos */
+            /* FORZADO MÓVIL: Color dorado intenso, tamaños nítidos y mayúsculas en subtítulos */
             h1 { font-size: 1.5rem; } 
             .title-block .honor-text { 
                 font-size: 1.1rem; 
                 color: #ffcc00 !important; 
-                text-transform: uppercase; /* Fuerza las mayúsculas en móvil */
+                text-transform: uppercase; 
                 font-weight: 700;
             }
             .title-block .years-subtitle-text { 
@@ -446,8 +468,24 @@
             
             #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 14px 10px !important; margin-top: 5px; }
 
-            .grid-anios-archivo { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 6px; }
-            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; }
+            /* REPARACIÓN DEL CENTRADO DE LA SECCIÓN HISTÓRICA */
+            .archivo-historico-seccion {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 30px auto 10px auto !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+                padding: 0 5px !important;
+            }
+            .grid-anios-archivo { 
+                display: grid !important;
+                grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)) !important; 
+                gap: 6px !important; 
+                justify-content: center !important; 
+                justify-items: center !important;
+                width: 100% !important;
+            }
+            .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; width: 100% !important; }
             
             .ctv-video-block { top: 10px; right: 10px; }
             .logo-ctv-fijo { height: 35px; }
@@ -461,40 +499,66 @@
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
 
-            /* Contención estricta para evitar deformaciones simétricas en Safari de iPhone */
+            /* REPARACIÓN DEL REPRODUCTOR (Fuerza el centrado absoluto del cartel de espera) */
             .video-container {
                 width: 100% !important;
                 max-width: 100% !important;
+                margin: 0 auto !important; 
+                float: none !important;
                 box-sizing: border-box !important;
             }
 
-            /* --- AJUSTE DE LOGOS DE COMPARSAS PARA MÓVILES --- */
+            /* --- REDISEÑO ADAPTATIVO ANTICORTES PARA COMPARSAS --- */
+            .comparsas-seccion {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 40px auto 0 auto !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
             .comparsas-grid {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-wrap: wrap;         /* Permite bajar limpiamente si la pantalla es muy estrecha */
-                gap: 8px !important;      /* Junta los logos un poco más */
-                padding: 0 5px;
+                display: grid !important;
+                /* Organiza en 3 columnas en pantallas medianas o 2 columnas en pantallas muy pequeñas, evitando desbordamientos */
+                grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)) !important;
+                gap: 12px 8px !important; 
+                justify-content: center !important;
+                justify-items: center !important;
+                align-items: start !important;
+                width: 100% !important;
+                padding: 0 4px !important;
+                box-sizing: border-box !important;
             }
 
             .comparsa-card {
-                flex: 1;
-                min-width: 48px;          /* Permite que se encojan de forma segura */
-                max-width: 75px;          /* Evita que se hagan gigantes */
-                text-align: center;
+                width: 100% !important;
+                max-width: 110px !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+                margin: 0 auto !important;
             }
 
             .logo-comparsa {
-                height: 55px !important;  /* Reducción sutil para que entren los 6 sin cortarse */
-                width: 55px !important;
-                object-fit: contain;
+                height: 52px !important;  
+                width: 52px !important;
+                max-height: 52px !important;
+                max-width: 52px !important;
+                object-fit: contain !important;
+                display: block !important;
+                margin: 0 auto 5px auto !important;
             }
 
+            /* Blindaje total del texto en color dorado brillante corporativo */
             .comparsa-card p {
-                font-size: 0.6rem !important; /* Texto un pelín más pequeño y compacto */
-                line-height: 1.1;
-                margin: 4px 0 0 0;
+                font-size: 0.68rem !important; 
+                color: #ffcc00 !important;    /* Fuerza el color dorado oficial */
+                font-weight: 800 !important;   /* Evita el efecto borroso en móviles */
+                line-height: 1.2 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                text-align: center !important;
+                white-space: normal !important; /* Permite saltar de línea limpiamente */
+                word-break: normal !important;   
+                overflow-wrap: break-word !important; 
             }
         }
 
@@ -513,7 +577,7 @@
 
         .video-container:fullscreen .video-wrapper {
             width: 100vw !important;
-            height: 56.25vw !important; /* Fuerza la escala panorámica fija sin desbordar el lienzo táctil */
+            height: 56.25vw !important; 
             max-height: 100vh !important;
             max-width: calc(100vh * 16 / 9) !important;
             padding-bottom: 0 !important;
@@ -525,8 +589,8 @@
         }
     </style>
 </head>
-<body>          
-
+<body>
+     
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
