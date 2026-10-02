@@ -110,7 +110,7 @@
             color: #ffcc00 !important;
             font-size: 1.3rem;
             font-weight: 700;
-            text-transform: uppercase; /* Fuerza las mayúsculas en el subtítulo */
+            text-transform: uppercase; 
             letter-spacing: 0.5px;
             margin: 4px 0 0 0;
         }
@@ -145,8 +145,8 @@
         .modal-kofi-festero {
             display: none;
             width: 100% !important;
-            max-width: 900px !important; /* Mismo ancho exacto que el marco del vídeo */
-            margin: 15px auto 25px auto !important; /* Centrado automático en la pantalla */
+            max-width: 900px !important; 
+            margin: 15px auto 25px auto !important; 
             background: #252525 !important;
             border: 1px solid #ffcc00 !important;
             border-radius: 8px !important;
@@ -263,38 +263,38 @@
             }
         }
 
-        /* --- ESTILOS DE COMPARSAS BASE (BLINDAJE DE COLOR Y MAYÚSCULAS) --- */
+        /* --- CORRECCIÓN EN PC: REJILLA DE COMPARSAS FIJA EN UNA SOLA LÍNEA DE 6 --- */
         .comparsas-seccion { 
-            max-width: 900px; 
+            max-width: 950px; 
             margin: 40px auto 10px auto; 
-            padding: 0 5px; 
+            padding: 0 10px; 
+            box-sizing: border-box;
         }
 
         .comparsas-grid { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            flex-wrap: wrap; 
-            gap: 15px; 
+            display: flex !important; 
+            flex-direction: row !important;
+            flex-wrap: nowrap !important; /* En PC prohíbe rotarse en dos líneas */
+            justify-content: space-between !important; 
+            align-items: center !important; 
+            gap: 12px !important;
+            width: 100% !important;
         }
 
         .comparsa-card { 
-            text-align: center; 
-            min-width: 100px; 
+            flex: 1 !important; /* Obliga a repartirse el espacio exacto del 100% */
+            text-align: center !important; 
         }
 
-        /* Fuerza las letras doradas y en mayúsculas en cualquier pantalla antes del responsive */
-        .comparsa-card p,
-        .comparsas-grid .comparsa-card p {
+        .comparsa-card p {
             color: #ffcc00 !important;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase !important; /* Fuerza las mayúsculas en la base */
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase !important; 
             line-height: 1.2;
             margin: 6px 0 0 0;
             display: block !important;
         }
-
     /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
