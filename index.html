@@ -1,20 +1,20 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Caudete Fiestas</title>
-         
+    <title>Caudete Fiestas</title>          
+    
     <!-- Metaetiquetas para optimizar el comportamiento en iPhone y Android -->
     <meta name="theme-color" content="#141414">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
     <link class="destello-logo" rel="apple-touch-icon" href="img/logo-ctv.png">
-    
-    <!-- ENLACE AL MANIFEST -->
-    <link rel="manifest" href="manifest.json">
          
+    <!-- ENLACE AL MANIFEST -->
+    <link rel="manifest" href="manifest.json">              
+    
     <style>
         html, body {
             background-color: #141414;
@@ -48,8 +48,8 @@
             box-sizing: border-box;
             width: 100%;
             position: relative;
-        }
-                 
+        }                  
+
         .header-block {
             display: flex;
             flex-direction: column;
@@ -57,8 +57,8 @@
             justify-content: center; 
             min-width: 140px;
             text-align: center;
-        }
-                 
+        }                  
+
         .header-block h3 {
             color: #ffcc00;
             font-size: 0.8rem; 
@@ -105,8 +105,27 @@
             line-height: 1.2;
         }
 
+        /* CORRECCIÓN: Estilos de subtítulos para pantallas grandes (Ordenador / Tablet) */
+        .title-block .honor-text {
+            color: #ffcc00 !important;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase; /* Fuerza las mayúsculas */
+            letter-spacing: 0.5px;
+            margin: 4px 0 0 0;
+        }
+
+        .title-block .years-subtitle-text {
+            color: #ffcc00 !important;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 2px 0 0 0;
+        }
+
         @media (min-width: 768px) {
             h1 { font-size: 2.2rem; }
+            .title-block .honor-text { font-size: 1.5rem; }
+            .title-block .years-subtitle-text { font-size: 1.4rem; }
         }
 
         /* --- ESTILO SIMÉTRICO PARA EL CUARTO BOTÓN DE LA FILA (€ BIZUM) --- */
@@ -121,8 +140,8 @@
         .btn-control-tv.btn-donar-tv:hover {
             transform: scale(1.1);
         }
-
-                 /* --- BANNER DE DONACIONES HORIZONTAL OPTIMIZADO AL ANCHO DEL VÍDEO --- */
+                  
+        /* --- BANNER DE DONACIONES HORIZONTAL OPTIMIZADO AL ANCHO DEL VÍDEO --- */
         .modal-kofi-festero {
             display: none;
             width: 100% !important;
@@ -136,7 +155,7 @@
             text-align: left !important;
             box-sizing: border-box !important;
             padding: 15px 20px !important;
-        }
+        }               
 
         /* Distribución interna del banner */
         .banner-donar-flex {
@@ -219,7 +238,7 @@
             font-size: 0.8rem;
             transition: all 0.2s;
         }
-        
+                 
         .btn-cerrar-banner:hover {
             color: #fff;
             border-color: #fff;
@@ -402,12 +421,24 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-       /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+              /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             .header-container { gap: 15px; padding: 15px; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box !important; width: 100% !important; }
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
-            h1 { font-size: 1.5rem; } .honor-text { font-size: 1.2rem; }
-            .years-subtitle-text { font-size: 1.2rem; font-weight: 600; }
+            
+            /* CORRECCIÓN MÓVIL: Forzado de color dorado, tamaños y mayúsculas en los subtítulos */
+            h1 { font-size: 1.5rem; } 
+            .title-block .honor-text { 
+                font-size: 1.1rem; 
+                color: #ffcc00 !important; 
+                text-transform: uppercase; /* Fuerza las mayúsculas en móvil */
+                font-weight: 700;
+            }
+            .title-block .years-subtitle-text { 
+                font-size: 1.1rem; 
+                font-weight: bold; 
+                color: #ffcc00 !important; 
+            }
             
             .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
             .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 75px; }
