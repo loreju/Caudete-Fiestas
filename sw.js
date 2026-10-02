@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caudete-fiestas-v45'; // Subimos a v45 para obligar a los móviles a actualizar el manifest e icono
+const CACHE_NAME = 'caudete-fiestas-v46'; // Subimos a v46 para obligar a los móviles a actualizar el manifest e icono
 
 // Guardamos solo lo imprescindible para asegurar una instalación limpia sin fallos de ruta
 const ASSETS = [
