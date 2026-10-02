@@ -421,7 +421,7 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
+          /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
         @media (max-width: 768px) {
             /* Forzado de centrado simétrico global en el lienzo */
             html, body {
@@ -508,57 +508,54 @@
                 box-sizing: border-box !important;
             }
 
-            /* --- REDISEÑO ADAPTATIVO ANTICORTES PARA COMPARSAS --- */
+            /* --- CONTROL ADAPTATIVO ANTICORTES PARA COMPARSAS EN MÓVIL --- */
             .comparsas-seccion {
                 width: 100% !important;
                 max-width: 100% !important;
                 margin: 40px auto 0 auto !important;
-                padding: 0 !important;
+                padding: 0 5px !important;
                 box-sizing: border-box !important;
             }
             .comparsas-grid {
-                display: grid !important;
-                /* Organiza en 3 columnas en pantallas medianas o 2 columnas en pantallas muy pequeñas, evitando desbordamientos */
-                grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)) !important;
-                gap: 12px 8px !important; 
+                display: flex !important;
+                flex-wrap: wrap !important;
                 justify-content: center !important;
-                justify-items: center !important;
                 align-items: start !important;
+                gap: 15px 10px !important; 
                 width: 100% !important;
-                padding: 0 4px !important;
                 box-sizing: border-box !important;
             }
 
             .comparsa-card {
-                width: 100% !important;
+                /* Organiza en columnas equilibradas en pantallas móviles para que nada se pise */
+                flex: 0 0 calc(33.33% - 10px) !important;
+                min-width: 90px !important;
                 max-width: 110px !important;
                 text-align: center !important;
                 box-sizing: border-box !important;
-                margin: 0 auto !important;
             }
 
             .logo-comparsa {
-                height: 52px !important;  
-                width: 52px !important;
-                max-height: 52px !important;
-                max-width: 52px !important;
+                height: 55px !important;  
+                width: 55px !important;
                 object-fit: contain !important;
                 display: block !important;
-                margin: 0 auto 5px auto !important;
+                margin: 0 auto 6px auto !important;
             }
 
-            /* Blindaje total del texto en color dorado brillante corporativo */
-            .comparsa-card p {
-                font-size: 0.68rem !important; 
-                color: #ffcc00 !important;    /* Fuerza el color dorado oficial */
-                font-weight: 800 !important;   /* Evita el efecto borroso en móviles */
+            /* REPARACIÓN MAESTRA DEL COLOR: Fuerza las letras a dorado sin importar el navegador */
+            .comparsa-card p, 
+            .comparsas-grid .comparsa-card p {
+                color: #ffcc00 !important;    /* Cambia el blanco por dorado oficial de las fiestas */
+                font-size: 0.72rem !important; 
+                font-weight: 800 !important;   /* Letras gruesas muy legibles */
                 line-height: 1.2 !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 text-align: center !important;
-                white-space: normal !important; /* Permite saltar de línea limpiamente */
-                word-break: normal !important;   
-                overflow-wrap: break-word !important; 
+                white-space: normal !important; /* Permite saltar de línea de forma elástica */
+                display: block !important;
+                visibility: visible !important;
             }
         }
 
@@ -590,7 +587,7 @@
     </style>
 </head>
 <body>
-     
+ 
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
     <div class="header-block ctv-block-top">
