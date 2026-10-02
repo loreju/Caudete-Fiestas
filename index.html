@@ -350,7 +350,7 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (TAMAÑOS MÁXIMOS Y DESTELLO) --- */
+         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (TAMAÑOS MÁXIMOS Y DESTELLO) --- */
         @media (max-width: 991px) {
             /* Fuerza a que el cuerpo de la web ordene todo de arriba a abajo y centrado */
             html, body {
@@ -403,7 +403,7 @@
                 justify-content: center !important; 
             }
             
-            /* CORRECCIÓN ABSOLUTA AYUNTAMIENTO: Se aumentan los 3 logos de arriba a 60px y se iguala el del ayuntamiento */
+            /* RECALIBRACIÓN DE VOLUMEN: Se sube la escala del ayuntamiento para igualar la masa visual */
             .logo-ctv-cabecera, .logo-mayordomia { 
                 height: 60px !important; 
                 width: auto !important; 
@@ -413,7 +413,7 @@
                 height: 60px !important; 
                 width: auto !important;
                 object-fit: contain !important;
-                transform: scale(1.15); 
+                transform: scale(1.32) !important; /* Incremento para igualar el volumen visual de los otros logos */
             }
             
             .header-block h3 { 
@@ -501,7 +501,7 @@
                 box-sizing: border-box !important;
             }
 
-            /* ¡ESCUDOS DE LAS COMPARSAS MÁS GRANDES! Suben a 76px */
+            /* ESCUDOS DE LAS COMPARSAS MÁS GRANDES MÓVILES (76PX) */
             .logo-comparsa {
                 height: 76px !important;  
                 width: 76px !important;
@@ -510,8 +510,8 @@
                 object-fit: contain !important;
                 display: block !important;
                 margin: 0 auto 6px auto !important;
-                /* REPARACIÓN DEL DESTELLO: Reactiva la animación en el móvil superponiendo el filtro */
-                animation: destelloSuaveLogoAbajo 4s infinite ease-in-out !important;
+                /* CORRECCIÓN DESTELLO: Cambiamos a la animación continua con máxima potencia para forzar el brillo */
+                animation: destelloContinuoLogo 4s infinite ease-in-out !important;
                 will-change: filter;
             }
 
@@ -540,7 +540,7 @@
                 order: -1 !important; 
             }
 
-            /* El escudo de la Asociación pasa a ser colosal: sube a 96px con destello calibrado */
+            /* El escudo de la Asociación colosal a 96px */
             .comparsas-grid .asociacion-card .logo-comparsa {
                 height: 96px !important;  
                 width: 96px !important;
@@ -572,7 +572,7 @@
         :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion { display: none !important; }
     </style>
 </head>
-<body>
+<body>     
         
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
