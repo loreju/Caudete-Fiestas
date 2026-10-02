@@ -110,7 +110,7 @@
             color: #ffcc00 !important;
             font-size: 1.3rem;
             font-weight: 700;
-            text-transform: uppercase; /* Fuerza las mayúsculas */
+            text-transform: uppercase; /* Fuerza las mayúsculas en el subtítulo */
             letter-spacing: 0.5px;
             margin: 4px 0 0 0;
         }
@@ -261,6 +261,38 @@
             .modal-kofi-festero {
                 text-align: center !important;
             }
+        }
+
+        /* --- ESTILOS DE COMPARSAS BASE (BLINDAJE DE COLOR Y MAYÚSCULAS) --- */
+        .comparsas-seccion { 
+            max-width: 900px; 
+            margin: 40px auto 10px auto; 
+            padding: 0 5px; 
+        }
+
+        .comparsas-grid { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            gap: 15px; 
+        }
+
+        .comparsa-card { 
+            text-align: center; 
+            min-width: 100px; 
+        }
+
+        /* Fuerza las letras doradas y en mayúsculas en cualquier pantalla antes del responsive */
+        .comparsa-card p,
+        .comparsas-grid .comparsa-card p {
+            color: #ffcc00 !important;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase !important; /* Fuerza las mayúsculas en la base */
+            line-height: 1.2;
+            margin: 6px 0 0 0;
+            display: block !important;
         }
 
     /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
