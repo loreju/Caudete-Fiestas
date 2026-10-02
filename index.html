@@ -20,7 +20,6 @@
             background-color: #141414;
             margin: 0;
             padding: 0;
-            /* Evita el efecto rebote elástico en móviles que deforma la interfaz */
             overscroll-behavior-y: none; 
             -webkit-overflow-scrolling: touch;
         }
@@ -29,20 +28,20 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             color: #ffffff;
             text-align: center;
-            padding: 20px 15px;
+            padding: 40px 20px;
         }
 
-        /* --- ESTILOS DE LA CABECERA COMPLETAMENTE ADAPTATIVA --- */
+        /* --- ESTILOS DE LA CABECERA EN PC --- */
         .header-container {
             display: flex;
             align-items: center; 
             justify-content: center; 
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 25px;
             max-width: 1450px;
             margin: 0 auto 25px auto;
             background-color: #1e1e1e;
-            padding: 20px;
+            padding: 25px 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             box-sizing: border-box;
@@ -55,13 +54,13 @@
             flex-direction: column;
             align-items: center;
             justify-content: center; 
-            min-width: 140px;
+            min-width: 180px;
             text-align: center;
         }                  
 
         .header-block h3 {
             color: #ffcc00;
-            font-size: 0.8rem; 
+            font-size: 0.85rem; 
             font-weight: 900; 
             text-transform: uppercase; 
             letter-spacing: 1px;
@@ -72,17 +71,9 @@
         }
 
         .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { 
-            height: 80px; 
+            height: 110px; 
             width: auto; 
             object-fit: contain; 
-        }
-
-        @media (min-width: 768px) {
-            body { padding: 40px 20px; }
-            .header-container { padding: 25px 30px; gap: 25px; }
-            .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 110px; }
-            .header-block { min-width: 180px; }
-            .header-block h3 { font-size: 0.85rem; }
         }
 
         .title-block {
@@ -98,17 +89,16 @@
 
         h1 {
             color: #ffcc00;
-            font-size: 1.6rem;
+            font-size: 2.2rem;
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 1px;
             line-height: 1.2;
         }
 
-        /* CORRECCIÓN: Estilos de subtítulos para pantallas grandes (Ordenador / Tablet) */
         .title-block .honor-text {
             color: #ffcc00 !important;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
             text-transform: uppercase; 
             letter-spacing: 0.5px;
@@ -117,31 +107,22 @@
 
         .title-block .years-subtitle-text {
             color: #ffcc00 !important;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             font-weight: bold;
             margin: 2px 0 0 0;
         }
 
-        @media (min-width: 768px) {
-            h1 { font-size: 2.2rem; }
-            .title-block .honor-text { font-size: 1.5rem; }
-            .title-block .years-subtitle-text { font-size: 1.4rem; }
-        }
-
-        /* --- ESTILO SIMÉTRICO PARA EL CUARTO BOTÓN DE LA FILA (€ BIZUM) --- */
+        /* --- ESTILO BIZUM --- */
         .btn-control-tv.btn-donar-tv {
-            background: linear-gradient(135deg, #00bcd4, #007bff) !important; /* Cyan a Azul Bizum */
+            background: linear-gradient(135deg, #00bcd4, #007bff) !important; 
             color: white !important;
             font-size: 1.3rem !important;
             font-weight: bold !important;
             pointer-events: auto !important;
         }
-
-        .btn-control-tv.btn-donar-tv:hover {
-            transform: scale(1.1);
-        }
+        .btn-control-tv.btn-donar-tv:hover { transform: scale(1.1); }
                   
-        /* --- BANNER DE DONACIONES HORIZONTAL OPTIMIZADO AL ANCHO DEL VÍDEO --- */
+        /* --- BANNER DE DONACIONES --- */
         .modal-kofi-festero {
             display: none;
             width: 100% !important;
@@ -157,7 +138,6 @@
             padding: 15px 20px !important;
         }               
 
-        /* Distribución interna del banner */
         .banner-donar-flex {
             display: flex;
             flex-direction: row;
@@ -167,129 +147,46 @@
             gap: 15px;
         }
 
-        .banner-donar-texto {
-            flex: 1;
-            min-width: 280px;
-            color: #ffffff;
-            text-align: left;
-        }
+        .banner-donar-texto { flex: 1; min-width: 280px; color: #ffffff; text-align: left; }
+        .banner-donar-texto h3 { margin: 0 0 5px 0; color: #ffcc00; font-size: 1.1rem; }
+        .banner-donar-texto p { margin: 0; font-size: 0.9rem; line-height: 1.4; color: #dddddd; }
+        .banner-donar-botones { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; }
 
-        .banner-donar-texto h3 {
-            margin: 0 0 5px 0;
-            color: #ffcc00;
-            font-size: 1.1rem;
-        }
-
-        .banner-donar-texto p {
-            margin: 0;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            color: #dddddd;
-        }
-
-        .banner-donar-botones {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Botones Rápidos de Ko-fi (PayPal / Tarjeta) */
         .btn-kofi-monto {
-            background-color: #ff5f5f !important;
-            color: #ffffff !important;
-            text-decoration: none !important;
-            padding: 8px 14px !important;
-            border-radius: 6px !important;
-            font-weight: bold !important;
-            font-size: 0.85rem !important;
-            transition: background 0.2s, transform 0.2s;
-            display: inline-flex;
-            align-items: center;
-            border: none;
-            cursor: pointer;
+            background-color: #ff5f5f !important; color: #ffffff !important; text-decoration: none !important;
+            padding: 8px 14px !important; border-radius: 6px !important; font-weight: bold !important;
+            font-size: 0.85rem !important; transition: background 0.2s, transform 0.2s; display: inline-flex; align-items: center; border: none; cursor: pointer;
         }
+        .btn-kofi-monto:hover { background-color: #ff3b3b !important; transform: scale(1.05); }
 
-        .btn-kofi-monto:hover {
-            background-color: #ff3b3b !important;
-            transform: scale(1.05);
-        }
+        .info-bizum-badge { background: #00bcd4 !important; color: #ffffff !important; padding: 8px 14px !important; border-radius: 6px !important; font-size: 0.85rem !important; font-weight: bold !important; display: inline-block; }
+        .btn-cerrar-banner { background: none; border: 1px solid #666; color: #aaa; border-radius: 5px; padding: 5px 10px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+        .btn-cerrar-banner:hover { color: #fff; border-color: #fff; background: #333; }
 
-        /* Identificador de Bizum integrado */
-        .info-bizum-badge {
-            background: #00bcd4 !important;
-            color: #ffffff !important;
-            padding: 8px 14px !important;
-            border-radius: 6px !important;
-            font-size: 0.85rem !important;
-            font-weight: bold !important;
-            display: inline-block;
-        }
-
-        /* Botón cerrar sutil */
-        .btn-cerrar-banner {
-            background: none;
-            border: 1px solid #666;
-            color: #aaa;
-            border-radius: 5px;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: all 0.2s;
-        }
-                 
-        .btn-cerrar-banner:hover {
-            color: #fff;
-            border-color: #fff;
-            background: #333;
-        }
-
-        /* Colapsar a vertical limpiamente en pantallas móviles */
-        @media (max-width: 991px) {
-            .banner-donar-flex {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
-            .banner-donar-texto {
-                text-align: center;
-            }
-            .banner-donar-botones {
-                justify-content: center;
-            }
-            .modal-kofi-festero {
-                text-align: center !important;
-            }
-        }
-
-        /* --- CORRECCIÓN EN PC: REJILLA DE COMPARSAS FIJA EN UNA SOLA LÍNEA DE 6 --- */
+        /* --- COMPARSAS EN PC: ALINEADAS EN 1 FILA --- */
         .comparsas-seccion { 
-            max-width: 950px; 
+            max-width: 900px; 
             margin: 40px auto 10px auto; 
-            padding: 0 10px; 
+            padding: 0 5px; 
             box-sizing: border-box;
         }
 
         .comparsas-grid { 
             display: flex !important; 
             flex-direction: row !important;
-            flex-wrap: nowrap !important; /* En PC prohíbe rotarse en dos líneas */
-            justify-content: space-between !important; 
+            flex-wrap: nowrap !important; 
+            justify-content: center !important; 
             align-items: center !important; 
-            gap: 12px !important;
+            gap: 15px !important;
             width: 100% !important;
         }
 
-        .comparsa-card { 
-            flex: 1 !important; /* Obliga a repartirse el espacio exacto del 100% */
-            text-align: center !important; 
-        }
+        .comparsa-card { text-align: center; min-width: 100px; flex: 1 !important; }
 
         .comparsa-card p {
             color: #ffcc00 !important;
-            font-size: 0.75rem;
-            font-weight: 800;
+            font-size: 0.8rem;
+            font-weight: bold;
             text-transform: uppercase !important; 
             line-height: 1.2;
             margin: 6px 0 0 0;
