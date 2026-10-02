@@ -531,7 +531,7 @@
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
 
-            /* REPARACIÓN DEL REPRODUCTOR (Fuerza el centrado absoluto del cartel de espera) */
+            /* REPARACIÓN DEL REPRODUCTOR (Centrado absoluto en el lienzo móvil) */
             .video-container {
                 width: 100% !important;
                 max-width: 100% !important;
@@ -540,12 +540,12 @@
                 box-sizing: border-box !important;
             }
 
-            /* --- MÁXIMA COMPACTACIÓN DE LOGOS PARA EVITAR CORTES --- */
+            /* --- DISTRIBUCIÓN DE LOGOS RECALIBRADA (ASOCIACIÓN ARRIBA, 5 COMPARSAS ABAJO) --- */
             .comparsas-seccion {
                 width: 100% !important;
                 max-width: 100% !important;
                 margin: 35px auto 0 auto !important;
-                padding: 0 !important;
+                padding: 0 4px !important;
                 box-sizing: border-box !important;
             }
             .comparsas-grid {
@@ -553,43 +553,67 @@
                 flex-wrap: wrap !important;
                 justify-content: center !important;
                 align-items: start !important;
-                gap: 12px 6px !important; /* Espaciado muy ajustado para encajarlos perfectamente */
+                gap: 16px 6px !important; /* Espacio simétrico lateral entre comparsas */
                 width: 100% !important;
-                padding: 0 2px !important;
                 box-sizing: border-box !important;
             }
 
+            /* Estilo base para las 5 comparsas de la fila inferior */
             .comparsa-card {
-                flex: 0 0 calc(33.33% - 8px) !important; /* Estructura elástica de tres columnas compactas */
-                min-width: 82px !important;
-                max-width: 95px !important;
+                flex: 0 0 calc(20% - 5px) !important; /* Cuadrícula exacta de 5 columnas elásticas */
+                min-width: 58px !important;
+                max-width: 68px !important;
                 text-align: center !important;
                 box-sizing: border-box !important;
             }
 
             .logo-comparsa {
-                height: 50px !important;  /* Ligeramente más pequeños para garantizar espacio */
-                width: 50px !important;
+                height: 42px !important;  
+                width: 42px !important;
                 object-fit: contain !important;
                 display: block !important;
                 margin: 0 auto 4px auto !important;
             }
 
-            /* BLINDAJE DE TEXTO MÓVIL: Dorado estricto y todo en mayúsculas */
-            .comparsa-card p,
-            .comparsas-grid .comparsa-card p,
-            .comparsas-seccion p {
-                color: #ffcc00 !important;       /* Dorado oficial unificado */
-                font-size: 0.65rem !important;    /* Ajuste de lectura sin desbordar */
-                font-weight: 800 !important;      /* Letras gruesas */
-                text-transform: uppercase !important; /* Fuerza las mayúsculas en todas las comparsas */
-                line-height: 1.15 !important;
+            /* Forzado de textos de las comparsas a miniatura legible */
+            .comparsa-card p {
+                color: #ffcc00 !important;
+                font-size: 0.52rem !important; 
+                font-weight: 800 !important;
+                text-transform: uppercase !important;
+                line-height: 1.1 !important;
                 margin: 0 !important;
-                padding: 0 !important;
                 text-align: center !important;
                 white-space: normal !important;   
-                display: block !important;
-                visibility: visible !important;
+            }
+
+            /* --- DISEÑO EXCLUSIVO PARA LA ASOCIACIÓN EN LA FILA SUPERIOR --- */
+            .comparsas-grid .comparsa-card.asociacion-card {
+                flex: 0 0 100% !important;  /* Rompe la rejilla para colocarse ella sola arriba */
+                min-width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 auto 10px auto !important; /* Margen inferior de separación antes de los escudos */
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                order: -1; /* Posiciona la caja al principio de todo el bloque */
+            }
+
+            /* Escudo de la Asociación destacado y ampliado */
+            .comparsas-grid .asociacion-card .logo-comparsa {
+                height: 56px !important;  
+                width: 56px !important;
+                max-height: 56px !important;
+                max-width: 56px !important;
+            }
+
+            /* Texto de la Asociación con máxima nitidez corporativa */
+            .comparsas-grid .asociacion-card p {
+                font-size: 0.68rem !important;
+                font-weight: 900 !important;
+                line-height: 1.2 !important;
+                letter-spacing: 0.3px;
             }
         }
 
@@ -620,7 +644,7 @@
         }
     </style>
 </head>
-<body>
+<body>     
  
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
