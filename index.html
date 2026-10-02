@@ -350,49 +350,41 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL --- */
-        @media (max-width: 768px) {
-            /* Forzado de alineación central absoluta en el body */
+         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (BLINDADA A 991PX) --- */
+        @media (max-width: 991px) {
+            /* Fuerza a que el cuerpo de la web ordene todo de arriba a abajo y centrado */
             html, body {
                 text-align: center !important;
                 display: flex !important;
                 flex-direction: column !important;
                 align-items: center !important;
-                justify-content: center !important;
+                justify-content: flex-start !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
                 margin: 0 !important;
+            }
+
+            body {
                 padding: 15px 8px !important;
             }
 
-            /* CORRECCIÓN DE CENTRADO: Contenedor superior de logos y título */
+            /* CENTRADO DE LA CABECERA */
             .header-container { 
+                display: flex !important;
+                flex-direction: column !important; 
+                align-items: center !important; 
+                justify-content: center !important; 
                 gap: 15px; 
                 padding: 15px; 
-                flex-direction: column; 
-                align-items: center; 
-                justify-content: center; 
                 box-sizing: border-box !important; 
                 width: 100% !important; 
-                max-width: 100% !important;
-                margin: 0 auto 20px auto !important; /* Centrado matemático horizontal */
+                margin: 0 auto 20px auto !important;
             }
             
             .title-block { order: -1; width: 100%; min-width: 100%; margin-bottom: 5px; text-align: center; }
-            
-            /* FORZADO MÓVIL: Color dorado intenso, tamaños nítidos y mayúsculas en subtítulos */
             h1 { font-size: 1.5rem; } 
-            .title-block .honor-text { 
-                font-size: 1.1rem; 
-                color: #ffcc00 !important; 
-                text-transform: uppercase; 
-                font-weight: 700;
-            }
-            .title-block .years-subtitle-text { 
-                font-size: 1.1rem; 
-                font-weight: bold; 
-                color: #ffcc00 !important; 
-            }
+            .title-block .honor-text { font-size: 1.1rem; color: #ffcc00 !important; text-transform: uppercase; font-weight: 700; }
+            .title-block .years-subtitle-text { font-size: 1.1rem; font-weight: bold; color: #ffcc00 !important; }
             
             .header-block { min-width: 100%; margin: 5px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
             .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { height: 75px; }
@@ -400,11 +392,11 @@
             
             #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 14px 10px !important; margin-top: 5px; }
 
-            /* CORRECCIÓN DE CENTRADO ABSOLUTO: Sección Histórica de los 45 Años */
+            /* CENTRADO DE LA CAJA DE LOS 45 AÑOS DE VÍDEOS */
             .archivo-historico-seccion {
                 width: 100% !important;
                 max-width: 100% !important;
-                margin: 30px auto 10px auto !important; /* Fuerza márgenes automáticos a los lados */
+                margin: 30px auto 10px auto !important; 
                 text-align: center !important;
                 box-sizing: border-box !important;
                 padding: 0 5px !important;
@@ -412,7 +404,6 @@
                 flex-direction: column !important;
                 align-items: center !important;
             }
-            
             .grid-anios-archivo { 
                 display: grid !important;
                 grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)) !important; 
@@ -420,14 +411,12 @@
                 justify-content: center !important; 
                 justify-items: center !important;
                 width: 100% !important;
-                max-width: 100% !important;
                 margin: 0 auto !important;
             }
             .btn-anio-archivo { padding: 10px 2px; font-size: 0.8rem; width: 100% !important; }
             
             .ctv-video-block { top: 10px; right: 10px; }
             .logo-ctv-fijo { height: 35px; }
-            
             .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
             .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
             
@@ -437,123 +426,96 @@
             .btn-pausa-reproductor { font-size: 1rem; }
             .btn-fullscreen-web { font-size: 1.1rem; }
 
-            /* CORRECCIÓN DE CENTRADO ABSOLUTO: Marco del reproductor y cartel de espera */
+            /* CENTRADO DEL REPRODUCTOR / CARTEL EN ESPERA */
             .video-container {
                 width: 100% !important;
                 max-width: 100% !important;
-                margin: 0 auto !important; /* Lo centra horizontalmente respecto al body */
+                margin: 0 auto !important; 
                 float: none !important;
                 box-sizing: border-box !important;
+                display: block !important;
             }
 
-            /* --- CORRECCIÓN DEFINITIVA DE LAS DOS FILAS DE LOGOS --- */
+            /* --- FORZADO DE DOS FILAS EN EL MÓVIL --- */
             .comparsas-seccion {
                 width: 100% !important;
-                max-width: 100% !important;
                 margin: 35px auto 0 auto !important;
-                padding: 0 4px !important;
+                padding: 0 !important;
                 box-sizing: border-box !important;
             }
             
             .comparsas-grid {
-                display: flex !important;
-                flex-direction: row !important; 
-                flex-wrap: wrap !important;     /* Permite el salto elástico en el móvil */
-                justify-content: center !important;
-                align-items: start !important;
-                gap: 16px 8px !important;        
+                display: block !important; /* Desactiva el comportamiento flex de PC para romper las líneas */
                 width: 100% !important;
-                box-sizing: border-box !important;
+                text-align: center !important;
+                padding: 0 !important;
             }
 
-            /* Forzamos un ancho mínimo para que las 5 comparsas salten abajo juntas */
+            /* Las 5 comparsas se convierten en bloques inline alineados abajo juntas */
             .comparsas-grid .comparsa-card {
-                flex: 1 1 calc(20% - 8px) !important; 
-                min-width: 62px !important; /* Al no caber las 5 en la misma línea con la asociación, caen abajo en bloque */
-                max-width: 70px !important;
+                display: inline-block !important; 
+                vertical-align: top !important;
+                width: 18% !important; /* Ajuste perfecto para meter 5 en la misma línea */
+                min-width: 54px !important;
+                max-width: 65px !important;
+                margin: 0 2px !important;
                 text-align: center !important;
                 box-sizing: border-box !important;
             }
 
             .logo-comparsa {
-                height: 44px !important;  
-                width: 44px !important;
+                height: 38px !important;  
+                width: 38px !important;
                 object-fit: contain !important;
                 display: block !important;
                 margin: 0 auto 4px auto !important;
             }
 
-            .comparsa-card p,
-            .comparsas-grid .comparsa-card p {
+            .comparsa-card p {
                 color: #ffcc00 !important;
-                font-size: 0.55rem !important; 
+                font-size: 0.48rem !important; 
                 font-weight: 800 !important;
                 text-transform: uppercase !important;
-                line-height: 1.15 !important;
+                line-height: 1.1 !important;
                 margin: 0 !important;
                 text-align: center !important;
                 white-space: normal !important;   
-                display: block !important;
             }
 
-            /* --- FORZADO DE FILA SUPERIOR COMPLETA AL 100% PARA LA ASOCIACIÓN --- */
+            /* --- FORZADO DE LA ASOCIACIÓN ARRIBA OCUPANDO EL 100% --- */
             .comparsas-grid .comparsa-card.asociacion-card {
-                flex: 0 0 100% !important;  /* Rompe la rejilla ocupando todo el ancho superior */
+                display: block !important; /* Al ser tipo block, obliga a vaciar toda su fila */
                 width: 100% !important;
-                min-width: 100% !important;
                 max-width: 100% !important;
-                margin: 0 auto 12px auto !important; 
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                order: -1 !important; /* Lo sube arriba del todo obligatoriamente */
+                margin: 0 auto 15px auto !important; /* Deja espacio limpio abajo */
+                text-align: center !important;
             }
 
-            /* Escudo de la Asociación destacado arriba */
             .comparsas-grid .asociacion-card .logo-comparsa {
-                height: 58px !important;  
-                width: 58px !important;
-                max-height: 58px !important;
-                max-width: 58px !important;
+                height: 55px !important;  
+                width: 55px !important;
+                margin: 0 auto 5px auto !important;
             }
 
-            /* Texto de la Asociación destacado arriba */
             .comparsas-grid .asociacion-card p {
-                font-size: 0.70rem !important;
+                font-size: 0.68rem !important;
                 font-weight: 900 !important;
                 line-height: 1.2 !important;
-                letter-spacing: 0.3px;
                 color: #ffcc00 !important;
                 text-transform: uppercase !important;
             }
         }
 
-        /* CORRECCIÓN ANDROID PANTALLA COMPLETA HORIZONTAL SIN AGRANDAMIENTOS ERRONEOS */
+        /* --- PANTALLA COMPLETA --- */
         .video-container:fullscreen {
-            width: 100vw !important;
-            height: 100vh !important;
-            max-width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            background: #000 !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            width: 100vw !important; height: 100vh !important; max-width: 100% !important;
+            padding: 0 !important; margin: 0 !important; background: #000 !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
         }
-
         .video-container:fullscreen .video-wrapper {
-            width: 100vw !important;
-            height: 56.25vw !important; 
-            max-height: 100vh !important;
-            max-width: calc(100vh * 16 / 9) !important;
-            padding-bottom: 0 !important;
+            width: 100vw !important; height: 56.25vw !important; max-height: 100vh !important; max-width: calc(100vh * 16 / 9) !important; padding-bottom: 0 !important;
         }
-
-        /* Oculta los bloques externos adyacentes en pantalla completa para un renderizado limpio */
-        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion {
-            display: none !important;
-        }
+        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion { display: none !important; }
     </style>
 </head>
 <body>   
