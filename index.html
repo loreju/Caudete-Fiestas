@@ -963,13 +963,17 @@ window.addEventListener('load', () => {
         btnInstalarApp.addEventListener('click', () => {
             alert("📲 INSTALACIÓN EN IPHONE (iOS):\n\n1. Pulse el botón de 'Compartir' 📤 (el icono del cuadrado con la flecha hacia arriba en Safari).\n2. Busque hacia abajo en la lista y pulse en 'Añadir a la pantalla de inicio' ➕.\n\n¡Así tendrá la aplicación de Caudete Fiestas directa en su teléfono!");
         });
-    } else if (btnInstalarApp) {
+       } else if (btnInstalarApp) {
         btnInstalarApp.addEventListener('click', async () => {
             if (!eventoInstalacion) return;
             eventoInstalacion.prompt();
             const { outcome } = await eventoInstalacion.userChoice;
-            eventoInstalacion = null;
-            btnInstalarApp.style.display = 'none';
+            
+            // CORRECCIÓN: Solo se oculta el botón si el usuario ACEPTA instalar la app
+            if (outcome === 'accepted') {
+                btnInstalarApp.style.display = 'none';
+                eventoInstalacion = null;
+            }
         });
     }
   
