@@ -1,24 +1,26 @@
-const CACHE_NAME = 'caudete-fiestas-v49'; // Subimos a v49 para obligar a los móviles a actualizar el manifest e icono
+const CACHE_NAME = 'caudete-fiestas-v50'; // Subimos a v50 para forzar la lectura de los nuevos iconos cuadrados
 
-// Guardamos solo lo imprescindible para asegurar una instalación limpia sin fallos de ruta
+// CORRECCIÓN: Añadimos obligatoriamente los iconos del manifest para activar la instalación nativa
 const ASSETS = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './img/Cartel Fiestas-boton (2).png',
+  './img/Cartel Fiestas-boton.png'
 ];
 
 // Instalación de la memoria caché
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Usamos un método tolerante: si una imagen falla, el SW se instala igual
+      // Usamos un método tolerante: si una imagen falla por mayúsculas/minúsculas, el SW se instala igual
       cache.addAll(ASSETS).catch(err => console.log("Aviso en caché estática:", err));
       return cache;
     }).then(() => self.skipWaiting())
   );
 });
 
-// Activación y limpieza estricta de cachés viejas (v1, v2, v3, v4...)
+// Activación y limpieza estricta de cachés viejas (v49, v48...)
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
