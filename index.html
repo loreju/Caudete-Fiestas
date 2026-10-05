@@ -353,229 +353,223 @@
         .comparsas-seccion { margin-top: 50px; }
         .comparsas-grid { display: flex; justify-content: center; align-items: center; }
 
-         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (TAMAÑOS MÁXIMOS Y DESTELLO) --- */
+        /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (AJUSTE UNIVERSAL ANTISCROLL) --- */
         @media (max-width: 991px) {
-            /* Fuerza a que el cuerpo de la web ordene todo de arriba a abajo y centrado */
+            /* Variables de entorno para respetar zonas seguras (Notch/Isla Dinámica) de iPhone y Samsung */
             html, body {
-                text-align: center !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: flex-start !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
-                margin: 0 !important;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                text-align: center;
+                overflow-x: hidden; /* Evita rebotes extraños en el scroll horizontal */
             }
 
             body {
-                padding: 15px 10px !important;
+                /* Usa padding dinámico que se adapta al Notch físico del teléfono */
+                padding: max(10px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+                background-color: #000; /* Fondo oscuro base para evitar destellos blancos */
             }
 
-            /* CABECERA MÓVIL BALANCEADA */
+            /* CABECERA MÓVIL MÁS COMPACTA */
             .header-container { 
-                display: flex !important;
-                flex-direction: row !important; 
-                flex-wrap: wrap !important;
-                align-items: center !important; 
-                justify-content: center !important; 
-                gap: 15px 10px !important; 
-                padding: 15px !important; 
-                box-sizing: border-box !important; 
-                width: 100% !important; 
-                margin: 0 auto 15px auto !important;
+                display: flex;
+                flex-direction: row; 
+                flex-wrap: wrap;
+                align-items: center; 
+                justify-content: center; 
+                gap: 8px; 
+                padding: 10px; 
+                box-sizing: border-box; 
+                width: 100%; 
+                margin: 0 auto 10px auto; 
             }
             
             .title-block { 
-                order: -2 !important; 
-                width: 100% !important; 
-                min-width: 100% !important; 
-                margin-bottom: 10px !important; 
-                text-align: center !important; 
+                order: -2; 
+                width: 100%; 
+                min-width: 100%; 
+                margin-bottom: 4px; 
+                text-align: center; 
             }
-            h1 { font-size: 1.45rem !important; } 
-            .title-block .honor-text { font-size: 1.1rem !important; color: #ffcc00 !important; text-transform: uppercase; font-weight: 700; }
-            .title-block .years-subtitle-text { font-size: 1.1rem !important; font-weight: bold; color: #ffcc00 !important; }
+            h1 { font-size: 1.35rem; } 
+            .title-block .honor-text { font-size: 1.0rem; color: #ffcc00; text-transform: uppercase; font-weight: 700; }
+            .title-block .years-subtitle-text { font-size: 1.0rem; font-weight: bold; color: #ffcc00; }
             
             .header-block { 
-                flex: 0 1 calc(33.33% - 8px) !important; 
-                min-width: 95px !important; 
-                margin: 4px 0 !important; 
-                display: flex !important; 
-                flex-direction: column !important; 
-                align-items: center !important; 
-                justify-content: center !important; 
+                flex: 0 1 calc(33.33% - 8px); 
+                min-width: 90px; 
+                margin: 2px 0; 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+                justify-content: center; 
             }
             
-            /* RECALIBRACIÓN DE VOLUMEN: Se sube la escala del ayuntamiento para igualar la masa visual */
-            .logo-ctv-cabecera, .logo-mayordomia { 
-                height: 60px !important; 
-                width: auto !important; 
-                object-fit: contain !important;
-            }
-            .logo-ayuntamiento {
-                height: 60px !important; 
-                width: auto !important;
-                object-fit: contain !important;
-                transform: scale(1.32) !important; /* Incremento para igualar el volumen visual de los otros logos */
-            }
+            .logo-ctv-cabecera, .logo-mayordomia { height: 50px; } 
+            .logo-ayuntamiento { height: 50px; transform: scale(1.30); }
             
-            .header-block h3 { 
-                font-size: 0.58rem !important; 
-                line-height: 1.15 !important;
-                margin: 6px 0 0 0 !important; 
-            }
+            .header-block h3 { font-size: 0.55rem; margin-top: 2px; }
             
-            #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 12px 10px !important; margin-top: 5px; }
+            #btnInstalarApp { width: 100%; max-width: 260px; font-size: 0.80rem; padding: 10px; margin-top: 4px; }
 
-            /* SECCIÓN HISTÓRICA DE VÍDEOS AMPLIADA */
+            /* SECCIÓN HISTÓRICA DE VÍDEOS COMPACTADA */
             .archivo-historico-seccion {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 35px auto 15px auto !important; 
-                text-align: center !important;
-                box-sizing: border-box !important;
-                padding: 0 !important;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
+                width: 100%;
+                max-width: 100%;
+                margin: 15px auto 10px auto; 
+                text-align: center;
+                box-sizing: border-box;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
             
             .archivo-historico-seccion h2 {
-                font-size: 1.3rem !important;
-                margin-bottom: 14px !important;
+                font-size: 1.15rem; 
+                margin-bottom: 8px;
             }
 
-            /* Botones de años grandes y cómodos para pulsar */
             .grid-anios-archivo { 
-                display: grid !important;
-                grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)) !important; 
-                gap: 8px !important; 
-                width: 100% !important;
-                margin: 0 auto !important;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); 
+                gap: 6px; 
+                width: 100%;
+                margin: 0 auto;
             }
-            .btn-anio-archivo { padding: 15px 2px !important; font-size: 1rem !important; width: 100% !important; font-weight: 900 !important; }
+            .btn-anio-archivo { padding: 12px 2px; font-size: 0.90rem; width: 100%; }
             
-            .ctv-video-block { top: 10px; right: 10px; }
-            .logo-ctv-fijo { height: 35px; }
-            .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
-            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
+            /* Capas fijas/absolutas del reproductor */
+            .ctv-video-block { top: 8px; right: 8px; }
+            .logo-ctv-fijo { height: 30px; }
+            .reloj-video-block { top: 8px; left: 8px; padding: 4px 6px; font-size: 0.75rem; }
+            .badge-anio-reproductor { bottom: 8px; left: 8px; padding: 5px 10px; font-size: 0.75rem; }
             
-            .control-buttons-group { bottom: 10px; right: 10px; gap: 8px; }
-            .btn-control-tv { width: 38px; height: 38px; }
-            .btn-salir-reproductor { font-size: 1.25rem; }
-            .btn-pausa-reproductor { font-size: 1rem; }
-            .btn-fullscreen-web { font-size: 1.1rem; }
+            .control-buttons-group { bottom: 8px; right: 8px; gap: 6px; }
+            .btn-control-tv { width: 36px; height: 38px; }
 
-            .video-container {
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 auto !important; 
-                box-sizing: border-box !important;
-                display: block !important;
-            }
-
-            /* --- SECCIÓN COMPARSAS GIGANTE CON RECUPERACIÓN DE DESTELLO --- */
+            /* SECCIÓN COMPARSAS COMPACTADA */
             .comparsas-seccion {
-                width: 100% !important;
-                margin: 45px auto 20px auto !important; 
-                padding: 0 !important;
-                box-sizing: border-box !important;
+                width: 100%;
+                margin: 20px auto 10px auto; 
+                padding: 0;
+                box-sizing: border-box;
             }
             
             .comparsas-grid {
-                display: flex !important;
-                flex-direction: row !important;
-                flex-wrap: wrap !important; 
-                justify-content: center !important;
-                align-items: start !important;
-                gap: 22px 14px !important;        
-                width: 100% !important;
-                box-sizing: border-box !important;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap; 
+                justify-content: center;
+                align-items: flex-start;
+                gap: 12px 10px;        
+                width: 100%;
+                box-sizing: border-box;
             }
 
-            /* Las 5 comparsas de la fila inferior con el tamaño aumentado al máximo */
             .comparsas-grid .comparsa-card {
-                display: block !important;
-                flex: 0 1 calc(33.33% - 14px) !important; 
-                min-width: 95px !important;
-                max-width: 115px !important;
-                margin: 0 auto !important;
-                text-align: center !important;
-                box-sizing: border-box !important;
+                flex: 0 1 calc(33.33% - 10px); 
+                min-width: 85px; 
+                max-width: 110px;
+                margin: 0 auto;
+                text-align: center;
+                box-sizing: border-box;
             }
 
-            /* ESCUDOS DE LAS COMPARSAS MÁS GRANDES MÓVILES (76PX) */
             .logo-comparsa {
-                height: 76px !important;  
-                width: 76px !important;
-                max-height: 76px !important;
-                max-width: 76px !important;
-                object-fit: contain !important;
-                display: block !important;
-                margin: 0 auto 6px auto !important;
-                /* CORRECCIÓN DESTELLO: Cambiamos a la animación continua con máxima potencia para forzar el brillo */
-                animation: destelloContinuoLogo 4s infinite ease-in-out !important;
-                will-change: filter;
+                height: 65px; 
+                width: 65px;
+                max-height: 65px;
+                max-width: 65px;
+                margin: 0 auto 4px auto;
+                object-fit: contain;
+                display: block;
+                animation: destelloContinuoLogo 4s infinite ease-in-out;
+                will-change: filter, transform;
             }
 
             .comparsa-card p {
-                color: #ffcc00 !important;
-                font-size: 0.75rem !important; 
-                font-weight: 800 !important;
-                text-transform: uppercase !important;
-                line-height: 1.25 !important;
-                margin: 0 !important;
-                text-align: center !important;
-                white-space: normal !important;   
+                color: #ffcc00;
+                font-size: 0.68rem; 
+                font-weight: 800;
+                text-transform: uppercase;
+                line-height: 1.2;
+                margin: 0;
             }
 
-            /* --- LA ASOCIACIÓN ARRIBA PRESIDIENDO, GIGANTE --- */
             .comparsas-grid .comparsa-card.asociacion-card {
-                flex: 0 0 100% !important; 
-                width: 100% !important;
-                min-width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 auto 15px auto !important; 
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: center !important;
-                justify-content: center !important;
-                order: -1 !important; 
+                flex: 0 0 100%; 
+                width: 100%;
+                min-width: 100%;
+                max-width: 100%;
+                margin: 0 auto 8px auto; 
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                order: -1; 
             }
 
-            /* El escudo de la Asociación colosal a 96px */
             .comparsas-grid .asociacion-card .logo-comparsa {
-                height: 96px !important;  
-                width: 96px !important;
-                max-height: 96px !important;
-                max-width: 96px !important;
-                margin: 0 auto 8px auto !important;
-                animation: destelloContinuoLogo 4s infinite ease-in-out !important;
+                height: 80px; 
+                width: 80px;
+                max-height: 80px;
+                max-width: 80px;
+                margin: 0 auto 4px auto;
             }
 
             .comparsas-grid .asociacion-card p {
-                font-size: 0.88rem !important; 
-                font-weight: 900 !important;
-                line-height: 1.2 !important;
-                color: #ffcc00 !important;
-                text-transform: uppercase !important;
-                letter-spacing: 0.5px;
+                font-size: 0.80rem; 
+                font-weight: 900;
+                line-height: 1.2;
+                color: #ffcc00;
+                text-transform: uppercase;
             }
         }
 
-        /* --- PANTALLA COMPLETA --- */
-        .video-container:fullscreen {
-            width: 100vw !important; height: 100vh !important; max-width: 100% !important;
-            padding: 0 !important; margin: 0 !important; background: #000 !important;
-            display: flex !important; align-items: center !important; justify-content: center !important;
+        /* --- PANTALLA COMPLETA UNIVERSAL (ANDROID, SAMSUNG E IPHONE) --- */
+        
+        /* Selectores unificados para navegadores estándar y WebKit de iOS/Safari */
+        .video-container:fullscreen,
+        .video-container:-webkit-full-screen {
+            /* Las unidades dvw/dvh evitan los cortes provocados por las barras del navegador */
+            width: 100dvw !important; 
+            height: 100dvh !important; 
+            max-width: 100% !important;
+            max-height: 100% !important;
+            padding: 0 !important; 
+            margin: 0 !important; 
+            background: #000 !important;
+            display: flex !important; 
+            align-items: center !important; 
+            justify-content: center !important;
+            overflow: hidden !important; /* Bloquea cualquier scroll accidental en el fondo */
         }
-        .video-container:fullscreen .video-wrapper {
-            width: 100vw !important; height: 56.25vw !important; max-height: 100vh !important; max-width: calc(100vh * 16 / 9) !important; padding-bottom: 0 !important;
+        
+        /* Ajuste interno manteniendo la relación de aspecto 16:9 en el reproductor */
+        .video-container:fullscreen .video-wrapper,
+        .video-container:-webkit-full-screen .video-wrapper {
+            width: 100dvw !important; 
+            height: 56.25dvw !important; 
+            max-height: 100dvh !important; 
+            max-width: calc(100dvh * 16 / 9) !important; 
+            padding-bottom: 0 !important;
+            box-sizing: border-box !important;
         }
-        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion { display: none !important; }
+        
+        /* Ocultado seguro de elementos web para cualquier motor de renderizado móvil */
+        :fullscreen .header-container, 
+        :fullscreen .archivo-historico-seccion, 
+        :fullscreen .comparsas-seccion,
+        :-webkit-full-screen .header-container,
+        :-webkit-full-screen .archivo-historico-seccion,
+        :-webkit-full-screen .comparsas-seccion { 
+            display: none !important; 
+        }
     </style>
 </head>
-<body>     
+<body>
         
   <!-- CABECERA OFICIAL SEMÁNTICA -->
 <header class="header-container">
