@@ -779,7 +779,7 @@ window.addEventListener('load', () => {
     Object.keys(videosData).sort().forEach(anio => {
         const boton = document.createElement('button');
         boton.className = 'btn-anio-archivo'; // Nacen limpios sin destellos iniciales en la rejilla
-        boton.innerText = rAnio = anio;
+        boton.innerText = anio;
         boton.dataset.anio = anio;
         
         boton.addEventListener('click', () => {
