@@ -11,19 +11,19 @@
   "theme_color": "#141414",
   "icons": [
     {
-      "src": "img/Cartel Fiestas-boton (2).png",
+      "src": "img/cartel-fiestas-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "img/Cartel Fiestas-boton.png",
+      "src": "img/cartel-fiestas-592.png",
       "sizes": "592x592",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "img/Cartel Fiestas-boton.png",
+      "src": "img/cartel-fiestas-592.png",
       "sizes": "592x592",
       "type": "image/png",
       "purpose": "maskable"
