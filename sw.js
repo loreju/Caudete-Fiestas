@@ -1,12 +1,12 @@
-const CACHE_NAME = 'caudete-fiestas-v55'; // Subimos a v55 para forzar la lectura de los nuevos iconos cuadrados
+const CACHE_NAME = 'caudete-fiestas-v56'; // Subimos a v56 para forzar la lectura de los nuevos iconos cuadrados
 
 // CORRECCIÓN: Añadimos obligatoriamente los iconos del manifest para activar la instalación nativa
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './img/Cartel Fiestas-boton (2).png',
-  './img/Cartel Fiestas-boton.png'
+  './img/cartel-fiestas-192.png',
+  './img/cartel-fiestas-592.png'
 ];
 
 // Instalación de la memoria caché
