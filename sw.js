@@ -1,4 +1,4 @@
-const CACHE_NAME = 'caudete-fiestas-v56'; // Subimos a v56 para forzar la lectura de los nuevos iconos cuadrados
+const CACHE_NAME = 'caudete-fiestas-v57'; // Subimos a v57 para forzar la lectura de los nuevos iconos cuadrados
 
 // CORRECCIÓN: Añadimos obligatoriamente los iconos del manifest para activar la instalación nativa
 const ASSETS = [
