@@ -744,8 +744,36 @@ window.addEventListener('load', () => {
         "2026": "https://youtu.be/KVDx-0qIuQc"
     };
 
-    // Añade aquí el ID de YouTube para cada año a medida que se suban los vídeos.
-    const youtubeVideoIds = {};
+    function extractYoutubeVideoId(url) {
+        if (!url) return null;
+
+        try {
+            const parsed = new URL(url);
+            if (parsed.hostname === 'youtu.be') {
+                const id = parsed.pathname.replace('/', '').split('/')[0];
+                return id || null;
+            }
+
+            if (parsed.hostname.includes('youtube.com')) {
+                const directId = parsed.searchParams.get('v');
+                if (directId) return directId;
+
+                const pathParts = parsed.pathname.split('/').filter(Boolean);
+                if (pathParts[0] === 'embed' && pathParts[1]) return pathParts[1];
+                if (pathParts[0] === 'shorts' && pathParts[1]) return pathParts[1];
+            }
+        } catch (error) {
+            console.warn('URL de YouTube no válida:', url, error);
+        }
+
+        return null;
+    }
+
+    const youtubeVideoIds = Object.fromEntries(
+        Object.entries(videosData)
+            .map(([anio, url]) => [anio, extractYoutubeVideoId(url)])
+            .filter(([, id]) => Boolean(id))
+    );
 
     // Unificación estricta de elementos vinculados al DOM
     const iframePlayer = document.getElementById('archivo-player');
