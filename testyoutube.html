@@ -324,7 +324,7 @@
         /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
         #capa-espera {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.svg');
+            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
             background-size: contain; background-position: center; background-repeat: no-repeat;
             z-index: 10; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease, visibility 0.4s ease;
         }
@@ -862,7 +862,8 @@ window.addEventListener('load', () => {
                 autoplay: '1',
                 enablejsapi: '1',
                 rel: '0',
-                playsinline: '1'
+                playsinline: '1',
+                cc_load_policy: '0'
             });
             if (window.location.origin !== 'null') {
                 parametros.set('origin', window.location.origin);
