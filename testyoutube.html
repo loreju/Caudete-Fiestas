@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Caudete Fiestas</title>          
+    
+    <!-- Metaetiquetas para optimizar el comportamiento en iPhone y Android -->
+    <meta name="theme-color" content="#141414">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Caudete Fiestas">
+    
+    <!-- CORRECCIÓN PARA IPHONE: Añadimos tus iconos del cartel cuadrados oficiales -->
+    <link rel="apple-touch-icon" sizes="192x192" href="img/cartel-fiestas-192.png">
+    <link rel="apple-touch-icon" sizes="592x592" href="img/cartel-fiestas-592.png">
+         
+    <!-- ENLACE AL MANIFEST -->
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        html, body {
+            background-color: #141414;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior-y: none; 
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        /* --- ESTILOS DE LA CABECERA EN PC --- */
+        .header-container {
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+            flex-wrap: wrap;
+            gap: 25px;
+            max-width: 1450px;
+            margin: 0 auto 25px auto;
+            background-color: #1e1e1e;
+            padding: 25px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-sizing: border-box;
+            width: 100%;
+            position: relative;
+        }                  
+
+        .header-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            min-width: 180px;
+            text-align: center;
+        }                  
+
+        .header-block h3 {
+            color: #ffcc00;
+            font-size: 0.85rem; 
+            font-weight: 900; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            line-height: 1.2;
+            text-align: center;
+            margin: 8px 0 0 0 !important;
+            width: 100%;
+        }
+
+        .logo-ctv-cabecera, .logo-ayuntamiento, .logo-mayordomia { 
+            height: 110px; 
+            width: auto; 
+            object-fit: contain; 
+        }
+
+        .title-block {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        h1 {
+            color: #ffcc00;
+            font-size: 2.2rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .title-block .honor-text {
+            color: #ffcc00 !important;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+            margin: 4px 0 0 0;
+        }
+
+        .title-block .years-subtitle-text {
+            color: #ffcc00 !important;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin: 2px 0 0 0;
+        }
+
+        /* --- ESTILO BIZUM --- */
+        .btn-control-tv.btn-donar-tv {
+            background: linear-gradient(135deg, #00bcd4, #007bff) !important; 
+            color: white !important;
+            font-size: 1.3rem !important;
+            font-weight: bold !important;
+            pointer-events: auto !important;
+        }
+        .btn-control-tv.btn-donar-tv:hover { transform: scale(1.1); }
+                  
+        /* --- BANNER DE DONACIONES --- */
+        .modal-kofi-festero {
+            display: none;
+            width: 100% !important;
+            max-width: 900px !important; 
+            margin: 15px auto 25px auto !important; 
+            background: #252525 !important;
+            border: 1px solid #ffcc00 !important;
+            border-radius: 8px !important;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.7) !important;
+            z-index: 99999 !important;
+            text-align: left !important;
+            box-sizing: border-box !important;
+            padding: 15px 20px !important;
+        }               
+
+        .banner-donar-flex {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .banner-donar-texto { flex: 1; min-width: 280px; color: #ffffff; text-align: left; }
+        .banner-donar-texto h3 { margin: 0 0 5px 0; color: #ffcc00; font-size: 1.1rem; }
+        .banner-donar-texto p { margin: 0; font-size: 0.9rem; line-height: 1.4; color: #dddddd; }
+        .banner-donar-botones { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; }
+
+        .btn-kofi-monto {
+            background-color: #ff5f5f !important; color: #ffffff !important; text-decoration: none !important;
+            padding: 8px 14px !important; border-radius: 6px !important; font-weight: bold !important;
+            font-size: 0.85rem !important; transition: background 0.2s, transform 0.2s; display: inline-flex; align-items: center; border: none; cursor: pointer;
+        }
+        .btn-kofi-monto:hover { background-color: #ff3b3b !important; transform: scale(1.05); }
+
+        .info-bizum-badge { background: #00bcd4 !important; color: #ffffff !important; padding: 8px 14px !important; border-radius: 6px !important; font-size: 0.85rem !important; font-weight: bold !important; display: inline-block; }
+        .btn-cerrar-banner { background: none; border: 1px solid #666; color: #aaa; border-radius: 5px; padding: 5px 10px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+        .btn-cerrar-banner:hover { color: #fff; border-color: #fff; background: #333; }
+
+        /* --- COMPARSAS EN PC: ALINEADAS EN 1 FILA --- */
+        .comparsas-seccion { 
+            max-width: 900px; 
+            margin: 40px auto 10px auto; 
+            padding: 0 5px; 
+            box-sizing: border-box;
+        }
+
+        .comparsas-grid { 
+            display: flex !important; 
+            flex-direction: row !important;
+            flex-wrap: nowrap !important; 
+            justify-content: center !important; 
+            align-items: center !important; 
+            gap: 15px !important;
+            width: 100% !important;
+        }
+
+        .comparsa-card { text-align: center; min-width: 100px; flex: 1 !important; }
+
+        .comparsa-card p {
+            color: #ffcc00 !important;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase !important; 
+            line-height: 1.2;
+            margin: 6px 0 0 0;
+            display: block !important;
+        }
+    /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
+        .efecto-destello, .destello-logo, .logo-ctv-fijo {
+            animation: destelloContinuoLogo 4s infinite ease-in-out;
+            will-change: filter;
+        }
+        
+        .logo-comparsa {
+            height: 150px; width: 150px; object-fit: contain; transition: transform 0.2s;
+            animation: destelloSuaveLogoAbajo 4s infinite ease-in-out; will-change: filter;
+        }
+        .logo-comparsa:hover { transform: scale(1.08); }
+
+        .destello-texto { 
+            animation: destelloContinuoTexto 4s infinite ease-in-out; will-change: text-shadow;
+        }
+
+        /* FUERZA BRUTA PARA EL AURA ALREDEDOR DE LA CAJA */
+        .badge-anio-reproductor, .destello-box-fiestas { 
+            animation: destelloCajaAnioEspecial 4s infinite ease-in-out !important; 
+            transform: translateZ(0); /* Activa renderizado por hardware del aura */
+            will-change: box-shadow, text-shadow, border-color;
+        }
+
+        .btn-anio-archivo.activo {
+            animation: destelloBotonActivo 4s infinite ease-in-out !important;
+            will-change: box-shadow, border-color;
+        }
+
+        @keyframes destelloContinuoLogo {
+            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
+            50% { filter: drop-shadow(0 0 14px #ffd700) drop-shadow(0 0 24px rgba(255, 204, 0, 0.6)); }
+        }
+
+        @keyframes destelloSuaveLogoAbajo {
+            0%, 100% { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+            50% { filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 15px rgba(255, 204, 0, 0.25)); }
+        }
+
+        @keyframes destelloContinuoTexto {
+            0%, 100% { text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+            50% { text-shadow: 0 0 10px #ffd700, 0 0 18px rgba(255, 204, 0, 0.5); }
+        }
+
+        /* CORRECCIÓN ABSOLUTA DEL CONTORNO DE LUZ EXTERIOR DEL BOX */
+        @keyframes destelloCajaAnioEspecial {
+            0%, 100% { 
+                border-color: #ffcc00 !important; 
+                box-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 4px rgba(255,204,0,0.2) !important;
+            }
+            50% { 
+                border-color: #ffffff !important; 
+                /* Se expande un resplandor dorado exterior super nítido de gran radio */
+                box-shadow: 0 0 20px #ffd700, 0 0 35px #ffcc00, 0 4px 15px rgba(0,0,0,0.6) !important; 
+            }
+        }
+
+        @keyframes destelloBotonActivo {
+            0%, 100% { border-color: #ffcc00; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+            50% { border-color: #ffffff; box-shadow: 0 0 16px #ffcc00, 0 0 25px rgba(255, 215, 0, 0.6); }
+        }
+
+        /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
+        .video-container {
+            position: relative; max-width: 900px; margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8); background-color: #000;
+            border-radius: 12px; overflow: hidden; padding: 5px; box-sizing: border-box;
+        }
+
+        .video-wrapper {
+            position: relative; padding-bottom: 56.25%; height: 0; width: 100%;
+            border-radius: 8px; overflow: hidden; background-color: #000;
+        }
+        
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; z-index: 1; }
+
+        /* --- OVERLAYS SOBRE EL VÍDEO --- */
+        .reloj-video-block {
+            position: absolute; top: 15px; left: 15px; display: none;
+            background-color: #000000; color: #ffffff; border: 1px solid #ffcc00;
+            padding: 8px 14px; font-size: 1.1rem; font-weight: bold;
+            font-family: 'Courier New', Courier, monospace; border-radius: 6px; z-index: 5; pointer-events: none; letter-spacing: 1px;
+        }
+        
+        .ctv-video-block { position: absolute; top: 15px; right: 15px; display: none; z-index: 5; pointer-events: none; }
+        .logo-ctv-fijo { height: 50px; width: auto; object-fit: contain; opacity: 0.95; }
+        
+        /* CAJA DEL REPRODUCTOR CON MEJORA DE CAPA */
+        .badge-anio-reproductor {
+            position: absolute; bottom: 15px; left: 15px; display: none;
+            background: #141414 !important; color: #ffcc00 !important; padding: 8px 16px; font-size: 1.1rem;
+            font-weight: 900; border-radius: 6px; z-index: 5; border: 1px solid #ffcc00; transition: all 0.3s ease-in-out;
+        }
+
+        @media (min-width: 768px) {
+            .reloj-video-block { top: 20px; left: 20px; padding: 12px 20px; font-size: 1.4rem; }
+            .ctv-video-block { top: 20px; right: 20px; }
+            .logo-ctv-fijo { height: 73px; }
+            .badge-anio-reproductor { bottom: 20px; left: 20px; padding: 12px 24px; font-size: 1.4rem; }
+        }
+
+        /* --- BOTONERA DE CONTROL EN FILA HORIZONTAL --- */
+        .control-buttons-group {
+            position: absolute; bottom: 15px; right: 15px; display: none; flex-direction: row; gap: 10px; z-index: 6; pointer-events: none;
+        }
+
+        .btn-control-tv {
+            width: 40px; height: 40px; border: none; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5); pointer-events: auto; 
+        }
+        
+        @media (min-width: 768px) {
+            .control-buttons-group { bottom: 20px; right: 20px; gap: 12px; }
+            .btn-control-tv { width: 46px; height: 46px; }
+        }
+        
+        .btn-control-tv:hover { transform: scale(1.1); }
+        .btn-salir-reproductor { background: rgba(229, 9, 20, 0.85); color: #ffffff; font-size: 1.4rem; }
+        .btn-salir-reproductor:hover { background: #ff0000; }
+        .btn-pausa-reproductor { background: rgba(255, 140, 0, 0.85); color: #ffffff; font-size: 1.1rem; }
+        .btn-pausa-reproductor:hover { background: #ff8c00; }
+        .btn-fullscreen-web { background: rgba(255, 204, 0, 0.85); color: #141414; font-size: 1.1rem; }
+        .btn-fullscreen-web:hover { background: #ffcc00; }
+
+        #escudo-toper { pointer-events: none !important; }
+
+        /* --- CAPA DE ESPERA CON SOPORTE FUNDIDO --- */
+        #capa-espera {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #141414; background-image: url('img/Cartel-Fiestas-espera.png');
+            background-size: contain; background-position: center; background-repeat: no-repeat;
+            z-index: 10; display: flex; align-items: center; justify-content: center; opacity: 1; transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        .btn-play {
+            background: rgba(255, 204, 0, 0.95); color: #141414; border: none; width: 80px; height: 80px; font-size: 2rem;
+            border-radius: 50%; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;
+            text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
+        }
+        .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
+
+        /* REJILLAS HISTÓRICAS Y COMPARSAS */
+        .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
+        .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
+        .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
+        
+        .btn-anio-archivo {
+            background-color: #1e1e1e; color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4);
+            padding: 12px 5px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-anio-archivo:hover { background-color: #ffcc00; color: #141414; border-color: #ffcc00; }
+
+        .btn-anio-archivo.activo { 
+            background-color: #ffcc00 !important; color: #141414 !important; border-color: #ffcc00 !important;
+        }
+
+        .comparsas-seccion { margin-top: 50px; }
+        .comparsas-grid { display: flex; justify-content: center; align-items: center; }
+
+         /* --- RECONFIGURACIÓN RESPONSIVE MÓVIL (TAMAÑOS MÁXIMOS Y DESTELLO) --- */
+        @media (max-width: 991px) {
+            /* Fuerza a que el cuerpo de la web ordene todo de arriba a abajo y centrado */
+            html, body {
+                text-align: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+            }
+
+            body {
+                padding: 15px 10px !important;
+            }
+
+            /* CABECERA MÓVIL BALANCEADA */
+            .header-container { 
+                display: flex !important;
+                flex-direction: row !important; 
+                flex-wrap: wrap !important;
+                align-items: center !important; 
+                justify-content: center !important; 
+                gap: 15px 10px !important; 
+                padding: 15px !important; 
+                box-sizing: border-box !important; 
+                width: 100% !important; 
+                margin: 0 auto 15px auto !important;
+            }
+            
+            .title-block { 
+                order: -2 !important; 
+                width: 100% !important; 
+                min-width: 100% !important; 
+                margin-bottom: 10px !important; 
+                text-align: center !important; 
+            }
+            h1 { font-size: 1.45rem !important; } 
+            .title-block .honor-text { font-size: 1.1rem !important; color: #ffcc00 !important; text-transform: uppercase; font-weight: 700; }
+            .title-block .years-subtitle-text { font-size: 1.1rem !important; font-weight: bold; color: #ffcc00 !important; }
+            
+            .header-block { 
+                flex: 0 1 calc(33.33% - 8px) !important; 
+                min-width: 95px !important; 
+                margin: 4px 0 !important; 
+                display: flex !important; 
+                flex-direction: column !important; 
+                align-items: center !important; 
+                justify-content: center !important; 
+            }
+            
+            /* RECALIBRACIÓN DE VOLUMEN: Se sube la escala del ayuntamiento para igualar la masa visual */
+            .logo-ctv-cabecera, .logo-mayordomia { 
+                height: 60px !important; 
+                width: auto !important; 
+                object-fit: contain !important;
+            }
+            .logo-ayuntamiento {
+                height: 60px !important; 
+                width: auto !important;
+                object-fit: contain !important;
+                transform: scale(1.32) !important; /* Incremento para igualar el volumen visual de los otros logos */
+            }
+            
+            .header-block h3 { 
+                font-size: 0.58rem !important; 
+                line-height: 1.15 !important;
+                margin: 6px 0 0 0 !important; 
+            }
+            
+            #btnInstalarApp { width: 100% !important; max-width: 280px !important; font-size: 0.85rem !important; padding: 12px 10px !important; margin-top: 5px; }
+
+            /* SECCIÓN HISTÓRICA DE VÍDEOS AMPLIADA */
+            .archivo-historico-seccion {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 35px auto 15px auto !important; 
+                text-align: center !important;
+                box-sizing: border-box !important;
+                padding: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+            }
+            
+            .archivo-historico-seccion h2 {
+                font-size: 1.3rem !important;
+                margin-bottom: 14px !important;
+            }
+
+            /* Botones de años grandes y cómodos para pulsar */
+            .grid-anios-archivo { 
+                display: grid !important;
+                grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)) !important; 
+                gap: 8px !important; 
+                width: 100% !important;
+                margin: 0 auto !important;
+            }
+            .btn-anio-archivo { padding: 15px 2px !important; font-size: 1rem !important; width: 100% !important; font-weight: 900 !important; }
+            
+            .ctv-video-block { top: 10px; right: 10px; }
+            .logo-ctv-fijo { height: 35px; }
+            .reloj-video-block { top: 10px; left: 10px; padding: 5px 8px; font-size: 0.8rem; }
+            .badge-anio-reproductor { bottom: 10px; left: 10px; padding: 6px 12px; font-size: 0.8rem; }
+            
+            .control-buttons-group { bottom: 10px; right: 10px; gap: 8px; }
+            .btn-control-tv { width: 38px; height: 38px; }
+            .btn-salir-reproductor { font-size: 1.25rem; }
+            .btn-pausa-reproductor { font-size: 1rem; }
+            .btn-fullscreen-web { font-size: 1.1rem; }
+
+            .video-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 auto !important; 
+                box-sizing: border-box !important;
+                display: block !important;
+            }
+
+            /* --- SECCIÓN COMPARSAS GIGANTE CON RECUPERACIÓN DE DESTELLO --- */
+            .comparsas-seccion {
+                width: 100% !important;
+                margin: 45px auto 20px auto !important; 
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+            
+            .comparsas-grid {
+                display: flex !important;
+                flex-direction: row !important;
+                flex-wrap: wrap !important; 
+                justify-content: center !important;
+                align-items: start !important;
+                gap: 22px 14px !important;        
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Las 5 comparsas de la fila inferior con el tamaño aumentado al máximo */
+            .comparsas-grid .comparsa-card {
+                display: block !important;
+                flex: 0 1 calc(33.33% - 14px) !important; 
+                min-width: 95px !important;
+                max-width: 115px !important;
+                margin: 0 auto !important;
+                text-align: center !important;
+                box-sizing: border-box !important;
+            }
+
+            /* ESCUDOS DE LAS COMPARSAS MÁS GRANDES MÓVILES (76PX) */
+            .logo-comparsa {
+                height: 76px !important;  
+                width: 76px !important;
+                max-height: 76px !important;
+                max-width: 76px !important;
+                object-fit: contain !important;
+                display: block !important;
+                margin: 0 auto 6px auto !important;
+                /* CORRECCIÓN DESTELLO: Cambiamos a la animación continua con máxima potencia para forzar el brillo */
+                animation: destelloContinuoLogo 4s infinite ease-in-out !important;
+                will-change: filter;
+            }
+
+            .comparsa-card p {
+                color: #ffcc00 !important;
+                font-size: 0.75rem !important; 
+                font-weight: 800 !important;
+                text-transform: uppercase !important;
+                line-height: 1.25 !important;
+                margin: 0 !important;
+                text-align: center !important;
+                white-space: normal !important;   
+            }
+
+            /* --- LA ASOCIACIÓN ARRIBA PRESIDIENDO, GIGANTE --- */
+            .comparsas-grid .comparsa-card.asociacion-card {
+                flex: 0 0 100% !important; 
+                width: 100% !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 auto 15px auto !important; 
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                order: -1 !important; 
+            }
+
+            /* El escudo de la Asociación colosal a 96px */
+            .comparsas-grid .asociacion-card .logo-comparsa {
+                height: 96px !important;  
+                width: 96px !important;
+                max-height: 96px !important;
+                max-width: 96px !important;
+                margin: 0 auto 8px auto !important;
+                animation: destelloContinuoLogo 4s infinite ease-in-out !important;
+            }
+
+            .comparsas-grid .asociacion-card p {
+                font-size: 0.88rem !important; 
+                font-weight: 900 !important;
+                line-height: 1.2 !important;
+                color: #ffcc00 !important;
+                text-transform: uppercase !important;
+                letter-spacing: 0.5px;
+            }
+        }
+
+        /* --- PANTALLA COMPLETA --- */
+        .video-container:fullscreen {
+            width: 100vw !important; height: 100vh !important; max-width: 100% !important;
+            padding: 0 !important; margin: 0 !important; background: #000 !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
+        }
+        .video-container:fullscreen .video-wrapper {
+            width: 100vw !important; height: 56.25vw !important; max-height: 100vh !important; max-width: calc(100vh * 16 / 9) !important; padding-bottom: 0 !important;
+        }
+        :fullscreen .header-container, :fullscreen .archivo-historico-seccion, :fullscreen .comparsas-seccion { display: none !important; }
+    </style>
+</head>
+<body>           
+        
+  <!-- CABECERA OFICIAL SEMÁNTICA -->
+<header class="header-container">
+    <div class="header-block ctv-block-top">
+        <img class="logo-ctv-cabecera destello-logo" src="img/logo-ctv.png" alt="Caudete Televisión">
+        <h3 style="margin-left: 14px !important;">CAUDETE<br>TELEVISIÓN</h3>
+    </div>
+    <div class="title-block">
+        <h1 class="destello-texto">Caudete Fiestas de Moros y Cristianos</h1>
+        <p class="honor-text destello-texto">En Honor a Ntra. Sra. de Gracia</p>
+        <p class="years-subtitle-text">1974 - 1983 A 2026</p>
+    </div>
+    <div class="header-block ayuntamiento-block">
+        <img class="logo-ayuntamiento destello-logo" src="img/escudo-ayuntamiento.png" alt="M.I. Ayuntamiento de Caudete">
+        <h3>M.I. AYUNTAMIENTO<br>DE CAUDETE</h3>
+    </div>
+    <div class="header-block mayordomia-block">
+        <img class="logo-mayordomia destello-logo" src="img/logo-mayordomia.png" alt="M.I. Mayordomía Ntra. Sra. de Gracia">
+        <h3>M.I. MAYORDOMÍA<br>NTRA. SRA. DE GRACIA</h3>
+    </div>
+</header>
+
+<!-- 🎬 BANNER DE DONACIONES HORIZONTAL OPTIMIZADO (CON BIZUM INTERACTIVO) -->
+<div id="ventanaMensajeKofi" class="modal-kofi-festero">
+    <div class="banner-donar-flex">
+        <div class="banner-donar-texto">
+            <h3>🎬 ¡Ayuda a mantener el archivo!</h3>
+            <p style="margin: 0 0 6px 0 !important; line-height: 1.45;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios en Bunny.net genera costes mensuales.</p>
+            <p style="margin: 0 !important; line-height: 1.45;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum, PayPal o Tarjeta (de 1€, 3€, 5€ o lo que quieras):</p>
+        </div>
+        <div class="banner-donar-botones">
+            <!-- Botón oficial Ko-fi -->
+            <a href="https://ko-fi.com/caudetefiestas" target="_blank" class="btn-kofi-monto" style="background-color: #ff5f5f !important; color: white !important;">💳 PayPal / Tarjeta</a>
+            
+            <!-- BOTÓN INTERACTIVO DE BIZUM (Llama a la función Javascript al hacer clic) -->
+            <button onclick="instruccionesBizum(event)" class="info-bizum-badge" style="border: none; cursor: pointer; font-family: inherit;">📲 Bizum: 609 450 962</button>
+            
+            <!-- Botón para cerrar el banner -->
+            <button class="btn-cerrar-banner" onclick="document.getElementById('ventanaMensajeKofi').style.display='none';">✕ Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- 📥 BOTÓN DE INSTALACIÓN PWA -->
+<div style="text-align: center; margin: 15px auto 25px auto; max-width: 900px; padding: 0 5px;">
+    <button id="btnInstalarApp" style="display: none; background-color: #ffcc00; color: #141414; border: none; padding: 14px 24px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 0.95rem; width: 100%; max-width: 320px; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.2s;">
+        📥 Instalar Aplicación Caudete Fiestas
+    </button>
+</div>
+
+<!-- CONTENEDOR DEL REPRODUCTOR -->
+<div class="video-container" id="marco-contenedor">
+    <div class="video-wrapper">
+        
+        <!-- INFOGRAFÍA INTERNA DE TELEVISIÓN -->
+        <div class="reloj-video-block destello-logo" id="reloj-video" style="z-index: 98;">00:00</div>
+
+        <div class="ctv-video-block" id="bloque-logo-ctv-video" style="z-index: 98;">
+            <img class="logo-ctv-fijo destello-logo" src="img/logo-ctv.png" alt="CTV">
+        </div>
+
+        <!-- REAJUSTADO: El box blanco de abajo a la izquierda RECUPERA el destello continuo fijo para destacar -->
+        <div id="badge-anio" class="badge-anio-reproductor efecto-destello destello-texto" style="z-index: 98;">FIESTAS 2026 PRÓXIMAMENTE</div>
+        
+        <!-- ESCUDO TOTALMENTE LIBERADO CON POINTER-EVENTS NONE -->
+        <div id="escudo-toper" style="position: absolute; top: 0; left: 0; width: 100%; height: 80%; z-index: 4; cursor: default; pointer-events: none;"></div>
+
+        <!-- BOTONERA DE CONTROL -->
+        <div class="control-buttons-group" id="grupo-botones-tv" style="z-index: 99; pointer-events: auto;">
+            <button class="btn-control-tv btn-salir-reproductor" id="btn-salir-video" title="Inicio">🏠</button>
+            <button class="btn-control-tv btn-pausa-reproductor" id="btn-pausa-video" title="Pausar Emisión">⏸</button>
+            <button class="btn-control-tv btn-fullscreen-web" id="btn-pantalla-completa" title="Pantalla Completa">⛶</button>
+        </div>
+
+        <!-- Capa de espera -->
+        <div id="capa-espera" style="z-index: 10;">
+            <button class="btn-play" id="start-btn" style="z-index: 12;">▶</button>
+        </div>
+        
+        <!-- Iframe limpio oficial -->
+        <iframe 
+            id="archivo-player"
+            class="archivo-video-player"
+            src="about:blank" 
+            loading="lazy" 
+            allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowfullscreen="true"
+            style="z-index: 1;">
+        </iframe>
+    </div>
+</div>
+
+<!-- SECCIÓN INTERACTIVA: ARCHIVO HISTÓRICO -->
+<div class="archivo-historico-seccion">
+    <h2 class="destello-texto">Seleccionar Año de las Fiestas</h2>
+    <div id="contenedor-botones-archivo" class="grid-anios-archivo"></div>
+</div>
+
+<!-- SECCIÓN DE COMPARSAS ADAPTADA (ASOCIACIÓN ARRIBA Y 5 COMPARSAS ABAJO) -->
+<div class="comparsas-seccion">
+    <div class="comparsas-grid">
+        <!-- La Asociación que ahora irá ARRIBA sola y más grande -->
+        <div class="comparsa-card asociacion-card"><img class="logo-comparsa destello-logo" src="img/logo-asociacion.png" alt="Asociación"><p>Asociación de<br>Comparsas</p></div>
+
+        <!-- Las 5 comparsas que irán ABAJO alineadas -->
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/guerreros.png" alt="Guerreros"><p>Comparsa de<br>Guerreros</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/mirenos.png" alt="Mirenos"><p>Comparsa de<br>Mirenos</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/tarik.png" alt="Tarik"><p>Comparsa de<br>Tarik</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/moros.png" alt="Moros"><p>Comparsa de<br>Moros</p></div>
+        <div class="comparsa-card"><img class="logo-comparsa destello-logo" src="img/antigua.png" alt="La Antigua"><p>Comparsa de<br>La Antigua</p></div>
+    </div>
+</div>
+ 
+  <!-- ========================================== -->
+<!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
+<!-- ========================================== -->
+
+<script>
+window.addEventListener('load', () => {
+    // --- VÍDEOS POR AÑO ---
+    const videosData = {
+        "1974": "https://youtu.be/hjV7W-0BABM",      
+        "1983": "https://youtu.be/w0wdwkkAywI",
+        "1984": "https://youtu.be/L9WvXHQJfuw",
+        "1985": "https://youtu.be/d9p7RzkcGKc",
+        "1986": "https://youtu.be/AVGhFdGLj48",
+        "1987": "https://youtu.be/EPbBxyyK9hc",
+        "1988": "https://youtu.be/R2J5EHiVeqk",
+        "1989": "https://youtu.be/WvtgEzB2T_M",
+        "1990": "https://youtu.be/4IvYvg0zrIU",
+        "1991": "https://youtu.be/9A646dYBDUU",
+        "1992": "https://youtu.be/IEMdOf4YQwg",
+        "1993": "https://youtu.be/Q2GENGr54iM",
+        "1994": "https://youtu.be/HyIPrk7Dlg0",
+        "1995": "https://youtu.be/hEp7byXw9r0",
+        "1996": "https://youtu.be/7Zs8NYLFfQw",
+        "1997": "https://youtu.be/o-y051QRg98",
+        "1998": "https://youtu.be/cCUr0pMJFMA",
+        "1999": "https://youtu.be/rsyxTG0HsUY",
+        "2000": "https://youtu.be/oDhFnIFVgeM",
+        "2001": "https://youtu.be/JtMQke-cGwc",
+        "2002": "https://youtu.be/_QOEtiMiNOw",
+        "2003": "https://youtu.be/83A4_xjqbNA",
+        "2004": "https://youtu.be/wf65AcoN95Y",
+        "2005": "https://youtu.be/pYuMPQ199pE",
+        "2006": "https://youtu.be/EC5AQslAxiY",
+        "2007": "https://youtu.be/8FIpyxZlzpc",
+        "2008": "https://youtu.be/NX6oAHDgx3Y",
+        "2009": "https://youtu.be/LvJhjjqU6gQ",
+        "2010": "https://youtu.be/lYUI7l_oxxU",
+        "2011": "https://youtu.be/KBoYQj8xkAc",
+        "2012": "https://youtu.be/PA1ZIcnOCBM",
+        "2013": "https://youtu.be/29jF4RlMrqw",
+        "2014": "https://youtu.be/XeKex6zp3UY",
+        "2015": "https://youtu.be/WwapJJ8QagE",
+        "2016": "https://youtu.be/wX77WT5jrP0",
+        "2017": "https://youtu.be/npZaStenu7U",
+        "2018": "https://youtu.be/O3vXeWK9oKI",
+        "2019": "https://youtu.be/FTU4Sp1Clgs",
+        "2020": "https://youtu.be/FApuej5vZbw",
+        "2021": "https://youtu.be/h92oMNYJUis",
+        "2022": "https://youtu.be/2w6YMqqMUGw",
+        "2023": "https://youtu.be/ceG0RYDV5pI",
+        "2024": "https://youtu.be/Hkf8-biA9n0",
+        "2025": "https://youtu.be/_cXZWL6XQfM",
+        "2026": "https://youtu.be/KVDx-0qIuQc"
+    };
+
+    // Añade aquí el ID de YouTube para cada año a medida que se suban los vídeos.
+    const youtubeVideoIds = {};
+
+    // Unificación estricta de elementos vinculados al DOM
+    const iframePlayer = document.getElementById('archivo-player');
+    const capaEspera = document.getElementById('capa-espera');
+    const btnPlayBase = document.getElementById('start-btn');
+    const badgeAnio = document.getElementById('badge-anio');
+    const contenedorBotones = document.getElementById('contenedor-botones-archivo');
+    const bloqueLogoCTVVideo = document.getElementById('bloque-logo-ctv-video');
+    const relojVideo = document.getElementById('reloj-video');
+    const marcoContenedor = document.getElementById('marco-contenedor');
+    const btnFS = document.getElementById('btn-pantalla-completa');   
+    const btnPausaVideo = document.getElementById('btn-pausa-video');
+    const btnSalirVideo = document.getElementById('btn-salir-video');
+    const grupoBotonesTv = document.getElementById('grupo-botones-tv');
+
+    let anioSeleccionadoDestino = "2026";
+    let unVideoEstaReproduciendose = false;
+    let segundosTranscurridosVideo = 0;
+    let temporizadorReloj = null;
+    let videoPausado = false;
+    let reproductorActual = 'bunny';
+
+    function enviarComandoReproductor(metodo, valor = null) {
+        if (iframePlayer && iframePlayer.contentWindow) {
+            if (reproductorActual === 'youtube') {
+                const comandos = { play: 'playVideo', pause: 'pauseVideo' };
+                const payload = {
+                    event: 'command',
+                    func: comandos[metodo],
+                    args: valor === null ? [] : [valor]
+                };
+                iframePlayer.contentWindow.postMessage(JSON.stringify(payload), '*');
+                return;
+            }
+
+            const payload = JSON.stringify({
+                context: 'player.js',
+                method: metodo,
+                value: valor
+            });
+            iframePlayer.contentWindow.postMessage(payload, '*');
+        }
+    }
+
+    // --- RENDERIZADO DINÁMICO DE LOS BOTONES DE AÑOS ---
+    Object.keys(videosData).sort().forEach(anio => {
+        const boton = document.createElement('button');
+        boton.className = 'btn-anio-archivo'; // Nacen limpios sin destellos iniciales en la rejilla
+        boton.innerText = anio;
+        boton.dataset.anio = anio;
+        
+        boton.addEventListener('click', () => {
+            // Al activar un año, limpiamos los demás y solo destella de forma continua el año seleccionado
+            document.querySelectorAll('.btn-anio-archivo').forEach(b => {
+                b.classList.remove('activo');
+                b.classList.remove('efecto-destello');
+            });
+            boton.classList.add('activo');
+            boton.classList.add('efecto-destello');
+            anioSeleccionadoDestino = anio;
+            inicializarCambioEmisionVideo(anio);
+        });
+        
+        contenedorBotones.appendChild(boton);
+    });
+
+    // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CON TEXTOS HISTÓRICOS Y DESTELLO FIJO) ---
+    function inicializarCambioEmisionVideo(anio) {
+        clearInterval(temporizadorReloj);
+        videoPausado = false;
+        btnPausaVideo.innerText = "⏸";
+
+        const youtubeVideoId = youtubeVideoIds[anio];
+        if (youtubeVideoId) {
+            reproductorActual = 'youtube';
+            const parametros = new URLSearchParams({
+                autoplay: '1',
+                enablejsapi: '1',
+                rel: '0'
+            });
+            if (window.location.origin !== 'null') {
+                parametros.set('origin', window.location.origin);
+            }
+            iframePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?${parametros}`;
+        } else {
+            reproductorActual = 'bunny';
+            const parametros = new URLSearchParams({
+                autoplay: 'true',
+                loop: 'false',
+                muted: 'false',
+                preload: 'true',
+                responsive: 'true'
+            });
+            iframePlayer.src = `${videosData[anio]}?${parametros}`;
+        }
+        
+        capaEspera.style.opacity = "0";
+        setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
+
+        // --- ASIGNACIÓN DE TEXTOS HISTÓRICOS PERSONALIZADOS (2020, 2021 Y 2026) ---
+        if (anio === "2020" || anio === "2021") {
+            badgeAnio.innerText = `FIESTAS ${anio} SUSPENDIDAS`;
+        } else if (anio === "2026") {
+            badgeAnio.innerText = `FIESTAS ${anio} PRÓXIMAMENTE`;
+        } else {
+            badgeAnio.innerText = `FIESTAS ${anio}`;
+        }
+        
+        badgeAnio.style.display = "block";
+        
+        // Forzamos al navegador a mantener el destello continuo
+        badgeAnio.classList.add('efecto-destello');
+        
+        bloqueLogoCTVVideo.style.display = "block";
+        relojVideo.style.display = "block";
+        grupoBotonesTv.style.display = "flex";
+
+        unVideoEstaReproduciendose = true;
+        
+        actualizarRelojHoraReal();
+        temporizadorReloj = setInterval(actualizarRelojHoraReal, 1000);
+    }
+
+    // --- RELOJ EN HORA REAL DE TELEVISIÓN ---
+    function actualizarRelojHoraReal() {
+        const ahora = new Date();
+        const horas = String(ahora.getHours()).padStart(2, '0');
+        const minutes = String(ahora.getMinutes()).padStart(2, '0');
+        relojVideo.innerText = `${horas}:${minutes}`;
+    }
+
+    // --- LISTENERS DE LA BOTONERA DE CONTROL ---
+
+    // Botón de Inicio / Detener Emisión (🏠)
+    btnSalirVideo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        if (document.fullscreenElement || document.webkitFullscreenElement) {
+            const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
+            if (salirFS) salirFS.call(document).catch(() => {});
+        }
+        
+        clearInterval(temporizadorReloj);
+        unVideoEstaReproduciendose = false;
+        
+        enviarComandoReproductor('pause');
+        iframePlayer.src = "about:blank"; 
+        reproductorActual = 'bunny';
+
+        badgeAnio.style.display = "none";
+        badgeAnio.classList.remove('efecto-destello'); // Quitamos el destello al salir
+        bloqueLogoCTVVideo.style.display = "none";
+        relojVideo.style.display = "none";
+        grupoBotonesTv.style.display = "none";
+        document.querySelectorAll('.btn-anio-archivo').forEach(b => {
+            b.classList.remove('activo');
+            b.classList.remove('efecto-destello');
+        });
+
+        capaEspera.style.visibility = "visible";
+        capaEspera.style.opacity = "1";
+    });
+
+    // Botón de Pausa / Reanudar Emisión (⏸)
+    btnPausaVideo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!unVideoEstaReproduciendose) return;
+
+        if (!videoPausado) {
+            enviarComandoReproductor('pause');
+            videoPausado = true;
+            btnPausaVideo.innerText = "▶";
+        } else {
+            enviarComandoReproductor('play');
+            videoPausado = false;
+            btnPausaVideo.innerText = "⏸";
+        }
+    });
+
+    // Botón de Pantalla Completa Adaptativo (⛶) - CORREGIDO PARA IPHONE (iOS)
+    btnFS.addEventListener('click', (e) => {
+        e.stopPropagation();
+        
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            const solicitarFS = marcoContenedor.requestFullscreen || marcoContenedor.webkitRequestFullscreen;
+            if (solicitarFS) {
+                solicitarFS.call(marcoContenedor).then(() => {
+                    if (screen.orientation && screen.orientation.lock) {
+                        screen.orientation.lock('landscape').catch(() => {});
+                    }
+                }).catch((err) => {
+                    console.error("Error al activar Fullscreen:", err);
+                });
+            } else if (iframePlayer && iframePlayer.webkitEnterFullscreen) {
+                // EXCEPCIÓN DE IPHONE: Lanza el reproductor de vídeo nativo de iOS a pantalla completa
+                iframePlayer.webkitEnterFullscreen();
+            } else {
+                alert("Para ver en pantalla completa en este dispositivo iOS, gire su teléfono en horizontal o use los controles integrados del propio vídeo.");
+            }
+        } else {
+            const salirFS = document.exitFullscreen || document.webkitExitFullscreen;
+            if (salirFS) {
+                salirFS.call(document).catch(() => {});
+            }
+        }
+    });
+
+    btnPlayBase.addEventListener('click', () => {
+        const botonUltimoAnio = document.querySelector(`.btn-anio-archivo[data-anio="${anioSeleccionadoDestino}"]`);
+        if (botonUltimoAnio) {
+            botonUltimoAnio.classList.add('activo');
+            botonUltimoAnio.classList.add('efecto-destello');
+        }
+        inicializarCambioEmisionVideo(anioSeleccionadoDestino);
+    });
+
+    // Restaurar sincronización de pantalla al salir
+    const restaurarEstadosPantalla = () => {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            btnFS.innerText = "⛶";
+            if (screen.orientation && screen.orientation.unlock) {
+                screen.orientation.unlock();
+            }
+        } else {
+            btnFS.innerText = "❌";
+        }
+    };
+
+    document.addEventListener('fullscreenchange', restaurarEstadosPantalla);
+    document.addEventListener('webkitfullscreenchange', restaurarEstadosPantalla);
+
+    // --- GESTIÓN DE LA INSTALACIÓN PWA (OPTIMIZADO PARA ANDROID Y GUÍA PARA IPHONE) ---
+    let eventoInstalacion = null;
+    const btnInstalarApp = document.getElementById('btnInstalarApp');
+    const esIphone = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const esOrdenador = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        eventoInstalacion = e;
+        if (btnInstalarApp && !esOrdenador && !esIphone) {
+            btnInstalarApp.style.display = 'block';
+        }
+    });
+
+    if (esIphone && btnInstalarApp) {
+        btnInstalarApp.style.display = 'block';
+        btnInstalarApp.innerText = "🍏 Cómo Instalar en iPhone";
+        btnInstalarApp.style.backgroundColor = "#ffffff";
+        btnInstalarApp.style.color = "#141414";
+        
+        btnInstalarApp.addEventListener('click', () => {
+            alert("📲 INSTALACIÓN EN IPHONE (iOS):\n\n1. Pulse el botón de 'Compartir' 📤 (el icono del cuadrado con la flecha hacia arriba en Safari).\n2. Busque hacia abajo en la lista y pulse en 'Añadir a la pantalla de inicio' ➕.\n\n¡Así tendrá la aplicación de Caudete Fiestas directa en su teléfono!");
+        });
+       } else if (btnInstalarApp) {
+        btnInstalarApp.addEventListener('click', async () => {
+            if (!eventoInstalacion) return;
+            eventoInstalacion.prompt();
+            const { outcome } = await eventoInstalacion.userChoice;
+            
+            // CORRECCIÓN: Solo se oculta el botón si el usuario ACEPTA instalar la app
+            if (outcome === 'accepted') {
+                btnInstalarApp.style.display = 'none';
+                eventoInstalacion = null;
+            }
+        });
+    }
+  
+// --- CREACIÓN DINÁMICA DEL BOTÓN DE DONACIÓN (€) ---
+    const btnDonarInicio = document.createElement('button');
+    btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello';
+    btnDonarInicio.id = 'btnDonarInicio';
+    btnDonarInicio.innerText = '€';
+    btnDonarInicio.title = 'Ayuda al mantenimiento del archivo (Bizum / Tarjeta / PayPal)';
+    
+    // Al pulsar el botón, abrimos o cerramos de forma limpia el banner horizontal superior
+    btnDonarInicio.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const bannerKofi = document.getElementById('ventanaMensajeKofi');
+        if (bannerKofi) {
+            if (bannerKofi.style.display === 'block') {
+                bannerKofi.style.display = 'none';
+            } else {
+                bannerKofi.style.display = 'block';
+                bannerKofi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    });
+
+    // Inserción en la botonera de televisión respetando la inversión CSS
+    if (grupoBotonesTv) {
+        grupoBotonesTv.insertBefore(btnDonarInicio, grupoBotonesTv.firstChild);
+    }
+
+    // --- LÓGICA PARA CERRAR EL BANNER AL HACER CLIC FUERA ---
+    const ventanaMensajeKofi = document.getElementById('ventanaMensajeKofi');
+    
+    if (btnDonarInicio && ventanaMensajeKofi) {
+        document.addEventListener('click', () => {
+            ventanaMensajeKofi.style.display = 'none';
+        });
+        // Evitamos que el banner se cierre si se hace clic dentro de él
+        ventanaMensajeKofi.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    // --- FUNCIÓN INTERACTIVA DE BIZUM (AVISO Y COPIADO AUTOMÁTICO) ---
+    window.instruccionesBizum = function(e) {
+        e.stopPropagation(); // Evita que se cierre el banner al pulsar el botón
+        const numeroTelefono = "609450962";
+        
+        navigator.clipboard.writeText(numeroTelefono).then(() => {
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 45 09 62.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
+        }).catch(err => {
+            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 45 09 62.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.");
+        });
+    };
+
+    // --- CONTROL ESTRICTO DE PANTALLA COMPLETA ---
+    const comprobarPantallaCompletaFestera = () => {
+        if (btnDonarInicio && ventanaMensajeKofi) {
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                btnDonarInicio.style.setProperty('display', 'none', 'important');
+                ventanaMensajeKofi.style.display = 'none';
+            } else {
+                btnDonarInicio.style.setProperty('display', 'flex', 'important');
+            }
+        }
+    };
+
+    document.addEventListener('fullscreenchange', comprobarPantallaCompletaFestera);
+    document.addEventListener('webkitfullscreenchange', comprobarPantallaCompletaFestera);
+
+    // --- REGISTRO AUTOMÁTICO DEL SERVICE WORKER (PWA) ---
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js')
+            .then((registro) => {
+                console.log('Service Worker de Caudete Fiestas registrado con éxito en el alcance:', registro.scope);
+            })
+            .catch((error) => {
+                console.error('Fallo en el registro del Service Worker:', error);
+            });
+    }
+});
+</script>
+</body>
+</html>
