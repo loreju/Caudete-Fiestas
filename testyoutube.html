@@ -258,7 +258,7 @@
 
         /* --- MARCO DEL REPRODUCTOR OPTIMIZADO --- */
         .video-container {
-            position: relative; max-width: 900px; margin: 0 auto;
+            position: relative; width: 100%; max-width: 900px; margin: 0 auto;
             box-shadow: 0 15px 35px rgba(0,0,0,0.8); background-color: #000;
             border-radius: 12px; overflow: hidden; padding: 5px; box-sizing: border-box;
         }
@@ -659,6 +659,7 @@
         <iframe 
             id="archivo-player"
             class="archivo-video-player"
+            title="Reproductor de vídeos históricos de las Fiestas de Caudete"
             src="about:blank" 
             loading="lazy" 
             allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
@@ -863,7 +864,8 @@ window.addEventListener('load', () => {
                 enablejsapi: '1',
                 rel: '0',
                 playsinline: '1',
-                cc_load_policy: '0'
+                cc_load_policy: '0',
+                vq: 'hd1080'
             });
             if (window.location.origin !== 'null') {
                 parametros.set('origin', window.location.origin);
