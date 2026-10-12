@@ -25,6 +25,7 @@
             padding: 0;
             overscroll-behavior-y: none; 
             -webkit-overflow-scrolling: touch;
+            width: 100%;
         }
 
         body {
@@ -32,6 +33,7 @@
             color: #ffffff;
             text-align: center;
             padding: 40px 20px;
+            box-sizing: border-box;
         }
 
         /* --- ESTILOS DE LA CABECERA EN PC --- */
@@ -195,7 +197,7 @@
             margin: 6px 0 0 0;
             display: block !important;
         }
-    /* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
+/* --- ANIMACIONES DE DESTELLO INTERMEDIAS (CALIBRADAS) --- */
         .efecto-destello, .destello-logo, .logo-ctv-fijo {
             animation: destelloContinuoLogo 4s infinite ease-in-out;
             will-change: filter;
@@ -268,7 +270,10 @@
             border-radius: 8px; overflow: hidden; background-color: #000;
         }
         
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; z-index: 1; }
+        .video-wrapper iframe { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; z-index: 1; 
+            will-change: transform;
+        }
 
         /* --- OVERLAYS SOBRE EL VÍDEO --- */
         .reloj-video-block {
@@ -334,8 +339,7 @@
             text-indent: 5px; transition: transform 0.2s, background-color 0.2s; z-index: 12;
         }
         .btn-play:hover { transform: scale(1.1); background: #ffcc00; }
-
-        /* REJILLAS HISTÓRICAS Y COMPARSAS */
+/* REJILLAS HISTÓRICAS Y COMPARSAS */
         .archivo-historico-seccion { max-width: 900px; margin: 40px auto 10px auto; padding: 0 5px; }
         .archivo-historico-seccion h2 { color: #ffcc00; font-size: 1.4rem; text-transform: uppercase; margin-bottom: 15px; }
         .grid-anios-archivo { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 10px; width: 100%; }
@@ -513,7 +517,7 @@
                 object-fit: contain !important;
                 display: block !important;
                 margin: 0 auto 6px auto !important;
-                /* CORRECCIÓN DESTELLO: Cambiamos a la animación continua con máxima potencia para forzar el brillo */
+    /* CORRECCIÓN DESTELLO: Cambiamos a la animación continua con máxima potencia para forzar el brillo */
                 animation: destelloContinuoLogo 4s infinite ease-in-out !important;
                 will-change: filter;
             }
@@ -603,12 +607,12 @@
     <div class="banner-donar-flex">
         <div class="banner-donar-texto">
             <h3>🎬 ¡Ayuda a mantener el archivo!</h3>
-            <p style="margin: 0 0 6px 0 !important; line-height: 1.45;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios en Bunny.net genera costes mensuales.</p>
+            <p style="margin: 0 0 6px 0 !important; line-height: 1.45;">Mantener <strong>45 vídeos históricos (1 Terabyte)</strong> en alta calidad y sin anuncios genera costes mensuales.</p>
             <p style="margin: 0 !important; line-height: 1.45;">Si disfrutas del recuerdo y quieres colaborar para pagar el servidor, puedes enviar tu aportación voluntaria por Bizum, PayPal o Tarjeta (de 1€, 3€, 5€ o lo que quieras):</p>
         </div>
         <div class="banner-donar-botones">
             <!-- Botón oficial Ko-fi -->
-            <a href="https://ko-fi.com/caudetefiestas" target="_blank" class="btn-kofi-monto" style="background-color: #ff5f5f !important; color: white !important;">💳 PayPal / Tarjeta</a>
+            <a href="https://ko-fi.com" target="_blank" class="btn-kofi-monto" style="background-color: #ff5f5f !important; color: white !important;">💳 PayPal / Tarjeta</a>
             
             <!-- BOTÓN INTERACTIVO DE BIZUM (Llama a la función Javascript al hacer clic) -->
             <button onclick="instruccionesBizum(event)" class="info-bizum-badge" style="border: none; cursor: pointer; font-family: inherit;">📲 Bizum: 609 450 962</button>
@@ -625,7 +629,6 @@
         📥 Instalar Aplicación Caudete Fiestas
     </button>
 </div>
-
 <!-- CONTENEDOR DEL REPRODUCTOR -->
 <div class="video-container" id="marco-contenedor">
     <div class="video-wrapper">
@@ -690,65 +693,72 @@
     </div>
 </div>
  
-  <!-- ========================================== -->
+<!-- ========================================== -->
 <!-- PARTE 4: BASE DE DATOS Y LISTENERS GLOBALES (CORREGIDA) -->
 <!-- ========================================== -->
 
 <script>
 window.addEventListener('load', () => {
-    // --- VÍDEOS POR AÑO ---
+    // --- VÍDEOS POR AÑO (Convertidos al formato oficial embed de YouTube con inyección forzada a 1080p) ---
     const videosData = {
-        "1974": "https://youtu.be/hjV7W-0BABM",      
-        "1983": "https://youtu.be/w0wdwkkAywI",
-        "1984": "https://youtu.be/L9WvXHQJfuw",
-        "1985": "https://youtu.be/d9p7RzkcGKc",
-        "1986": "https://youtu.be/TsV4tbosxKs",
-        "1987": "https://youtu.be/EPbBxyyK9hc",
-        "1988": "https://youtu.be/R2J5EHiVeqk",
-        "1989": "https://youtu.be/WvtgEzB2T_M",
-        "1990": "https://youtu.be/4IvYvg0zrIU",
-        "1991": "https://youtu.be/9A646dYBDUU",
-        "1992": "https://youtu.be/IEMdOf4YQwg",
-        "1993": "https://youtu.be/Q2GENGr54iM",
-        "1994": "https://youtu.be/HyIPrk7Dlg0",
-        "1995": "https://youtu.be/hEp7byXw9r0",
-        "1996": "https://youtu.be/7Zs8NYLFfQw",
-        "1997": "https://youtu.be/o-y051QRg98",
-        "1998": "https://youtu.be/cCUr0pMJFMA",
-        "1999": "https://youtu.be/rsyxTG0HsUY",
-        "2000": "https://youtu.be/oDhFnIFVgeM",
-        "2001": "https://youtu.be/JtMQke-cGwc",
-        "2002": "https://youtu.be/_QOEtiMiNOw",
-        "2003": "https://youtu.be/83A4_xjqbNA",
-        "2004": "https://youtu.be/wf65AcoN95Y",
-        "2005": "https://youtu.be/pYuMPQ199pE",
-        "2006": "https://youtu.be/EC5AQslAxiY",
-        "2007": "https://youtu.be/8FIpyxZlzpc",
-        "2008": "https://youtu.be/NX6oAHDgx3Y",
-        "2009": "https://youtu.be/LvJhjjqU6gQ",
-        "2010": "https://youtu.be/lYUI7l_oxxU",
-        "2011": "https://youtu.be/KBoYQj8xkAc",
-        "2012": "https://youtu.be/PA1ZIcnOCBM",
-        "2013": "https://youtu.be/29jF4RlMrqw",
-        "2014": "https://youtu.be/XeKex6zp3UY",
-        "2015": "https://youtu.be/WwapJJ8QagE",
-        "2016": "https://youtu.be/wX77WT5jrP0",
-        "2017": "https://youtu.be/npZaStenu7U",
-        "2018": "https://youtu.be/O3vXeWK9oKI",
-        "2019": "https://youtu.be/FTU4Sp1Clgs",
-        "2020": "https://youtu.be/FApuej5vZbw",
-        "2021": "https://youtu.be/h92oMNYJUis",
-        "2022": "https://youtu.be/2w6YMqqMUGw",
-        "2023": "https://youtu.be/ceG0RYDV5pI",
-        "2024": "https://youtu.be/Hkf8-biA9n0",
-        "2025": "https://youtu.be/_cXZWL6XQfM",
-        "2026": "https://youtu.be/KVDx-0qIuQc"
+        "1974": "https://youtube.com",      
+        "1983": "https://youtube.com",
+        "1984": "https://youtube.com",
+        "1985": "https://youtube.com",
+        "1986": "https://youtube.com",
+        "1987": "https://youtube.com",
+        "1988": "https://youtube.com",
+        "1989": "https://youtube.com",
+        "1990": "https://youtube.com",
+        "1991": "https://youtube.com",
+        "1992": "https://youtube.com",
+        "1993": "https://youtube.com",
+        "1994": "https://youtube.com",
+        "1995": "https://youtube.com",
+        "1996": "https://youtube.com",
+        "1997": "https://youtube.com",
+        "1998": "https://youtube.com",
+        "1999": "https://youtube.com",
+        "2000": "https://youtube.com",
+        "2001": "https://youtube.com",
+        "2002": "https://youtube.com",
+        "2003": "https://youtube.com",
+        "2004": "https://youtube.com",
+        "2005": "https://youtube.com",
+        "2006": "https://youtube.com",
+        "2007": "https://youtube.com",
+        "2008": "https://youtube.com",
+        "2009": "https://youtube.com",
+        "2010": "https://youtube.com",
+        "2011": "https://youtube.com",
+        "2012": "https://youtube.com",
+        "2013": "https://youtube.com",
+        "2014": "https://youtube.com",
+        "2015": "https://youtube.com",
+        "2016": "https://youtube.com",
+        "2017": "https://youtube.com",
+        "2018": "https://youtube.com",
+        "2019": "https://youtube.com",
+        "2020": "https://youtube.com",
+        "2021": "https://youtube.com",
+        "2022": "https://youtube.com",
+        "2023": "https://youtube.com",
+        "2024": "https://youtube.com",
+        "2025": "https://youtube.com",
+        "2026": "https://youtube.com"
     };
-
-    function extractYoutubeVideoId(url) {
+  function extractYoutubeVideoId(url) {
         if (!url) return null;
 
         try {
+            // Manejar urls que ya vienen convertidas a embed con parámetros
+            if (url.includes('://youtube.com')) {
+                const parts = url.split('://youtube.com');
+                if (parts[1]) {
+                    return parts[1].split('?')[0];
+                }
+            }
+            
             const parsed = new URL(url);
             if (parsed.hostname === 'youtu.be') {
                 const id = parsed.pathname.replace('/', '').split('/')[0];
@@ -778,7 +788,7 @@ window.addEventListener('load', () => {
 
     function abrirVideoEnYoutube(anio) {
         const videoUrl = youtubeVideoIds[anio]
-            ? `https://www.youtube.com/watch?v=${encodeURIComponent(youtubeVideoIds[anio])}`
+            ? `https://www.youtube.com/watch?v=${encodeURIComponent(youtubeVideoIds[anio])}&vq=hd1080`
             : videosData[anio];
 
         if (!videoUrl) return;
@@ -850,7 +860,7 @@ window.addEventListener('load', () => {
         contenedorBotones.appendChild(boton);
     });
 
-    // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CON TEXTOS HISTÓRICOS Y DESTELLO FIJO) ---
+    // --- CONTROLADOR DE EMISIÓN DE VÍDEO (CON TRUCOS DE CALIDAD HD FORZADA A 1080P) ---
     function inicializarCambioEmisionVideo(anio) {
         clearInterval(temporizadorReloj);
         videoPausado = false;
@@ -865,12 +875,12 @@ window.addEventListener('load', () => {
                 rel: '0',
                 playsinline: '1',
                 cc_load_policy: '0',
-                vq: 'hd1080'
+                vq: 'hd1080' // Forzado estricto inicial a 1080p
             });
-            if (window.location.origin !== 'null') {
+            if (window.location.origin !== 'null' && window.location.origin !== '') {
                 parametros.set('origin', window.location.origin);
             }
-            iframePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?${parametros}`;
+            iframePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?${parametros.toString()}`;
             iframePlayer.onerror = () => {
                 console.warn(`El vídeo ${anio} no se puede incrustar (error 153). Se abre directamente en YouTube.`);
                 abrirVideoEnYoutube(anio);
@@ -884,13 +894,12 @@ window.addEventListener('load', () => {
                 preload: 'true',
                 responsive: 'true'
             });
-            iframePlayer.src = `${videosData[anio]}?${parametros}`;
+            iframePlayer.src = `${videosData[anio]}?${parametros.toString()}`;
         }
         
         capaEspera.style.opacity = "0";
         setTimeout(() => { capaEspera.style.visibility = "hidden"; }, 400);
-
-        // --- ASIGNACIÓN DE TEXTOS HISTÓRICOS PERSONALIZADOS (2020, 2021 Y 2026) ---
+    // --- ASIGNACIÓN DE TEXTOS HISTÓRICOS PERSONALIZADOS (2020, 2021 Y 2026) ---
         if (anio === "2020" || anio === "2021") {
             badgeAnio.innerText = `FIESTAS ${anio} SUSPENDIDAS`;
         } else if (anio === "2026") {
@@ -1051,15 +1060,18 @@ window.addEventListener('load', () => {
             eventoInstalacion.prompt();
             const { outcome } = await eventoInstalacion.userChoice;
             
-            // CORRECCIÓN: Solo se oculta el botón si el usuario ACEPTA instalar la app
+            // CONSEGUIDO: Solo se oculta el botón si el usuario ACEPTA instalar la app
             if (outcome === 'accepted') {
                 btnInstalarApp.style.display = 'none';
                 eventoInstalacion = null;
             }
         });
     }
-  
-// --- CREACIÓN DINÁMICA DEL BOTÓN DE DONACIÓN (€) ---
+});
+</script>
+</body>
+</html>
+ // --- CREACIÓN DINÁMICA DEL BOTÓN DE DONACIÓN (€) ---
     const btnDonarInicio = document.createElement('button');
     btnDonarInicio.className = 'btn-control-tv btn-donar-tv efecto-destello';
     btnDonarInicio.id = 'btnDonarInicio';
@@ -1101,11 +1113,15 @@ window.addEventListener('load', () => {
         e.stopPropagation(); // Evita que se cierre el banner al pulsar el botón
         const numeroTelefono = "609450962";
         
-        navigator.clipboard.writeText(numeroTelefono).then(() => {
-            alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 45 09 62.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
-        }).catch(err => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(numeroTelefono).then(() => {
+                alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 45 09 62.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.\n\n¡Hemos copiado el número de teléfono en su portapapeles para que pueda pegarlo fácilmente en su banco!");
+            }).catch(err => {
+                alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 45 09 62.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.");
+            });
+        } else {
             alert("💡 CONSEJO PARA BIZUM:\n\n1. Utilice la aplicación de su banco en su teléfono móvil.\n2. Envíe su aportación de 1€, 3€, 5€ al número 609 45 09 62.\n3. Ponga como concepto: 'Mantenimiento Web Caudete-Fiestas'.");
-        });
+        }
     };
 
     // --- CONTROL ESTRICTO DE PANTALLA COMPLETA ---
