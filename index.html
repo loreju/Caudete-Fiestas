@@ -965,10 +965,11 @@ window.addEventListener('load', () => {
             }
             if (youtubePlayer) {
                 crearReproductorYoutube();
-            } else if (youtubeApiReady) {
-                crearReproductorYoutube();
             } else {
                 iframePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?${parametros}`;
+                if (youtubeApiReady) {
+                    crearReproductorYoutube();
+                }
             }
             iframePlayer.onerror = () => {
                 console.warn(`El vídeo ${anio} no se puede incrustar (error 153). Se abre directamente en YouTube.`);
