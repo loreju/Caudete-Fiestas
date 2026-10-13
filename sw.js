@@ -1,4 +1,4 @@
-const CACHE_NAME = 'Caudete-Fiestas-v58'; // Subimos a v58 para forzar la actualización en todos los móviles
+const CACHE_NAME = 'Caudete-Fiestas-v59'; // Subimos a v59 para forzar la actualización en todos los móviles
 const CACHE_PREFIX = 'Caudete-Fiestas-';
 
 // Todos tus archivos estáticos reales y definitivos en GitHub Pages
