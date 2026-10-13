@@ -18,6 +18,22 @@
     <!-- ENLACE AL MANIFEST -->
     <link rel="manifest" href="manifest.json">
 
+    <!-- Añade aquí el ID de medición de GA4 (formato G-XXXXXXXXXX) para activar la analítica. -->
+    <script>
+        window.CAUDETE_GA4_ID = 'G-4YD6LG9NSQ';
+        if (window.CAUDETE_GA4_ID) {
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+            window.gtag('config', window.CAUDETE_GA4_ID);
+
+            const googleAnalyticsScript = document.createElement('script');
+            googleAnalyticsScript.async = true;
+            googleAnalyticsScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(window.CAUDETE_GA4_ID)}`;
+            document.head.appendChild(googleAnalyticsScript);
+        }
+    </script>
+
     <style>
         html, body {
             background-color: #141414;
@@ -805,10 +821,85 @@ window.addEventListener('load', () => {
     let temporizadorReloj = null;
     let videoPausado = false;
     let reproductorActual = 'bunny';
+    let youtubePlayer = null;
+    let youtubePlayerReady = false;
+    let youtubeApiReady = false;
+    let youtubeVideoPendiente = null;
+
+    function registrarInicioYoutube() {
+        if (typeof window.gtag !== 'function' || !youtubePlayer) return;
+
+        const videoId = youtubePlayer.getVideoData().video_id;
+        if (!videoId) return;
+        const anio = Object.keys(youtubeVideoIds).find(key => youtubeVideoIds[key] === videoId);
+        window.gtag('event', 'youtube_play', {
+            video_year: anio || anioSeleccionadoDestino,
+            video_id: videoId,
+            player_location: 'archivo_historico'
+        });
+    }
+
+    function crearReproductorYoutube() {
+        if (!youtubeApiReady || !youtubeVideoPendiente) return;
+
+        const { videoId } = youtubeVideoPendiente;
+        if (youtubePlayer) {
+            if (youtubePlayerReady) youtubePlayer.loadVideoById(videoId);
+            return;
+        }
+
+        const origin = window.location.origin !== 'null' ? window.location.origin : undefined;
+        youtubePlayer = new YT.Player(iframePlayer, {
+            host: 'https://www.youtube-nocookie.com',
+            videoId,
+            playerVars: {
+                autoplay: 1,
+                enablejsapi: 1,
+                rel: 0,
+                playsinline: 1,
+                ...(origin ? { origin } : {})
+            },
+            events: {
+                onReady: event => {
+                    if (!youtubePlayer || !youtubeVideoPendiente) return;
+                    youtubePlayerReady = true;
+                    if (event.target.getVideoData().video_id !== youtubeVideoPendiente.videoId) {
+                        event.target.loadVideoById(youtubeVideoPendiente.videoId);
+                    } else {
+                        event.target.playVideo();
+                    }
+                },
+                onStateChange: event => {
+                    if (event.data === YT.PlayerState.PLAYING) registrarInicioYoutube();
+                },
+                onError: event => console.error('Error del reproductor de YouTube:', event.data)
+            }
+        });
+    }
+
+    function cargarApiYoutube() {
+        window.onYouTubeIframeAPIReady = () => {
+            youtubeApiReady = true;
+            crearReproductorYoutube();
+        };
+
+        const script = document.createElement('script');
+        script.src = 'https://www.youtube.com/iframe_api';
+        script.onerror = () => console.error('No se pudo cargar la YouTube IFrame Player API.');
+        document.head.appendChild(script);
+    }
+
+    cargarApiYoutube();
 
     function enviarComandoReproductor(metodo, valor = null) {
         if (iframePlayer && iframePlayer.contentWindow) {
             if (reproductorActual === 'youtube') {
+                if (youtubePlayer) {
+                    if (metodo === 'play') youtubePlayer.playVideo();
+                    if (metodo === 'pause') youtubePlayer.pauseVideo();
+                    return;
+                }
+
                 const comandos = { play: 'playVideo', pause: 'pauseVideo' };
                 const payload = {
                     event: 'command',
@@ -859,6 +950,8 @@ window.addEventListener('load', () => {
         const youtubeVideoId = youtubeVideoIds[anio];
         if (youtubeVideoId) {
             reproductorActual = 'youtube';
+            iframePlayer.style.visibility = 'visible';
+            youtubeVideoPendiente = { videoId: youtubeVideoId, anio };
             const parametros = new URLSearchParams({
                 autoplay: '1',
                 enablejsapi: '1',
@@ -870,13 +963,25 @@ window.addEventListener('load', () => {
             if (window.location.origin !== 'null') {
                 parametros.set('origin', window.location.origin);
             }
-            iframePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?${parametros}`;
+            if (youtubePlayer) {
+                crearReproductorYoutube();
+            } else if (youtubeApiReady) {
+                crearReproductorYoutube();
+            } else {
+                iframePlayer.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(youtubeVideoId)}?${parametros}`;
+            }
             iframePlayer.onerror = () => {
                 console.warn(`El vídeo ${anio} no se puede incrustar (error 153). Se abre directamente en YouTube.`);
                 abrirVideoEnYoutube(anio);
             };
         } else {
             reproductorActual = 'bunny';
+            youtubeVideoPendiente = null;
+            if (youtubePlayer) {
+                youtubePlayer.destroy();
+                youtubePlayer = null;
+                youtubePlayerReady = false;
+            }
             const parametros = new URLSearchParams({
                 autoplay: 'true',
                 loop: 'false',
@@ -937,7 +1042,12 @@ window.addEventListener('load', () => {
         unVideoEstaReproduciendose = false;
         
         enviarComandoReproductor('pause');
-        iframePlayer.src = "about:blank"; 
+        if (youtubePlayer) {
+            youtubePlayer.stopVideo();
+            iframePlayer.style.visibility = 'hidden';
+        } else {
+            iframePlayer.src = "about:blank";
+        }
         reproductorActual = 'bunny';
 
         badgeAnio.style.display = "none";
